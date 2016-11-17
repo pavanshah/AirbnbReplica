@@ -1228,7 +1228,7 @@ input.check-in-box:-ms-input-placeholder { /* Internet Explorer 10-11 */
 
 .map-section {
     height: 90%;
-    background-image: url(../images/room-list-images/map.png);
+    /*background-image: url(../images/room-list-images/map.png);*/
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -1376,3 +1376,6 @@ input.check-in-box:-ms-input-placeholder { /* Internet Explorer 10-11 */
     font-size: 13px;
     letter-spacing: 2.3;
 }
+
+/*div[id^=map_canvas], 
+div[id^=map_canvas] div {overflow: auto;}*/
