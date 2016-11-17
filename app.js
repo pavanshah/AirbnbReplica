@@ -9,7 +9,28 @@ var bodyParser = require('body-parser');
 var methodOverride = require('method-override');
 var app = express();
 
+ //URL for the sessions collections in mongoDB
+var mongoSessionConnectURL = "mongodb://apps92:shim123@ds155727.mlab.com:55727/airbnbproto";
+var expressSession = require("express-session");
+var mongoStore = require("connect-mongo")(expressSession);
+var mongo = require("./routes/mongo");
+
+
+
+
 // all environments
+app.use(expressSession({
+  secret: 'cmpe273_airbnb_team9',
+  resave: false,  //don't save session if unmodified
+  saveUninitialized: false, // don't create session until something stored
+  duration: 30 * 60 * 1000,    
+  activeDuration: 5 * 60 * 1000,
+  store: new mongoStore({
+    url: mongoSessionConnectURL
+  })
+}));
+
+
 app.set('port', process.env.PORT || 3000);
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
@@ -39,8 +60,15 @@ app.use(express.static(path.join(__dirname, '/')));
         res.sendfile('public/index.html'); // load the single view file (angular will handle the page changes on the front-end)
     });
 
+mongo.connect(mongoSessionConnectURL, function(){
+  console.log('Connected to mongo at: ' + mongoSessionConnectURL);
+  http.createServer(app).listen(app.get('port'), function(){
+    console.log('Express server listening on port ' + app.get('port'));
+  });  
+});
 
 
-http.createServer(app).listen(app.get('port'), function(){
+/*http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
 });
+*/
