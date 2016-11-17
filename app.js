@@ -8,13 +8,13 @@ var logger = require('morgan');
 var bodyParser = require('body-parser');
 var methodOverride = require('method-override');
 var app = express();
-
+var mongoose = require('mongoose');
  //URL for the sessions collections in mongoDB
 var mongoSessionConnectURL = "mongodb://apps92:shim123@ds155727.mlab.com:55727/airbnbproto";
 var expressSession = require("express-session");
 var mongoStore = require("connect-mongo")(expressSession);
 var mongo = require("./routes/mongo");
-
+var property = require("./routes/properties");
 
 
 
@@ -59,8 +59,11 @@ app.use(favicon(path.join(__dirname, 'public','images','favicon.ico')));
  app.get('/', function(req, res) {
         res.sendfile('public/index.html'); // load the single view file (angular will handle the page changes on the front-end)
     });
+ app.post('/CreateProperty',property.CreateProperty);
+ app.post('/SearchPropertyByDistance',property.SearchPropertyByDistance);
+ app.post('/FilterProperties',property.FilterProperties);
 
-mongo.connect(mongoSessionConnectURL, function(){
+mongoose.connect(mongoSessionConnectURL, function(){
   console.log('Connected to mongo at: ' + mongoSessionConnectURL);
   http.createServer(app).listen(app.get('port'), function(){
     console.log('Express server listening on port ' + app.get('port'));
