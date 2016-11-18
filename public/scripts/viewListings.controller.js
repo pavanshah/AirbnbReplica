@@ -24,7 +24,7 @@ function viewListingsControllerFn($state,propertyService,locationService) {
      propertyService.getProperties({}).
       then(function(properties) {
           properties = properties;
-          mapCenter = {lat: properties[0].location[1], lng: properties[0].location[0]};
+          mapCenter = {lat: properties[1].location[1], lng: properties[1].location[0]};
           drawMarkersOnMap(properties); 
       });
   }
