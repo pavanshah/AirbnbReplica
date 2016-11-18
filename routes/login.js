@@ -8,12 +8,19 @@ var Users = require('../Models/user');
 
 var userSignup = function(req,res){
 	console.log("Inside signup host");
-	
-		
+	var user = Users(req.body.property);
+	console.log(user);
+	user.save(function(err,result){
 
-	res
-	.status(200)
-	.send({"result":"user signed up"});
+		if(!err){
+			console.log(result);
+			res.status(200);
+			res.json({"result":"user LoggedIn"});
+
+		}
+		else
+			console.log(err);
+	});
 };
 
 var userLogIn = function(req,res){
