@@ -22,7 +22,7 @@ address : {
 
  description:String,
  propertyTitle:String,
- condition:String,
+ createdAt:Date,
  bookings:[{
  			start_date:Date,
  			end_date:Date
@@ -40,5 +40,14 @@ propertyPictures: [String],
 propertyVideos:[String]
 
 });
+
+Property.pre('save', function(next){
+   now = new Date();
+   if (!this.createdAt) {
+       this.createdAt = now;
+   }
+   next();
+});
+
 Property.index({location: '2dsphere'});
 module.exports = mongoose.model("Property",Property);
