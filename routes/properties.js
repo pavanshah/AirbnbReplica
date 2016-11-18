@@ -66,6 +66,24 @@ var FilterProperties = function(req,res){
 
 	})
 
+}
+
+var UpdateProperty = function(req,res){
+
+	console.log("inside update property");
+	var newProperty = Property(req.body.property);
+	newProperty.save(function(err,result){
+
+		if(!err){
+			console.log(result);
+			res.status(200);
+			res.json({"result":"Property created"});
+
+		}
+		else
+			console.log(err);
+	});
+
 
 }
 
