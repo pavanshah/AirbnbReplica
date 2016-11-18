@@ -71,6 +71,7 @@ app.use(favicon(path.join(__dirname, 'public','images','favicon.ico')));
 app.post('/userSignUp',user.userSignup);
 app.post('/userLogIn',user.userLogIn);
 app.post('/deleteLogin',user.deleteLogin);
+
 app.post('/updateLogin',user.updateLogin);
 app.get('/getLogin',user.getLogin);
  
