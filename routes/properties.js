@@ -46,7 +46,7 @@ var SearchPropertyByDistance = function(req,res){
 	})
 
 
-	}
+}
 
 var FilterProperties = function(req,res){
 
@@ -69,24 +69,23 @@ var FilterProperties = function(req,res){
 }
 
 var UpdateProperty = function(req,res){
-
 	console.log("inside update property");
-	var newProperty = Property(req.body.property);
-	newProperty.save(function(err,result){
-
-		if(!err){
-			console.log(result);
+	var query = {'property_id':req.body.property.property_id};
+	var obj = req.body.property;
+	Property.update(query,{$set:obj}, function(error, property) {
+		if(!error)
+		{
 			res.status(200);
-			res.json({"result":"Property created"});
-
+			res.json({"result":"Property updated"});
 		}
-		else
-			console.log(err);
+		else{
+			console.log(error);
+		}
+		
 	});
-
-
 }
 
 exports.SearchPropertyByDistance = SearchPropertyByDistance;
 exports.CreateProperty = CreateProperty;
 exports.FilterProperties = FilterProperties;
+exports.UpdateProperty = UpdateProperty;
