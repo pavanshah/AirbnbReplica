@@ -9,6 +9,19 @@ var Property = require('../Models/property');
 var CreateProperty = function (req,res){
 
 	console.log("inside create property");
+
+	var todayDate = new Date();
+	var year = todayDate.getFullYear();
+	var month = parseInt(todayDate.getMonth())+1;
+	var date = todayDate.getDate();
+	var hour = todayDate.getHours();
+	var minute = todayDate.getMinutes();
+	var second = todayDate.getSeconds();
+	var milliSecond = todayDate.getMilliseconds();
+	var property_id = year+""+month+""+date+""+hour+""+minute+""+second+""+milliSecond;
+	//Will use the below variable to save the propertyID after the login is done and username is available in the session
+	//var property_id = req.session.username+""+year+""+month+""+date+""+hour+""+minute+""+second+""+milliSecond;
+	req.body.property.property_id=property_id;
 	var newProperty = Property(req.body.property);
 	console.log(newProperty);
 	newProperty.save(function(err,result){
