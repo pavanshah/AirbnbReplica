@@ -35,7 +35,10 @@ princing_catalog : {
 	seasonal_surge:Number,
 	weekly_discount:Number,
 	monthly_discount:Number
-					 }
+					 },
+propertyPictures: [String], 
+propertyVideos:[String]
+
 });
 Property.index({location: '2dsphere'});
 module.exports = mongoose.model("Property",Property);
