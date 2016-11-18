@@ -9,7 +9,7 @@ function viewListingsControllerFn($state,propertyService,locationService) {
 	}
   var icon = "http://maps.google.com/mapfiles/ms/icons/blue-dot.png";
   var mapCenter = {};
-  var properties = [];
+  vm.properties = [];
 
   
 
@@ -23,9 +23,14 @@ function viewListingsControllerFn($state,propertyService,locationService) {
   function getProperties(filter) {
      propertyService.getProperties({}).
       then(function(properties) {
-          properties = properties;
-          mapCenter = {lat: properties[1].location[1], lng: properties[1].location[0]};
-          drawMarkersOnMap(properties); 
+          vm.properties = properties;
+          angular.forEach(properties,function(property) {
+            if(!property.propertyPictures){
+              property.propertyPictures = ["public/images/room-list-images/room-1-a.png"];
+            }
+          })
+          mapCenter = {lat: vm.properties[1].location[1], lng: vm.properties[1].location[0]};
+          drawMarkersOnMap(vm.properties); 
       });
   }
 
