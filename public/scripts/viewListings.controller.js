@@ -11,7 +11,7 @@ function viewListingsControllerFn($state) {
 
 	 var Location = function(latlon, message, username, gender, age, favlang){
             this.latlon = latlon;
-            this.message = "Hey";
+            this.message = message;
          
         };
 
@@ -73,6 +73,7 @@ function viewListingsControllerFn($state) {
                    map: map,
                    title: "Big Map",
                    icon: icon,
+                   label:"MarkerText"
                });
 
   // For each marker created, add a listener that checks for clicks
