@@ -15,7 +15,11 @@ var expressSession = require("express-session");
 var mongoStore = require("connect-mongo")(expressSession);
 var mongo = require("./routes/mongo");
 var property = require("./routes/properties");
-var userLogin = require("./routes/login");
+
+var user = require("./routes/login");
+
+var host = require("./routes/hosts");
+
 
 
 
@@ -63,9 +67,27 @@ app.use(favicon(path.join(__dirname, 'public','images','favicon.ico')));
  app.post('/CreateProperty',property.CreateProperty);
  app.post('/SearchPropertyByDistance',property.SearchPropertyByDistance);
  app.post('/FilterProperties',property.FilterProperties);
- app.post('/login',userLogin.Userlogin);
+
+app.post('/userSignUp',user.userSignup);
+app.post('/userLogIn',user.userLogIn);
+app.post('/deleteLogin',user.deleteLogin);
+app.post('/updateLogin',user.updateLogin);
+app.get('/getLogin',user.getLogin);
  
+
+
+ 
+ app.post('/HostSignUp',host.HostSignUp);
+ app.post('/HostLogIn',host.HostLogIn);
+ app.post('/DeleteHost',host.DeleteHost);
+ app.post('/UpdateHost',host.UpdateHost);
+ app.get('/GetHost',host.GetHost);
+
+
+
+
  /*app.post('/UpdateProperty',;*/
+
 mongoose.connect(mongoSessionConnectURL, function(){
   console.log('Connected to mongo at: ' + mongoSessionConnectURL);
   http.createServer(app).listen(app.get('port'), function(){
