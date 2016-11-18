@@ -63,6 +63,7 @@ app.use(favicon(path.join(__dirname, 'public','images','favicon.ico')));
  app.post('/CreateProperty',property.CreateProperty);
  app.post('/SearchPropertyByDistance',property.SearchPropertyByDistance);
  app.post('/FilterProperties',property.FilterProperties);
+
  
  app.post('/HostSignUp',host.HostSignUp);
  app.post('/HostLogIn',host.HostLogIn);
@@ -70,6 +71,9 @@ app.use(favicon(path.join(__dirname, 'public','images','favicon.ico')));
  app.post('/UpdateHost',host.UpdateHost);
  app.get('/GetHost',host.GetHost);
 
+
+
+ /*app.post('/UpdateProperty',;*/
 
 mongoose.connect(mongoSessionConnectURL, function(){
   console.log('Connected to mongo at: ' + mongoSessionConnectURL);
