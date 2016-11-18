@@ -5,7 +5,15 @@ function propertyServiceFn($http) {
 
 	function getProperties(propertyFilters) {
 		
-		
+		var properties = [];
+
+		return $http.post("FilterProperties",propertyFilters).
+		then(function(response) {
+			if(response.status==200){
+				properties = response.data;
+			}
+			return properties;		
+		})
 
 
 	}
