@@ -64,6 +64,9 @@ app.use(favicon(path.join(__dirname, 'public','images','favicon.ico')));
  app.post('/SearchPropertyByDistance',property.SearchPropertyByDistance);
  app.post('/FilterProperties',property.FilterProperties);
 
+app.post('/UpdateProperty',property.UpdateProperty);
+
+
  
  app.post('/HostSignUp',host.HostSignUp);
  app.post('/HostLogIn',host.HostLogIn);
