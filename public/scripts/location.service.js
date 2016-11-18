@@ -52,7 +52,7 @@ function locationServiceFn() {
             var property = properties[i];
 
             // Create popup windows for each record
-            var  contentString = '<p><b> ' + property.address.street + '</b></p>';
+            var  contentString = '<p><b> ' + property.address.street + '</b></p><p><img width="200" height="200" src="public/images/room-list-images/room-1-a.png" alt="property image"></p>';
 
             // Converts each of the JSON records into Google Maps Location format (Note Lat, Lng format).
             locations.push(new Location(
