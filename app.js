@@ -15,6 +15,7 @@ var expressSession = require("express-session");
 var mongoStore = require("connect-mongo")(expressSession);
 var mongo = require("./routes/mongo");
 var property = require("./routes/properties");
+var userLogin = require("./routes/login");
 
 
 
@@ -62,6 +63,8 @@ app.use(favicon(path.join(__dirname, 'public','images','favicon.ico')));
  app.post('/CreateProperty',property.CreateProperty);
  app.post('/SearchPropertyByDistance',property.SearchPropertyByDistance);
  app.post('/FilterProperties',property.FilterProperties);
+ app.post('/login',userLogin.Userlogin);
+ 
  /*app.post('/UpdateProperty',;*/
 mongoose.connect(mongoSessionConnectURL, function(){
   console.log('Connected to mongo at: ' + mongoSessionConnectURL);
