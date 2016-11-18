@@ -21,6 +21,8 @@ address : {
 			 },
 
  description:String,
+ propertyTitle:String,
+ condition:String,
  bookings:[{
  			start_date:Date,
  			end_date:Date
