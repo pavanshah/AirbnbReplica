@@ -4,6 +4,9 @@
   "description": "Class project",
   "main": "app.js",
   "dependencies": {
+	"express": "4.14.0",
+	"url": "^0.10.1",
+	"ejs": "^1.0.0",
     "amqp": "^0.2.6",
     "body-parser": "^1.15.2",
     "bcryptjs": "^2.3.0",
