@@ -15,7 +15,11 @@ var expressSession = require("express-session");
 var mongoStore = require("connect-mongo")(expressSession);
 var mongo = require("./routes/mongo");
 var property = require("./routes/properties");
+
+var user = require("./routes/login");
+
 var host = require("./routes/hosts");
+
 
 
 
@@ -64,7 +68,16 @@ app.use(favicon(path.join(__dirname, 'public','images','favicon.ico')));
  app.post('/SearchPropertyByDistance',property.SearchPropertyByDistance);
  app.post('/FilterProperties',property.FilterProperties);
 
+
+app.post('/userSignUp',user.userSignup);
+app.post('/userLogIn',user.userLogIn);
+app.post('/deleteLogin',user.deleteLogin);
+app.post('/updateLogin',user.updateLogin);
+app.get('/getLogin',user.getLogin);
+ 
+
 app.post('/UpdateProperty',property.UpdateProperty);
+
 
 
  
@@ -73,6 +86,7 @@ app.post('/UpdateProperty',property.UpdateProperty);
  app.post('/DeleteHost',host.DeleteHost);
  app.post('/UpdateHost',host.UpdateHost);
  app.get('/GetHost',host.GetHost);
+
 
 
 
