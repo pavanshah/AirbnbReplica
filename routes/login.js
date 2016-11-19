@@ -7,8 +7,18 @@ var Users = require('../Models/user');
 
 
 var userSignup = function(req,res){
-	console.log("Inside signup host");
-	var user = Users(req.body.property);
+	console.log("Inside signup user");
+	var todayDate = new Date();
+	var year = todayDate.getFullYear();
+	var month = parseInt(todayDate.getMonth())+1;
+	var date = todayDate.getDate();
+	var hour = todayDate.getHours();
+	var minute = todayDate.getMinutes();
+	var second = todayDate.getSeconds();
+	var milliSecond = todayDate.getMilliseconds();
+	var user_id = year+""+month+""+date+""+hour+""+minute+""+second+""+milliSecond;
+	req.body.login.user_id = user_id;
+	var user = new Users(req.body.login);
 	console.log(user);
 	user.save(function(err,result){
 
@@ -18,8 +28,11 @@ var userSignup = function(req,res){
 			res.json({"result":"user LoggedIn"});
 
 		}
-		else
+		else{
+			console.log("inside error");
 			console.log(err);
+		}
+			
 	});
 };
 
