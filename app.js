@@ -19,7 +19,8 @@ var mongo = require("./routes/mongo");
 var property = require("./routes/properties");
 var user = require("./routes/login");
 var host = require("./routes/hosts");
-
+var Hosts = require('./Models/host');
+var Users = require('./Models/user');
 // all environments
 app.use(expressSession({
   secret: 'cmpe273_airbnb_team9',
@@ -61,6 +62,29 @@ app.use(favicon(path.join(__dirname, 'public','images','favicon.ico')));
 
 //app.get('/', home.signin);
 
+passport.serializeUser(function(host, done) {
+	var key = {id : host.id,type : host.type};
+	  done(null, key);
+});
+
+passport.deserializeUser(function(key, done) {
+	
+	console.log("this is:"+key.type);
+	if(key.type == 2){
+	  Hosts.findById(key.id, function(err, hosts) {
+		  console.log(hosts);
+	    done(err, hosts);
+	  });	
+	}
+	else if(key.type == 1){
+		  Users.findById(key.id, function(err, users) {
+			  console.log(users);
+		    done(err, users);
+		  });	
+		}
+});
+
+
  app.get('/', function(req, res) {
         res.sendfile('public/index.html'); // load the single view file (angular will handle the page changes on the front-end)
     });
@@ -80,7 +104,7 @@ app.post('/UpdateProperty',property.UpdateProperty);
 
 
 
-app.post('/HostLogIn',passport.authenticate('local', { failWithError: true }),function(req,res,next){
+app.post('/HostLogIn',passport.authenticate('host', { failWithError: true }),function(req,res,next){
 	 console.log("Testing");
 		res.
 		json({"result":"Success"});
