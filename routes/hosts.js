@@ -15,17 +15,8 @@ var LocalStrategy = require('passport-local').Strategy;
 
 
 
-passport.serializeUser(function(host, done) {
-	  done(null, host.id);
-});
 
-passport.deserializeUser(function(id, done) {
-	  Hosts.findById(id, function(err, host) {
-	    done(err, host);
-	  });
-});
-
-passport.use(new LocalStrategy({
+passport.use('host',new LocalStrategy({
 			    usernameField: 'email'
 			},
 		  function(username, password, done) {
@@ -76,10 +67,11 @@ var HostSignUp = function(req,res){
 			return;
 		}
 		req.body.hostSignUp.host_id = uniqueIDGenerator.returnUniqueID();
-		
+		req.body.hostSignUp.type = 2;
 		var salt = bcrypt.genSaltSync(10);
 		var hash = bcrypt.hashSync(req.body.hostSignUp.password, salt);
 		req.body.hostSignUp.password = hash;
+		
 		var newHost = new Hosts(req.body.hostSignUp);
 		newHost.save(function(err,result){
 			console.log("Inside saving record");

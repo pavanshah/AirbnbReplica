@@ -3,6 +3,7 @@ var Schema = mongoose.Schema;
 
 var Hosts = new Schema({
 	host_id : String,
+	type : Number,
 	firstname: String,
 	lastname : String,
 	email: String,
