@@ -5,7 +5,8 @@ var Schema = mongoose.Schema;
 var Users = require('../Models/user');
 var bcrypt = require('bcryptjs');
 var uniqueIDGenerator = require('../routes/uniqueIDGenerator');
-
+var passport = require('passport');
+var LocalStrategy = require('passport-local').Strategy;
 
 var userSignup = function(req,res){
 	console.log("Inside signup user");
@@ -29,7 +30,8 @@ var userSignup = function(req,res){
 			res.status(400);
 			res.json({"result":"user already present"});
 			return;
-		} 
+		}
+		req.body.userSignUp.type = 1;
 		var user = new Users(req.body.userSignUp);
 		user.save(function(err,result){
 				if(!err){
@@ -51,7 +53,32 @@ var userSignup = function(req,res){
 	
 	
 };
-
+passport.use('user',new LocalStrategy({
+    usernameField: 'email'
+},
+function(username, password, done) {
+  console.log("I am checking here"+username);
+  console.log("I am checking password"+password);
+  Users.findOne({ email: username }, function (err, user) {
+  if (err) { return done(err); }
+  if (!user) {
+	  console.log("Wrong Email");
+    return done(null, false, { message: 'Incorrect email.' });
+  }		      
+  console.log(user);
+  var hash = user.password;
+	console.log(hash);
+    if(!bcrypt.compareSync(password, hash)){
+    	console.log("Wrong password");
+    	return done(null, false, { message: 'Incorrect password.' });
+    }
+    console.log("Correct password");
+  
+  return done(null, user);
+});
+}
+));
+/*
 var userLogIn = function(req,res){
 	console.log("Inside user sign in");
 	
@@ -84,7 +111,7 @@ var userLogIn = function(req,res){
  })
 	
 };
-
+*/
 var deleteLogin = function(req,res){
 	Users.find({ "email":req.body.DeleteUser.email }).remove(function(err,removed){		
 		console.log(removed);
@@ -145,9 +172,9 @@ var getLogin = function(req,res){
 
 
 exports.userSignup = userSignup;
-exports.userLogIn = userLogIn;
-exports.deleteLogin = deleteLogin;
-exports.updateLogin = updateLogin;
-exports.getLogin = getLogin;
+//exports.userLogIn = userLogIn;
+exports.deleteUser = deleteLogin;
+exports.updateUser = updateLogin;
+exports.getLoginUserDetails = getLogin;
 
 

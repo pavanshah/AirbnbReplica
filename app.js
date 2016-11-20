@@ -9,20 +9,18 @@ var bodyParser = require('body-parser');
 var methodOverride = require('method-override');
 var app = express();
 var mongoose = require('mongoose');
+var passport = require('passport');
+var LocalStrategy = require('passport-local').Strategy;
  //URL for the sessions collections in mongoDB
 var mongoSessionConnectURL = "mongodb://apps92:shim123@ds155727.mlab.com:55727/airbnbproto";
 var expressSession = require("express-session");
 var mongoStore = require("connect-mongo")(expressSession);
 var mongo = require("./routes/mongo");
 var property = require("./routes/properties");
-
 var user = require("./routes/login");
-
 var host = require("./routes/hosts");
-
-
-
-
+var Hosts = require('./Models/host');
+var Users = require('./Models/user');
 // all environments
 app.use(expressSession({
   secret: 'cmpe273_airbnb_team9',
@@ -35,6 +33,8 @@ app.use(expressSession({
   })
 }));
 
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.set('port', process.env.PORT || 3000);
 app.set('views', path.join(__dirname, 'views'));
@@ -51,6 +51,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, '/')));
 app.use(favicon(path.join(__dirname, 'public','images','favicon.ico')));
 
+
 //app.use(express.bodyParser());
 /*app.use(express.cookieParser());*/
 
@@ -61,6 +62,32 @@ app.use(favicon(path.join(__dirname, 'public','images','favicon.ico')));
 
 //app.get('/', home.signin);
 
+passport.serializeUser(function(host, done) {
+	var key = {id : host.id,type : host.type};
+	  done(null, key);
+});
+
+passport.deserializeUser(function(key, done) {
+	
+	console.log("this is:"+key.type);
+	if(key.type == 2){
+	  Hosts.findById(key.id, function(err, hosts) {
+		  console.log(hosts);
+	    done(err, hosts);
+	  });	
+	}
+	else if(key.type == 1){
+		  Users.findById(key.id, function(err, users) {
+			  console.log(users);
+		    done(err, users);
+		  });	
+		}
+	else{
+		done(err, users);
+	}
+});
+
+
  app.get('/', function(req, res) {
         res.sendfile('public/index.html'); // load the single view file (angular will handle the page changes on the front-end)
     });
@@ -70,19 +97,44 @@ app.use(favicon(path.join(__dirname, 'public','images','favicon.ico')));
 
 
 app.post('/userSignUp',user.userSignup);
-app.post('/userLogIn',user.userLogIn);
-app.post('/deleteLogin',user.deleteLogin);
-app.post('/updateLogin',user.updateLogin);
-app.get('/getLogin',user.getLogin);
+//app.post('/userLogIn',user.userLogIn);
+app.post('/deleteUser',user.deleteUser);
+app.post('/updateUser',user.updateUser);
+app.get('/getLoginUserDetails',user.getLoginUserDetails);
  
+app.post('/userLogIn',passport.authenticate('user', { failWithError: true }),function(req,res,next){
+	 console.log("Testing for user");
+		res.
+		json({"result":"Success"});
+		return;
+		 //return res.redirect('/');
+	},
+	function(err, req, res, next) {
+	    // handle error			   	  	
+	    return res.json(err);
+	   
+	  }	
+);
 
 app.post('/UpdateProperty',property.UpdateProperty);
 
 
 
- 
+app.post('/HostLogIn',passport.authenticate('host', { failWithError: true }),function(req,res,next){
+	 console.log("Testing");
+		res.
+		json({"result":"Success"});
+		return;
+		 //return res.redirect('/');
+	},
+	function(err, req, res, next) {
+	    // handle error			   	  	
+	    return res.json(err);
+	   
+	  }	
+ );
+
  app.post('/HostSignUp',host.HostSignUp);
- app.post('/HostLogIn',host.HostLogIn);
  app.post('/DeleteHost',host.DeleteHost);
  app.post('/UpdateHost',host.UpdateHost);
  app.get('/GetHost',host.GetHost);
