@@ -82,9 +82,11 @@ passport.deserializeUser(function(key, done) {
 		    done(err, users);
 		  });	
 		}
+
 	else{
 		done(err, users);
 	}
+
 });
 
 

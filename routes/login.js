@@ -150,7 +150,7 @@ var updateLogin = function(req,res){
 	});
 };
 
-var getLogin = function(req,res){
+var getLoginUserDetails = function(req,res){
 	console.log("Inside Get user");
 	
  	
@@ -175,6 +175,6 @@ exports.userSignup = userSignup;
 //exports.userLogIn = userLogIn;
 exports.deleteUser = deleteLogin;
 exports.updateUser = updateLogin;
-exports.getLoginUserDetails = getLogin;
+exports.getLoginUserDetails = getLoginUserDetails;
 
 
