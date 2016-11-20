@@ -7,9 +7,48 @@ var mongoURL = "mongodb://apps92:shim123@ds155727.mlab.com:55727/airbnbproto";
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var Hosts = require('../Models/host');
-bodyParser = require('body-parser').json();
+var bodyParser = require('body-parser').json();
 var uniqueIDGenerator = require('../routes/uniqueIDGenerator');
 var bcrypt = require('bcryptjs');
+var passport = require('passport');
+var LocalStrategy = require('passport-local').Strategy;
+
+
+
+passport.serializeUser(function(host, done) {
+	  done(null, host.id);
+});
+
+passport.deserializeUser(function(id, done) {
+	  Hosts.findById(id, function(err, host) {
+	    done(err, host);
+	  });
+});
+
+passport.use(new LocalStrategy({
+			    usernameField: 'email'
+			},
+		  function(username, password, done) {
+			  console.log("I am checking here"+username);
+			  console.log("I am checking password"+password);
+			  Hosts.findOne({ email: username }, function (err, user) {
+		      if (err) { return done(err); }
+		      if (!user) {
+		    	  console.log("Wrong Email");
+		        return done(null, false, { message: 'Incorrect email.' });
+		      }		      
+		      var hash = user.password;
+				console.log(hash);
+		        if(!bcrypt.compareSync(password, hash)){
+		        	console.log("Wrong password");
+		        	return done(null, false, { message: 'Incorrect password.' });
+		        }
+		        console.log("Correct password");
+		      
+		      return done(null, user);
+		    });
+		  }
+));
 
 
 var HostSignUp = function(req,res){
@@ -67,7 +106,7 @@ var HostSignUp = function(req,res){
 
 	
 };
-
+/*
 var HostLogIn = function(req,res){
 	console.log("Inside Host sign in");
 	
@@ -102,7 +141,7 @@ var HostLogIn = function(req,res){
 	
 	
 };
-
+*/
 var DeleteHost = function(req,res){
 	console.log("Inside Host Delete");
 	
@@ -169,7 +208,6 @@ var GetHost = function(req,res){
 }; 
 
 exports.HostSignUp = HostSignUp;
-exports.HostLogIn = HostLogIn;
 exports.DeleteHost = DeleteHost;
 exports.UpdateHost = UpdateHost;
 exports.GetHost = GetHost;
