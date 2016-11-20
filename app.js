@@ -82,6 +82,11 @@ passport.deserializeUser(function(key, done) {
 		    done(err, users);
 		  });	
 		}
+
+	else{
+		done(err, users);
+	}
+
 });
 
 
@@ -94,11 +99,24 @@ passport.deserializeUser(function(key, done) {
 
 
 app.post('/userSignUp',user.userSignup);
-app.post('/userLogIn',user.userLogIn);
-app.post('/deleteLogin',user.deleteLogin);
-app.post('/updateLogin',user.updateLogin);
-app.get('/getLogin',user.getLogin);
+//app.post('/userLogIn',user.userLogIn);
+app.post('/deleteUser',user.deleteUser);
+app.post('/updateUser',user.updateUser);
+app.get('/getLoginUserDetails',user.getLoginUserDetails);
  
+app.post('/userLogIn',passport.authenticate('user', { failWithError: true }),function(req,res,next){
+	 console.log("Testing for user");
+		res.
+		json({"result":"Success"});
+		return;
+		 //return res.redirect('/');
+	},
+	function(err, req, res, next) {
+	    // handle error			   	  	
+	    return res.json(err);
+	   
+	  }	
+);
 
 app.post('/UpdateProperty',property.UpdateProperty);
 
