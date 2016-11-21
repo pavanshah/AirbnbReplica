@@ -6,6 +6,7 @@ var Users = require('../Models/user');
 var bcrypt = require('bcryptjs');
 var uniqueIDGenerator = require('../routes/uniqueIDGenerator');
 var passport = require('passport');
+require('./passport')(passport);
 var LocalStrategy = require('passport-local').Strategy;
 
 var userSignup = function(req,res){
@@ -53,7 +54,7 @@ var userSignup = function(req,res){
 	
 	
 };
-passport.use('user',new LocalStrategy({
+/*passport.use('user',new LocalStrategy({
     usernameField: 'email'
 },
 function(username, password, done) {
@@ -77,7 +78,38 @@ function(username, password, done) {
   return done(null, user);
 });
 }
-));
+));*/
+
+
+var authenticateLocal = function (req,res,next){
+
+	console.log("inside Passport signin register");
+
+	passport.authenticate('user',function(err,user,info){
+	if(err) {
+      return next(err);
+    }
+    if(!user) {
+      return res.redirect('/');
+    }
+    req.logIn(user, {session:false}, function(err) {
+      if(err) {
+        return next(err);
+      }
+      console.log(user);
+      console.log("storing in session");
+	 //console.log("Testing for user",res);
+	 	req.session.emailId = user.email;
+	 	//console.log(req.session.emailId);
+		res.json({"userLoggedIn":true});
+		return;
+		 //return res.redirect('/');
+	});
+	
+})(req, res, next);
+};
+
+
 /*
 var userLogIn = function(req,res){
 	console.log("Inside user sign in");
@@ -204,5 +236,5 @@ exports.userSignup = userSignup;
 exports.deleteUser = deleteLogin;
 exports.updateUser = updateLogin;
 exports.getLoginUserDetails = getLoginUserDetails;
-
+exports.authenticateLocal = authenticateLocal;
 
