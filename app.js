@@ -106,9 +106,10 @@ app.post('/updateUser',user.updateUser);
 app.get('/getLoginUserDetails',user.getLoginUserDetails);
  
 app.post('/userLogIn',passport.authenticate('user', { failWithError: true }),function(req,res,next){
-	 console.log("Testing for user");
-		res.
-		json({"result":"Success"});
+
+	 //console.log("Testing for user",res);
+	 	req.session.emailId = res.email;
+		res.json({"userLoggedIn":true});
 		return;
 		 //return res.redirect('/');
 	},

@@ -13,8 +13,8 @@
    </div>
    <div class="login-form">
    		<form name="loginForm">
-   			<input type="email" class="email" placeholder="Email Address">
-   			<input type="password" class="pwd" placeholder="Password">
+   			<input type="email" ng-model="vm.userData.email" class="email" placeholder="Email Address">
+   			<input type="password" ng-model="vm.userData.password" class="pwd" placeholder="Password">
    			<div class="remember-forgot">
    				<label for="rememberme" class="remember-checkbox">
 			        <input type="checkbox" id="rememberme" name="rememberme" >
@@ -22,7 +22,7 @@
 			    </label>
 			    <a href="#." class="forgot-link pull-right">Forgot password?</a>
    			</div>
-   			<button class="modal-btn-primary">Log in</button>
+   			<button class="modal-btn-primary" ng-click="vm.ok()">Log in</button>
    		</form>
    		<div class="custom-footer dont-have-account">
    			<a href="#." class="">Don't have an account?</a>
