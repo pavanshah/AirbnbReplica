@@ -100,6 +100,7 @@ passport.deserializeUser(function(key, done) {
 app.post('/GenerateBill',bill.GenerateBill);
 app.post('/SearchBillsByMonth',bill.SearchBillsByMonth);
 app.post('/SearchBillsbyDate',bill.SearchBillsbyDate);
+app.post('/DeleteBill',bill.DeleteBill);
 
 app.post('/userSignUp',user.userSignup);
 //app.post('/userLogIn',user.userLogIn);
