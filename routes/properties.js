@@ -138,10 +138,11 @@ var UpdateProperty = function(req,res){
 }
 
 var bookProperty = function(req,res) {
-	console.log(req.data.property_id);
+	console.log(req.body.property.property_id);
+	console.log(req.session.user.emailId);
 	var query = {'property_id':req.body.property.property_id};
-	var obj = req.body.property;
-	Property.update(query,{}, function(error, property) {
+	var obj = {"start_date":req.body.start_date, "end_date":req.body.end_date, "user_email":req.session.user.emailId};
+	Property.update(query,{$push:{bookings:obj}}, function(error, property) {
 		if(!error)
 		{
 			res.status(200);

@@ -27,7 +27,7 @@ address : {
  bookings:[{
  			start_date:Date,
  			end_date:Date,
- 			user_email:[String]
+ 			user_email:String
  		}],
  property_start_date:Date,
  property_end_date:Date,

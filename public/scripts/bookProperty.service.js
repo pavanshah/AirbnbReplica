@@ -1,9 +1,15 @@
 var app = angular.module("Airbnb");
 
-function bookPropertyFn($http) {
+function bookPropertyServiceFn($http) {
 	
 	function bookProperty(details) {
-		// body...
+		return $http.post('/bookProperty', details).
+		then(function(res){
+			if(res.status==200)
+			{
+				return res.status;
+			}
+		});
 	}
 
 	return{
@@ -11,4 +17,4 @@ function bookPropertyFn($http) {
 	}
 }
 
-app.service("bookPropertyFn",bookPropertyFn);
+app.service("bookPropertyService",bookPropertyServiceFn);

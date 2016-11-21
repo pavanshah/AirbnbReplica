@@ -110,6 +110,7 @@ app.post('/userLogIn',user.authenticateLocal);
 
 
 app.post('/UpdateProperty',property.UpdateProperty);
+app.post('/bookProperty', property.bookProperty);
 
 
 
