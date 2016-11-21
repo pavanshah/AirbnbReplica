@@ -70,16 +70,16 @@ passport.serializeUser(function(host, done) {
 
 passport.deserializeUser(function(key, done) {
 	
-	console.log("this is:"+key.type);
+	//console.log("this is:"+key.type);
 	if(key.type == 2){
 	  Hosts.findById(key.id, function(err, hosts) {
-		  console.log(hosts);
+		 // console.log(hosts);
 	    done(err, hosts);
 	  });	
 	}
 	else if(key.type == 1){
 		  Users.findById(key.id, function(err, users) {
-			  console.log(users);
+			  //console.log(users);
 		    done(err, users);
 		  });	
 		}
@@ -104,6 +104,7 @@ app.post('/SearchHostBillsbyDate',bill.SearchHostBillsbyDate);
 app.post('/SearchHostBillsByMonth',bill.SearchHostBillsByMonth);
 app.post('/SearchUserBillsbyDate',bill.SearchUserBillsbyDate);
 app.post('/SearchUserBillsByMonth',bill.SearchUserBillsByMonth);
+app.post('/DeleteBill',bill.DeleteBill);
 
 app.post('/userSignUp',user.userSignup);
 //app.post('/userLogIn',user.userLogIn);
@@ -116,6 +117,7 @@ app.post('/userLogIn',user.authenticateLocal);
 
 
 app.post('/UpdateProperty',property.UpdateProperty);
+app.post('/bookProperty', property.bookProperty);
 
 
 

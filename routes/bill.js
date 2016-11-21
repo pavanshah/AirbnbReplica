@@ -166,6 +166,26 @@ var SearchUserBillsbyDate = function (req,res){
 }
 
 
+
+var DeleteBill = function (req,res){
+
+	console.log("inside delete bill");
+	
+	bill.update({"billing_id":req.body.bill.billing_id}, {$set : {bill_status : "inactive" }}, function(err, user){
+		if (user) 
+		{
+			res.status(200);
+			res.json({"result":"Bill Deleted"});
+		} else 
+		{
+			console.log(err);
+		}
+	});
+}
+
+
+
+exports.DeleteBill = DeleteBill;
 exports.SearchBillsByMonth = SearchBillsByMonth;
 exports.GenerateBill = GenerateBill;
 exports.SearchBillsbyDate = SearchBillsbyDate;

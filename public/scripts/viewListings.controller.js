@@ -10,10 +10,10 @@ function viewListingsControllerFn($state,propertyService,locationService,$stateP
   var icon = "http://maps.google.com/mapfiles/ms/icons/blue-dot.png";
   var mapCenter = {};
   vm.properties = [];
-
+  var filterdProperties = [];
   vm.filters = $stateParams.filters;
-  /*console.log("stateParams",);*/
-
+  console.log("stateParams",vm.filters);
+  
   function drawMarkersOnMap(properties){
       locationService.initMap(mapCenter);
       var locations = locationService.convertToMapPoints(properties);
@@ -21,10 +21,13 @@ function viewListingsControllerFn($state,propertyService,locationService,$stateP
       locationService.drawMarkersOnMap(locations,icon);
   }
 
+
+
   function getProperties(filters) {
      propertyService.getProperties(filters).
       then(function(properties) {
           vm.properties = properties;
+          //filter(properties);
           angular.forEach(properties,function(property) {
             if(!property.propertyPictures || property.propertyPictures.length==0){
               property.propertyPictures = ["public/images/room-list-images/room-1-a.png"];
