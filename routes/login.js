@@ -99,7 +99,11 @@ var authenticateLocal = function (req,res,next){
       console.log(user);
       console.log("storing in session");
 	 //console.log("Testing for user",res);
-	 	req.session.emailId = user.email;
+	     var userObject = {
+	     	"emailId": user.email,
+	     	"UserType": user.UserType
+	     }
+	 	req.session.user = userObject;
 	 	//console.log(req.session.emailId);
 		res.json({"userLoggedIn":true});
 		return;
@@ -204,7 +208,7 @@ var getLoginUserDetails = function(req,res){
 var getUserProfile = function(req,res){
 	console.log("Inside Get LoggedIn user service");
 	 	
- 	Users.findOne({"email":req.session.emailId},function(err,user){
+ 	Users.findOne({"email":req.session.user.emailId},function(err,user){
  		if(err || user == null){
  			res
  			.status(404)
@@ -220,6 +224,7 @@ var getUserProfile = function(req,res){
 		    "email": user.email,
 		    "user_id": user.user_id,
 		    "type": user.type,
+		    "UserType": user.UserType
  		};
  				
  		res
