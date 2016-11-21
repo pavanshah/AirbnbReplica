@@ -14,7 +14,7 @@ function homeControllerFn($state,$http) {
 		then(function(response) {
 			console.log("nearby locations",response.data);
 		});*/
-		$state.go("viewListings",{'filters':{'latitude':lat,'longitude':long}});
+		$state.go("viewListings",{'filters':{'latitude':lat,'longitude':long,start_date:vm.checkInDate,end_date:vm.checkOutDate}});
 	}
 
 	//vm.checkInDate = new Date();

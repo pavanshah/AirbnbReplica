@@ -30,8 +30,8 @@ var authenticateHost = function (req,res,next){
       if(err) {
         return next(err);
       }
-      console.log(user);
-      console.log("storing in session");
+      //console.log(user);
+      //console.log("storing in session");
 	 //console.log("Testing for user",res);
 	 	req.session.emailId = user.email;
 	 	//console.log(req.session.emailId);
