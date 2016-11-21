@@ -10,8 +10,8 @@ to_date:Date,
 property : Object,
 user : Object,
 
-trip_amount:Number
-
+trip_amount:Number,
+bill_status:String
 });
 
 module.exports = mongoose.model("bill",bill);
