@@ -50,12 +50,12 @@ function locationServiceFn() {
         // Loop through all of the JSON entries provided in the response
         for(var i= 0; i < properties.length; i++) {
             var property = properties[i];
-            if(property.propertyPictures)
+            if(property.propertyPictures && property.propertyPictures.length!=0)
             	var propertyImage = property.propertyPictures[0];
             else
             	var propertyImage = "public/images/room-list-images/room-1-a.png";
             // Create popup windows for each record
-            var  contentString = '<p><b> ' + property.address.street + '</b></p><p><img width="200" height="200" alt="property image" src="'+propertyImage+'"></p>';
+            var  contentString = '<p><b> ' + property.propertyTitle + '</b></p><p><img width="200" height="200" alt="property image" src="'+propertyImage+'"></p>';
 
             // Converts each of the JSON records into Google Maps Location format (Note Lat, Lng format).
             locations.push(new Location(
@@ -64,7 +64,7 @@ function locationServiceFn() {
                     content: contentString,
                     maxWidth: 320
                 }),
-                property.address.street
+                property.propertyTitle
                 
             ))
         }
