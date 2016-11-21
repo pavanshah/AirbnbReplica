@@ -27,4 +27,48 @@ var GenerateBill = function (req,res){
 	
 }
 
+var SearchBillsByMonth = function (req,res){
+
+	console.log("inside Bill by Month");
+
+	var choosenMonth = req.body.month;
+     
+     var start = new Date(2016,choosenMonth-1,1);
+     var end = new Date(2016,choosenMonth,1);
+
+     bill.find({billing_date: { $gte: start,$lt:end}}, function (err, docs) {
+
+     	if(!docs)
+     	{
+     		console.log(err);
+     	}
+
+     	else 
+     		console.log(docs);
+
+
+     });
+
+ }
+
+
+var SearchBillsbyDate = function (req,res){
+
+	console.log("inside bill by Date");
+
+	bill.find({billing_date:req.body.date},function(err,docs){
+
+		if(!docs)
+		{
+			console.log(err);
+		}
+		else
+			console.log(docs);
+
+	})
+
+}
+
+exports.SearchBillsByMonth = SearchBillsByMonth;
 exports.GenerateBill = GenerateBill;
+exports.SearchBillsbyDate = SearchBillsbyDate;

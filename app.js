@@ -98,6 +98,8 @@ passport.deserializeUser(function(key, done) {
  app.post('/SearchPropertyByDistance',property.SearchPropertyByDistance);
  app.post('/FilterProperties',property.FilterProperties);
 app.post('/GenerateBill',bill.GenerateBill);
+app.post('/SearchBillsByMonth',bill.SearchBillsByMonth);
+app.post('/SearchBillsbyDate',bill.SearchBillsbyDate);
 
 app.post('/userSignUp',user.userSignup);
 //app.post('/userLogIn',user.userLogIn);
