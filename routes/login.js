@@ -169,6 +169,24 @@ var getLoginUserDetails = function(req,res){
 	
 };
 
+var getUserProfile = function(req,res){
+	console.log("Inside Get LoggedIn user service");
+	 	
+ 	Users.findOne({"email":req.session.emailId},function(err,user){
+ 		if(err || user == null){
+ 			res
+ 			.status(404)
+ 			.send({"result":"user not found"});
+ 			return;
+ 			
+ 		}
+ 		res
+ 		.status(200)
+ 		.send({"LoggedIn User":user});
+ 	});
+	
+};
+
 
 
 exports.userSignup = userSignup;
