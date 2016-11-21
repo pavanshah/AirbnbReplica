@@ -74,7 +74,7 @@ var DeleteBill = function (req,res){
 
 	console.log("inside delete bill");
 	
-	bill.update({"billing_id":req.body.DeleteBill.billing_id}, {$set : {bill_status : "inactive" }}, function(err, user){
+	bill.update({"billing_id":req.body.bill.billing_id}, {$set : {bill_status : "inactive" }}, function(err, user){
 		if (user) 
 		{
 			res.status(200);
