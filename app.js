@@ -104,6 +104,7 @@ app.post('/userSignUp',user.userSignup);
 app.post('/deleteUser',user.deleteUser);
 app.post('/updateUser',user.updateUser);
 app.get('/getLoginUserDetails',user.getLoginUserDetails);
+app.get('/getUserProfile',user.getUserProfile);
  
 app.post('/userLogIn',passport.authenticate('user', { failWithError: true }),function(req,res,next){
 
