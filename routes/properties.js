@@ -48,7 +48,40 @@ var CreateProperty = function (req,res){
 
 var SearchPropertyByDistance = function(req,res){
 
-	//var retrivedProperty = mongoose.model('Property',Property);
+	var lat             = req.body.latitude;
+    var long            = req.body.longitude;
+    //var distance        = req.body.distance;
+
+
+    var distance = 100;
+    //lat = 42;
+    //long = -122;
+
+    // Opens a generic Mongoose Query. Depending on the post body we will...
+    var query = Property.find({});
+
+    // ...include filter by Max Distance (converting miles to meters)
+    if(distance){
+
+        // Using MongoDB's geospatial querying features. (Note how coordinates are set [long, lat]
+        query = query.where('location').near({ center: {type: 'Point', coordinates: [long, lat]},
+
+            // Converting meters to miles. Specifying spherical geometry (for globe)
+            maxDistance: distance * 1609.34, spherical: true});
+    }
+    
+    // ... Other queries will go here ... 
+
+    // Execute Query and Return the Query Results
+    query.exec(function(err, properties){
+        if(err)
+            res.send(err);
+
+        // If no errors, respond with a JSON of all users that meet the criteria
+        res.json(properties);
+    });
+
+/*	//var retrivedProperty = mongoose.model('Property',Property);
 
 	Property.findOne({"property_id":"1234"},function(err,property){
 
@@ -64,7 +97,7 @@ var SearchPropertyByDistance = function(req,res){
 
 	})
 
-
+*/
 }
 
 var FilterProperties = function(req,res){

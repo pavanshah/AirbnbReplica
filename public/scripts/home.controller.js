@@ -1,11 +1,20 @@
 var app = angular.module('Airbnb');
 
-function homeControllerFn($state) {
+function homeControllerFn($state,$http) {
 	
 	var vm = this;
 
 	vm.searchListings = function() {
-		$state.go("viewListings");
+		console.log("location",vm.travelLocation);
+		//console.log("lat location",);
+		var lat = vm.travelLocation.geometry.location.lat();
+		var long = vm.travelLocation.geometry.location.lng();
+
+		/*$http.post("/SearchPropertyByDistance",{'latitude':lat,'longitude':long}).
+		then(function(response) {
+			console.log("nearby locations",response.data);
+		});*/
+		$state.go("viewListings",{'filters':{'latitude':lat,'longitude':long}});
 	}
 
 	//vm.checkInDate = new Date();
@@ -28,6 +37,15 @@ function homeControllerFn($state) {
 	vm.openCheckOutDate = function() {
 	    vm.checkOutDatePopUp.opened = true;
 	};
+
+
+	vm.findProperty = function () {
+		
+
+		
+	}
+
+
 }
 
 app.controller('HomeController',homeControllerFn);

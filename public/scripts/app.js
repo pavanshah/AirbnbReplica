@@ -17,7 +17,10 @@ app.config(function($stateProvider, $urlRouterProvider) {
 		url:"/viewListings",
 		templateUrl:"public/views/viewListings.html",
 		controller:"ViewListingsController",
-		controllerAs:"vm"
+		controllerAs:"vm",
+		params: {
+            filters: null
+        },
 	})
 
 	.state('propertyDetails',{
