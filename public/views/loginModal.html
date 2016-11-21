@@ -12,9 +12,12 @@
    		<hr></hr>
    </div>
    <div class="login-form">
-   		<form name="loginForm">
-   			<input type="email" class="email" placeholder="Email Address">
-   			<input type="password" class="pwd" placeholder="Password">
+   		<form name="loginForm" novalidate>
+   			<input type="email" name = "email" ng-model = "email" class="email" placeholder="Email Address" required>
+   			<span style = "color:red" ng-show="loginForm.email.$error.required && login">This is a required field</span>
+   			<input name = "password" ng-model = "password" type="password" class="pwd" placeholder="Password" required>
+   			<span style = "color:red" ng-show="loginForm.password.$error.required && login">This is a required field</span>
+   			
    			<div class="remember-forgot">
    				<label for="rememberme" class="remember-checkbox">
 			        <input type="checkbox" id="rememberme" name="rememberme" >
@@ -22,7 +25,7 @@
 			    </label>
 			    <a href="#." class="forgot-link pull-right">Forgot password?</a>
    			</div>
-   			<button class="modal-btn-primary">Log in</button>
+   			<button class="modal-btn-primary" ng-click = "login = true">Log in</button>
    		</form>
    		<div class="custom-footer dont-have-account">
    			<a href="#." class="">Don't have an account?</a>
