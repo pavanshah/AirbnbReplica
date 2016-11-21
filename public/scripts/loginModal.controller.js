@@ -6,7 +6,15 @@ function loginModalControllerFn($uibModalInstance) {
 	vm.required = false;
 	vm.ok = function () {
 		vm.required = true;
-    	$uibModalInstance.close(vm.userData);
+		
+		if(vm.userData.email == null || vm.userData.password == null)
+			{
+				//Either of the inputs is not provided
+			}
+		else
+			{
+				$uibModalInstance.close(vm.userData);
+			}
   	};
 
 
