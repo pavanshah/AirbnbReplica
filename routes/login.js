@@ -101,7 +101,8 @@ var authenticateLocal = function (req,res,next){
 	 //console.log("Testing for user",res);
 	     var userObject = {
 	     	"emailId": user.email,
-	     	"UserType": user.UserType
+	     	"UserType": user.UserType,
+	     	"user_id":user.user_id
 	     }
 	 	req.session.user = userObject;
 	 	//console.log(req.session.emailId);

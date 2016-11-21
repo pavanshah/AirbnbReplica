@@ -36,7 +36,7 @@ var SearchBillsByMonth = function (req,res){
      var start = new Date(2016,choosenMonth-1,1);
      var end = new Date(2016,choosenMonth,1);
 
-     bill.find({billing_date: { $gte: start,$lt:end}}, function (err, docs) {
+     bill.find({bill_status:"active",billing_date: { $gte: start,$lt:end}}, function (err, docs) {
 
      	if(!docs)
      	{
@@ -45,6 +45,8 @@ var SearchBillsByMonth = function (req,res){
 
      	else 
      		console.log(docs);
+     	res.status(200);
+     	res.json({"bills":docs});
 
 
      });
@@ -56,7 +58,7 @@ var SearchBillsbyDate = function (req,res){
 
 	console.log("inside bill by Date");
 
-	bill.find({billing_date:req.body.date},function(err,docs){
+	bill.find({bill_status:"active",billing_date:req.body.date},function(err,docs){
 
 		if(!docs)
 		{
@@ -64,10 +66,105 @@ var SearchBillsbyDate = function (req,res){
 		}
 		else
 			console.log(docs);
+		res.status(200);
+		res.json({"bills":docs});
 
 	})
 
 }
+
+var SearchHostBillsByMonth = function (req,res){
+
+	console.log("inside Host Bill by Month");
+
+	var choosenMonth = req.body.month;
+     
+     var start = new Date(2016,choosenMonth-1,1);
+     var end = new Date(2016,choosenMonth,1);
+
+     bill.find({'property.host_id':req.session.user.user_id,bill_status:"active",billing_date: { $gte: start,$lt:end}}, function (err, docs) {
+
+     	if(!docs)
+     	{
+     		console.log(err);
+     	}
+
+     	else 
+     		console.log(docs);
+     	res.status(200);
+     	res.json({"bills":docs});
+
+
+     });
+
+ }
+
+
+var SearchHostBillsbyDate = function (req,res){
+
+	console.log("inside Host bill by Date");
+	console.log(req.session.user.user_id);
+	bill.find({'property.host_id':req.session.user.user_id,bill_status:"active",billing_date:req.body.date},function(err,docs){
+
+		if(!docs)
+		{
+			console.log(err);
+		}
+		else
+			console.log(docs);
+		res.status(200);
+		res.json({"bills":docs});
+
+	})
+
+}
+
+var SearchUserBillsByMonth = function (req,res){
+
+	console.log("inside User Bill by Month");
+
+	var choosenMonth = req.body.month;
+     
+     var start = new Date(2016,choosenMonth-1,1);
+     var end = new Date(2016,choosenMonth,1);
+
+     bill.find({'user.userid':req.session.user.user_id,bill_status:"active",billing_date: { $gte: start,$lt:end}}, function (err, docs) {
+
+     	if(!docs)
+     	{
+     		console.log(err);
+     	}
+
+     	else 
+     		console.log(docs);
+     	res.status(200);
+     	res.json({"bills":docs});
+
+
+     });
+
+ }
+
+
+var SearchUserBillsbyDate = function (req,res){
+
+	console.log("inside User bill by Date");
+	console.log(req.session.user.user_id);
+	bill.find({'user.userid':req.session.user.user_id,bill_status:"active",billing_date:req.body.date},function(err,docs){
+
+		if(!docs)
+		{
+			console.log(err);
+		}
+		else
+			console.log(docs);
+		res.status(200);
+		res.json({"bills":docs});
+
+	})
+
+}
+
 
 
 var DeleteBill = function (req,res){
@@ -92,3 +189,7 @@ exports.DeleteBill = DeleteBill;
 exports.SearchBillsByMonth = SearchBillsByMonth;
 exports.GenerateBill = GenerateBill;
 exports.SearchBillsbyDate = SearchBillsbyDate;
+exports.SearchHostBillsbyDate = SearchHostBillsbyDate;
+exports.SearchHostBillsByMonth = SearchHostBillsByMonth
+exports.SearchUserBillsbyDate = SearchUserBillsbyDate;
+exports.SearchUserBillsByMonth = SearchUserBillsByMonth;
