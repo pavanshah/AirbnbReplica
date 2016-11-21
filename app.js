@@ -106,38 +106,14 @@ app.post('/updateUser',user.updateUser);
 app.get('/getLoginUserDetails',user.getLoginUserDetails);
 app.get('/getUserProfile',user.getUserProfile);
  
-app.post('/userLogIn',passport.authenticate('user', { failWithError: true }),function(req,res,next){
+app.post('/userLogIn',user.authenticateLocal);	
 
-	 //console.log("Testing for user",res);
-	 	req.session.emailId = res.email;
-		res.json({"userLoggedIn":true});
-		return;
-		 //return res.redirect('/');
-	},
-	function(err, req, res, next) {
-	    // handle error			   	  	
-	    return res.json(err);
-	   
-	  }	
-);
 
 app.post('/UpdateProperty',property.UpdateProperty);
 
 
 
-app.post('/HostLogIn',passport.authenticate('host', { failWithError: true }),function(req,res,next){
-	 console.log("Testing");
-		res.
-		json({"result":"Success"});
-		return;
-		 //return res.redirect('/');
-	},
-	function(err, req, res, next) {
-	    // handle error			   	  	
-	    return res.json(err);
-	   
-	  }	
- );
+app.post('/HostLogIn',host.authenticateHost);
 
  app.post('/HostSignUp',host.HostSignUp);
  app.post('/DeleteHost',host.DeleteHost);
