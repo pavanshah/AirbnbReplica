@@ -7,6 +7,7 @@ var Property = new Schema({
  category:String,
  qty:Number,
  base_price:Number,
+ ListingType:String,
  location: {
  				type:[Number],
  				required:true
