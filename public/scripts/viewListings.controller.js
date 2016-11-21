@@ -25,7 +25,7 @@ function viewListingsControllerFn($state,propertyService,locationService) {
       then(function(properties) {
           vm.properties = properties;
           angular.forEach(properties,function(property) {
-            if(!property.propertyPictures){
+            if(!property.propertyPictures || property.propertyPictures.length==0){
               property.propertyPictures = ["public/images/room-list-images/room-1-a.png"];
             }
           })

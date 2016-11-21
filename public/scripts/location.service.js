@@ -50,7 +50,7 @@ function locationServiceFn() {
         // Loop through all of the JSON entries provided in the response
         for(var i= 0; i < properties.length; i++) {
             var property = properties[i];
-            if(property.propertyPictures)
+            if(property.propertyPictures && property.propertyPictures.length!=0)
             	var propertyImage = property.propertyPictures[0];
             else
             	var propertyImage = "public/images/room-list-images/room-1-a.png";
