@@ -137,7 +137,25 @@ var UpdateProperty = function(req,res){
 	});
 }
 
+var bookProperty = function(req,res) {
+	console.log(req.data.property_id);
+	var query = {'property_id':req.body.property.property_id};
+	var obj = req.body.property;
+	Property.update(query,{}, function(error, property) {
+		if(!error)
+		{
+			res.status(200);
+			res.json({"result":"Property Booked"});
+		}
+		else{
+			console.log(error);
+		}
+		
+	});
+}
+
 exports.SearchPropertyByDistance = SearchPropertyByDistance;
 exports.CreateProperty = CreateProperty;
 exports.FilterProperties = FilterProperties;
 exports.UpdateProperty = UpdateProperty;
+exports.bookProperty = bookProperty;
