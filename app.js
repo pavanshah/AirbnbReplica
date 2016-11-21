@@ -19,6 +19,7 @@ var mongo = require("./routes/mongo");
 var property = require("./routes/properties");
 var user = require("./routes/login");
 var host = require("./routes/hosts");
+var bill = require("./routes/bill");
 var Hosts = require('./Models/host');
 var Users = require('./Models/user');
 // all environments
@@ -96,7 +97,7 @@ passport.deserializeUser(function(key, done) {
  app.post('/CreateProperty',property.CreateProperty);
  app.post('/SearchPropertyByDistance',property.SearchPropertyByDistance);
  app.post('/FilterProperties',property.FilterProperties);
-
+app.post('/GenerateBill',bill.GenerateBill);
 
 app.post('/userSignUp',user.userSignup);
 //app.post('/userLogIn',user.userLogIn);
