@@ -180,15 +180,25 @@ var getUserProfile = function(req,res){
  			return;
  			
  		}
+
+ 		var UserObject = 
+ 		{
+		 	"firstname": user.firstname,
+		    "lastname": user.lastname,
+		    "email": user.email,
+		    "user_id": user.user_id,
+		    "type": user.type,
+ 		};
+ 				
  		res
  		.status(200)
- 		.send({"LoggedIn User":user});
+ 		.send({"LoggedIn User":UserObject});
  	});
 	
 };
 
 
-
+exports.getUserProfile = getUserProfile;
 exports.userSignup = userSignup;
 //exports.userLogIn = userLogIn;
 exports.deleteUser = deleteLogin;
