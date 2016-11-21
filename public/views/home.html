@@ -25,7 +25,7 @@
 				<div class="col-lg-10 col-md-10 col-sm-10 col-xs-11 no-padding">
 					<div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 no-padding common-div">
 						<!-- Open modal on input click for mobile resolution -->
-						<input type="text" class="source-input white-bg" placeholder="Where to?">
+						<input type="text" class="source-input white-bg" g-places-autocomplete ng-model="vm.travelLocation" placeholder="Where to?">
 					</div>
 					<div class="col-lg-5 col-md-5 col-sm-5 hidden-xs no-padding common-div check-in-out-sec white-bg">
 						<span ng-class="{'focused-on':vm.checkInDatePopUp.opened}" class="in-out-btn" ng-click="vm.openCheckinDate()">

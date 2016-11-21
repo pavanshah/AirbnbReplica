@@ -1,6 +1,6 @@
 var app = angular.module('Airbnb');
 
-function viewListingsControllerFn($state,propertyService,locationService) {
+function viewListingsControllerFn($state,propertyService,locationService,$stateParams) {
 	
 	var vm = this;
 
@@ -11,7 +11,8 @@ function viewListingsControllerFn($state,propertyService,locationService) {
   var mapCenter = {};
   vm.properties = [];
 
-  
+  vm.filters = $stateParams.filters;
+  /*console.log("stateParams",);*/
 
   function drawMarkersOnMap(properties){
       locationService.initMap(mapCenter);
@@ -20,8 +21,8 @@ function viewListingsControllerFn($state,propertyService,locationService) {
       locationService.drawMarkersOnMap(locations,icon);
   }
 
-  function getProperties(filter) {
-     propertyService.getProperties({}).
+  function getProperties(filters) {
+     propertyService.getProperties(filters).
       then(function(properties) {
           vm.properties = properties;
           angular.forEach(properties,function(property) {
@@ -34,7 +35,7 @@ function viewListingsControllerFn($state,propertyService,locationService) {
       });
   }
 
-  getProperties(); 
+  getProperties(vm.filters); 
 
  }
 

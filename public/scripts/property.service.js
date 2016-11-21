@@ -7,7 +7,7 @@ function propertyServiceFn($http) {
 		
 		var properties = [];
 
-		return $http.post("FilterProperties",propertyFilters).
+		return $http.post("/SearchPropertyByDistance",propertyFilters).
 		then(function(response) {
 			if(response.status==200){
 				properties = response.data;
