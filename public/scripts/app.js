@@ -1,4 +1,4 @@
-var app = angular.module('Airbnb',['ui.bootstrap','ui.router','google.places']);
+var app = angular.module('Airbnb',['ui.bootstrap','ui.router','google.places','nvd3']);
 
 app.config(function($stateProvider, $urlRouterProvider) {
 
@@ -37,7 +37,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
 		controller:"PropertyDetailsController",
 		controllerAs:"vm",
 		params:{
-			property_id:null
+			property:null
 		}
 	})
 	

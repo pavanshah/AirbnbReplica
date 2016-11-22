@@ -196,13 +196,14 @@ var bookProperty = function(req,res) {
 }
 
 
-var SearchPropertyById = function (req,response){
+var SearchPropertyById = function (req,res){
 
 
 	//var retrivedProperty = mongoose.model('Property',Property);
-
-	Property.findOne({"property_id":req.body.property_id,function(err,property){
-
+	console.log(req.body);
+	Property.findOne({"property_id":req.body.property_id},function(err,property){
+		//console.log("err",err);
+		//console.log("property",property);
 		if(!err){
 
 			res.status(200);
@@ -216,7 +217,7 @@ var SearchPropertyById = function (req,response){
 			
 		}
 
-	}});
+	});
 }
 
 exports.SearchPropertyById = SearchPropertyById;

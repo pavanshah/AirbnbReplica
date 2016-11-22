@@ -17,9 +17,9 @@
 			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding room-specification">
 				<div class="col-lg-8 col-md-8 col-sm-12 col-xs-12 no-padding room-content-desc-section">
 					<div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
-						<h1>Romantic tower in deep countryside</h1>
+						<h1>{{vm.property.propertyTitle}}</h1>
 						<p class="room-type">
-		        			<span>Parranquet, Aquitaine, France</span>
+		        			<span>{{vm.property.address.street}}, {{vm.property.address.city}}, {{vm.property.address.country}}</span>
 		        			<i class="fa fa-star rated" aria-hidden="true"></i>
 		        			<i class="fa fa-star rated" aria-hidden="true"></i>
 		        			<i class="fa fa-star rated" aria-hidden="true"></i>
@@ -34,13 +34,13 @@
 					</div>
 					<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 room-short-desc">
 						<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 text-center">
-							<p>Entire home/apt</p>
+							<p>{{vm.property.category}}</p>
 						</div>
 						<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 text-center">
-							<p>2 Guests</p>
+							<p>2 Guests per Room</p>
 						</div>
 						<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 text-center">
-							<p>1 Bedroom</p>
+							<p>{{vm.property.qty}} Bedroom</p>
 						</div>
 						<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 text-center">
 							<p>1 Bed</p>
@@ -49,7 +49,7 @@
 				</div>
 				<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 no-padding right-sliding-section">
 					<div class="top-label">
-						<span class="pull-left">&#8377;2855</span>
+						<span class="pull-left">{{vm.property.base_price | currency}}</span>
 						<span class="pull-right">Per Night</span>
 					</div>
 					<div class="check-in-out-sec clearfix">
@@ -117,7 +117,7 @@
 				</div>
 				<div class="col-lg-8 col-md-8 col-sm-12 col-xs-12 about-this-section">
 					<h1>About this listing</h1>
-					<p>petit T2 de 48 m² au calme en plein centre de village piscine l'été intermarché , pharmacie , médecin et petits commerce locaux marché le dimanche matin proche de la nature pour les randonneurs à coté de la Loire pour les pêcheurs</p>
+					<p>{{vm.property.description}}</p>
 					<span class="link">Contact host</span>
 				</div>
 			</div>

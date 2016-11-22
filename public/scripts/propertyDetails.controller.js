@@ -4,8 +4,8 @@ function propertyDetailsControllerFn($state,$stateParams,$http) {
 	
 	var vm = this;
 	vm.property = {};
-	function getPropertyDetails(propertyId) {
-		$http.post("/SearchPropertyById",propertyId).
+	function getPropertyDetails(property) {
+		$http.post("/SearchPropertyById",{property_id:property.property_id}).
 		then(function(response) {
 			if(response.status==200){
 				vm.property= response.data;
@@ -14,7 +14,7 @@ function propertyDetailsControllerFn($state,$stateParams,$http) {
 		})
 	}
 
-	getPropertyDetails($stateParams.property_id);
+	getPropertyDetails($stateParams.property);
 	console.log($stateParams);
 }
 
