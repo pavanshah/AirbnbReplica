@@ -37,6 +37,13 @@ app.config(function($stateProvider, $urlRouterProvider) {
 		controller:"PropertyDetailsController",
 		controllerAs:"vm"
 	})
+	
+	.state('becomeahost',{
+		url:"/becomeahost",
+		templateUrl:"public/views/becomeahost.html",
+		controller:"BecomeAHostController",
+		controllerAs:"vm"
+	})
 	//$location.path('/prelogin');
 	//html5mode(true);
 	
