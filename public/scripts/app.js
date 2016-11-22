@@ -23,6 +23,14 @@ app.config(function($stateProvider, $urlRouterProvider) {
         },
 	})
 
+	
+	.state('admin',{
+		url:"/admin",
+		templateUrl:"public/views/admin.html",
+		controller:"AdminController",
+		controllerAs:"vm"
+	})
+	
 	.state('propertyDetails',{
 		url:"/propertyDetails",
 		templateUrl:"public/views/propertyDetails.html",
@@ -38,4 +46,5 @@ app.config(function($stateProvider, $urlRouterProvider) {
 	})
 	//$location.path('/prelogin');
 	//html5mode(true);
+	
 });
