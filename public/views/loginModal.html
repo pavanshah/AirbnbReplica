@@ -14,11 +14,11 @@
    <div class="login-form">
    		<form name="loginForm" novalidate>
    			<input type="email" name = "email" ng-model="vm.userData.email" class="email" placeholder="Email Address" required>
-   			<span style = "color:red" ng-show="loginForm.email.$error.required && vm.required">Email is required</span>
-   			<span style = "color:red" ng-show="loginForm.email.$error.email && vm.required">Not a valid email address</span>
+   			<span class="invalidinput" ng-show="loginForm.email.$error.required && vm.required">Email is required</span>
+   			<span class="invalidinput" ng-show="loginForm.email.$error.email && vm.required">Not a valid email address</span>
    				
    			<input name = "password" ng-model = "vm.userData.password" type="password" class="pwd" placeholder="Password" required>
-   			<span style = "color:red" ng-show="loginForm.password.$error.required && vm.required">Password is required</span>
+   			<span class="invalidinput" ng-show="loginForm.password.$error.required && vm.required">Password is required</span>
    			
    			<div class="remember-forgot">
    				<label for="rememberme" class="remember-checkbox">
