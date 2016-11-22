@@ -114,9 +114,11 @@ var SearchPropertyByDistance = function(req,res){
     query.exec(function(err, properties){
         if(err)
             res.send(err);
-
-       var refinedProperties = filter(properties,req.body.start_date,req.body.end_date);
-        res.json(refinedProperties);
+        else{
+       		var refinedProperties = filter(properties,req.body.start_date,req.body.end_date);
+       		res.json(refinedProperties); 	
+        }
+       
     });
 
 /*	//var retrivedProperty = mongoose.model('Property',Property);

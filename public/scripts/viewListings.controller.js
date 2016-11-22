@@ -4,8 +4,8 @@ function viewListingsControllerFn($state,propertyService,locationService,$stateP
 	
 	var vm = this;
 
-	vm.viewPropertyDetails = function() {
-		$state.go("propertyDetails");
+	vm.viewPropertyDetails = function(property) {
+		$state.go("propertyDetails",{property_id:property.property_id});
 	}
   var icon = "http://maps.google.com/mapfiles/ms/icons/blue-dot.png";
   var mapCenter = {};
@@ -28,13 +28,20 @@ function viewListingsControllerFn($state,propertyService,locationService,$stateP
       then(function(properties) {
           vm.properties = properties;
           //filter(properties);
-          angular.forEach(properties,function(property) {
-            if(!property.propertyPictures || property.propertyPictures.length==0){
-              property.propertyPictures = ["public/images/room-list-images/room-1-a.png"];
-            }
-          })
-          mapCenter = {lat: vm.properties[1].location[1], lng: vm.properties[1].location[0]};
-          drawMarkersOnMap(vm.properties); 
+          if(vm.properties.length!=0){
+              angular.forEach(properties,function(property) {
+              if(!property.propertyPictures || property.propertyPictures.length==0){
+                property.propertyPictures = ["public/images/room-list-images/room-1-a.png"];
+              }
+            })
+            mapCenter = {lat: vm.properties[1].location[1], lng: vm.properties[1].location[0]};
+            drawMarkersOnMap(vm.properties); 
+          }
+          else{
+            mapCenter = {lat: 39, lng: -122};
+            locationService.initMap(mapCenter);
+          }
+          
       });
   }
 

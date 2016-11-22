@@ -6,6 +6,14 @@ function homeControllerFn($state,$http) {
 
 	vm.searchListings = function() {
 		console.log("location",vm.travelLocation);
+
+		if(angular.isUndefined(vm.travelLocation) || vm.travelLocation == null){
+			return;
+		}
+
+		if (angular.isUndefined(vm.checkInDate) || angular.isUndefined(vm.checkOutDate) || vm.checkInDate==null || vm.checkOutDate==null) {
+			return;
+		}
 		//console.log("lat location",);
 		var lat = vm.travelLocation.geometry.location.lat();
 		var long = vm.travelLocation.geometry.location.lng();

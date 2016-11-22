@@ -35,7 +35,10 @@ app.config(function($stateProvider, $urlRouterProvider) {
 		url:"/propertyDetails",
 		templateUrl:"public/views/propertyDetails.html",
 		controller:"PropertyDetailsController",
-		controllerAs:"vm"
+		controllerAs:"vm",
+		params:{
+			property_id:null
+		}
 	})
 	
 	.state('becomeahost',{
