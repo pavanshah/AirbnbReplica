@@ -47,6 +47,12 @@ app.config(function($stateProvider, $urlRouterProvider) {
 		controller:"BecomeAHostController",
 		controllerAs:"vm"
 	})
+
+	.state('checkout', {
+		url:"/checkout",
+		templateUrl:"public/views/checkout.html"
+
+	})
 	//$location.path('/prelogin');
 	//html5mode(true);
 	
