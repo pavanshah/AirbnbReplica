@@ -1381,5 +1381,19 @@ input.check-in-box:-ms-input-placeholder { /* Internet Explorer 10-11 */
 	color : red;
 }
 
+.header-list-right-payment
+{
+   display: inline;
+    float: right;
+    margin-right: 2%;
+    width:53;
+    height: 35;
+    
+}
+
+input.credit-card-field{
+
+  height:30px;
+}
 /*div[id^=map_canvas], 
 div[id^=map_canvas] div {overflow: auto;}*/
