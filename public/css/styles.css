@@ -1377,5 +1377,9 @@ input.check-in-box:-ms-input-placeholder { /* Internet Explorer 10-11 */
     letter-spacing: 2.3;
 }
 
+.invalidinput {
+	color : red;
+}
+
 /*div[id^=map_canvas], 
 div[id^=map_canvas] div {overflow: auto;}*/
