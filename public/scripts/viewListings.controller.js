@@ -5,7 +5,7 @@ function viewListingsControllerFn($state,propertyService,locationService,$stateP
 	var vm = this;
 
 	vm.viewPropertyDetails = function(property) {
-		$state.go("propertyDetails",{property_id:property.property_id});
+		$state.go("propertyDetails",{property:property});
 	}
   var icon = "http://maps.google.com/mapfiles/ms/icons/blue-dot.png";
   var mapCenter = {};
