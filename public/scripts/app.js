@@ -1,4 +1,4 @@
-var app = angular.module('Airbnb',['ui.bootstrap','ui.router','google.places']);
+var app = angular.module('Airbnb',['ui.bootstrap','ui.router','google.places','nvd3']);
 
 app.config(function($stateProvider, $urlRouterProvider) {
 
