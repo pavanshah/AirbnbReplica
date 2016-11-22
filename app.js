@@ -97,6 +97,7 @@ passport.deserializeUser(function(key, done) {
  app.post('/CreateProperty',property.CreateProperty);
  app.post('/SearchPropertyByDistance',property.SearchPropertyByDistance);
  app.post('/FilterProperties',property.FilterProperties);
+ app.post('/SearchPropertyById',property.SearchPropertyById);
 app.post('/GenerateBill',bill.GenerateBill);
 app.post('/SearchBillsByMonth',bill.SearchBillsByMonth);
 app.post('/SearchBillsbyDate',bill.SearchBillsbyDate);

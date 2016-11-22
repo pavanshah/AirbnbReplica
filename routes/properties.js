@@ -193,6 +193,31 @@ var bookProperty = function(req,res) {
 	});
 }
 
+
+var SearchPropertyById = function (req,response){
+
+
+	//var retrivedProperty = mongoose.model('Property',Property);
+
+	Property.findOne({"property_id":req.body.property_id,function(err,property){
+
+		if(!err){
+
+			res.status(200);
+			res.json(property);
+		}
+		else
+		{
+			console.log(err);
+			res.status(400);
+			res.json({"response":"Bad Request"});
+			
+		}
+
+	}});
+}
+
+exports.SearchPropertyById = SearchPropertyById;
 exports.SearchPropertyByDistance = SearchPropertyByDistance;
 exports.CreateProperty = CreateProperty;
 exports.FilterProperties = FilterProperties;
