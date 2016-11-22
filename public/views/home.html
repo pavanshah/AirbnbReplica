@@ -3,7 +3,7 @@
 		<div class="hero-wrapper">
 			<div class="video-wrap">
 				<video preload="auto" loop="loop" class="hidden-xs" autoplay>
-				  <source src="https://a0.muscache.com/airbnb/static/P1-background-vid-compressed-2.mp4" type="video/mp4">
+				  <source src="https://cdn.filestackcontent.com/ROo1yXBQTAy4jVYxTWR5" type="video/mp4">
 				  <source src="https://a0.muscache.com/airbnb/static/P1-background-vid-compressed-2.webm" type="video/webm">
 				</video>
 				<ul class="visible-xs hero-slider">
@@ -22,30 +22,31 @@
 				</div>
 			</div>
 			<div class="hero-search-container">
+				<form name="checkInForm">
 				<div class="col-lg-10 col-md-10 col-sm-10 col-xs-11 no-padding">
 					<div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 no-padding common-div">
 						<!-- Open modal on input click for mobile resolution -->
-						<input type="text" class="source-input white-bg" placeholder="Where to?">
+						<input type="text" class="source-input white-bg" g-places-autocomplete ng-model="vm.travelLocation" placeholder="Where to?">
 					</div>
 					<div class="col-lg-5 col-md-5 col-sm-5 hidden-xs no-padding common-div check-in-out-sec white-bg">
 						<span ng-class="{'focused-on':vm.checkInDatePopUp.opened}" class="in-out-btn" ng-click="vm.openCheckinDate()">
-						<input type="text" class="form-control check-in-box" uib-datepicker-popup="{{vm.format}}" ng-model="vm.checkInDate" is-open="vm.checkInDatePopUp.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" alt-input-formats="altInputFormats" datepicker-append-to-body="true" placeholder="Check In"/>
+						<input type="text" name="location" class="form-control check-in-box" uib-datepicker-popup="{{vm.format}}" ng-model="vm.checkInDate" is-open="vm.checkInDatePopUp.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" alt-input-formats="altInputFormats" datepicker-append-to-body="true" placeholder="Check In"/>
 					         
 						</span>
 						<span class="glyphicon glyphicon-arrow-right pad-top-5"></span>
 						<span class="in-out-btn pad-top-5" ng-class="{'focused-on':vm.checkOutDatePopUp.opened}" class="in-out-btn" ng-click="vm.openCheckOutDate()">
-						<input type="text" class="form-control check-in-box" uib-datepicker-popup="{{vm.format}}" ng-model="vm.checkOutDate" is-open="vm.checkOutDatePopUp.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" alt-input-formats="altInputFormats" datepicker-append-to-body="true" placeholder="Check Out"/>
+						<input type="text"  class="form-control check-in-box" uib-datepicker-popup="{{vm.format}}" ng-model="vm.checkOutDate" is-open="vm.checkOutDatePopUp.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" alt-input-formats="altInputFormats" datepicker-append-to-body="true" placeholder="Check Out"/>
 						</span>
 						<span class="remove-date">
 							<svg viewBox="0 0 12 12" data-reactid=".3.0.0.0.1.0.0.0.3.1"><path d="M11.53.47a.75.75 0 0 0-1.061 0l-4.47 4.47L1.529.47A.75.75 0 1 0 .468 1.531l4.47 4.47-4.47 4.47a.75.75 0 1 0 1.061 1.061l4.47-4.47 4.47 4.47a.75.75 0 1 0 1.061-1.061l-4.47-4.47 4.47-4.47a.75.75 0 0 0 0-1.061z" data-reactid=".3.0.0.0.1.0.0.0.3.1.0"></path></svg>
 						</span>
 					</div>
-					<div class="col-lg-3 col-md-3 col-sm-3 hidden-xs no-padding common-div white-bg no-of-guest">
+					<!-- <div class="col-lg-3 col-md-3 col-sm-3 hidden-xs no-padding common-div white-bg no-of-guest">
 						<span class="guest-count focused-on pull-left">1 guest</span>
 						<i class="fa fa-caret-up pull-right" aria-hidden="true"></i>
 						<i class="fa fa-caret-down pull-right active" aria-hidden="true"></i>
-						<div class="filter-sec"><!-- add class "open" to show div -->
-							<ul class="clearfix">
+						<div class="filter-sec"> --><!-- add class "open" to show div -->
+					<!-- 		<ul class="clearfix">
 								<li>
 									<div class="col-lg-8 col-md-8 col-sm-8 no-padding-left rest-text">
 										<span class="pull-left main-criteria">1 adult</span>
@@ -79,7 +80,7 @@
 							</ul>
 							<span class="pull-right close-link">close</span>
 						</div>	
-					</div>
+					</div> -->
 				</div>
 				<div class="col-lg-2 col-md-2 col-sm-2 col-xs-1 no-padding">
 					<!-- btn for tab and desktop -->
@@ -87,6 +88,7 @@
 					<!-- btn for mobile -->
 					<button class="button-primary guest-btn visible-xs" ng-click="vm.searchListings()"><img src="public/images/search-icon-mobile.png"></button>
 				</div>
+				</form>
 			</div>
 		</div>	
 		<div class="custom-wrapper clearfix">

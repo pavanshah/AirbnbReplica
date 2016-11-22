@@ -19,6 +19,7 @@ var mongo = require("./routes/mongo");
 var property = require("./routes/properties");
 var user = require("./routes/login");
 var host = require("./routes/hosts");
+var bill = require("./routes/bill");
 var Hosts = require('./Models/host');
 var Users = require('./Models/user');
 // all environments
@@ -69,19 +70,24 @@ passport.serializeUser(function(host, done) {
 
 passport.deserializeUser(function(key, done) {
 	
-	console.log("this is:"+key.type);
+	//console.log("this is:"+key.type);
 	if(key.type == 2){
 	  Hosts.findById(key.id, function(err, hosts) {
-		  console.log(hosts);
+		 // console.log(hosts);
 	    done(err, hosts);
 	  });	
 	}
 	else if(key.type == 1){
 		  Users.findById(key.id, function(err, users) {
-			  console.log(users);
+			  //console.log(users);
 		    done(err, users);
 		  });	
 		}
+
+	else{
+		done(err, users);
+	}
+
 });
 
 
@@ -91,32 +97,32 @@ passport.deserializeUser(function(key, done) {
  app.post('/CreateProperty',property.CreateProperty);
  app.post('/SearchPropertyByDistance',property.SearchPropertyByDistance);
  app.post('/FilterProperties',property.FilterProperties);
-
+ app.post('/SearchPropertyById',property.SearchPropertyById);
+app.post('/GenerateBill',bill.GenerateBill);
+app.post('/SearchBillsByMonth',bill.SearchBillsByMonth);
+app.post('/SearchBillsbyDate',bill.SearchBillsbyDate);
+app.post('/SearchHostBillsbyDate',bill.SearchHostBillsbyDate);
+app.post('/SearchHostBillsByMonth',bill.SearchHostBillsByMonth);
+app.post('/SearchUserBillsbyDate',bill.SearchUserBillsbyDate);
+app.post('/SearchUserBillsByMonth',bill.SearchUserBillsByMonth);
+app.post('/DeleteBill',bill.DeleteBill);
 
 app.post('/userSignUp',user.userSignup);
-app.post('/userLogIn',user.userLogIn);
-app.post('/deleteLogin',user.deleteLogin);
-app.post('/updateLogin',user.updateLogin);
-app.get('/getLogin',user.getLogin);
+//app.post('/userLogIn',user.userLogIn);
+app.post('/deleteUser',user.deleteUser);
+app.post('/updateUser',user.updateUser);
+app.get('/getLoginUserDetails',user.getLoginUserDetails);
+app.get('/getUserProfile',user.getUserProfile);
  
+app.post('/userLogIn',user.authenticateLocal);	
+
 
 app.post('/UpdateProperty',property.UpdateProperty);
+app.post('/bookProperty', property.bookProperty);
 
 
 
-app.post('/HostLogIn',passport.authenticate('host', { failWithError: true }),function(req,res,next){
-	 console.log("Testing");
-		res.
-		json({"result":"Success"});
-		return;
-		 //return res.redirect('/');
-	},
-	function(err, req, res, next) {
-	    // handle error			   	  	
-	    return res.json(err);
-	   
-	  }	
- );
+app.post('/HostLogIn',host.authenticateHost);
 
  app.post('/HostSignUp',host.HostSignUp);
  app.post('/DeleteHost',host.DeleteHost);

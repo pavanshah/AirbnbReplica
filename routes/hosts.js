@@ -11,35 +11,37 @@ var bodyParser = require('body-parser').json();
 var uniqueIDGenerator = require('../routes/uniqueIDGenerator');
 var bcrypt = require('bcryptjs');
 var passport = require('passport');
+require('./passport')(passport);
 var LocalStrategy = require('passport-local').Strategy;
 
 
+var authenticateHost = function (req,res,next){
 
+	console.log("inside Passport signin register");
 
-passport.use('host',new LocalStrategy({
-			    usernameField: 'email'
-			},
-		  function(username, password, done) {
-			  console.log("I am checking here"+username);
-			  console.log("I am checking password"+password);
-			  Hosts.findOne({ email: username }, function (err, user) {
-		      if (err) { return done(err); }
-		      if (!user) {
-		    	  console.log("Wrong Email");
-		        return done(null, false, { message: 'Incorrect email.' });
-		      }		      
-		      var hash = user.password;
-				console.log(hash);
-		        if(!bcrypt.compareSync(password, hash)){
-		        	console.log("Wrong password");
-		        	return done(null, false, { message: 'Incorrect password.' });
-		        }
-		        console.log("Correct password");
-		      
-		      return done(null, user);
-		    });
-		  }
-));
+	passport.authenticate('host',function(err,user,info){
+	if(err) {
+      return next(err);
+    }
+    if(!user) {
+      return res.redirect('/');
+    }
+    req.logIn(user, {session:false}, function(err) {
+      if(err) {
+        return next(err);
+      }
+      //console.log(user);
+      //console.log("storing in session");
+	 //console.log("Testing for user",res);
+	 	req.session.emailId = user.email;
+	 	//console.log(req.session.emailId);
+		res.json({"HostLoggedIn":true});
+		return;
+		 //return res.redirect('/');
+	});
+	
+})(req, res, next);
+};
 
 
 var HostSignUp = function(req,res){
@@ -203,3 +205,4 @@ exports.HostSignUp = HostSignUp;
 exports.DeleteHost = DeleteHost;
 exports.UpdateHost = UpdateHost;
 exports.GetHost = GetHost;
+exports.authenticateHost = authenticateHost;

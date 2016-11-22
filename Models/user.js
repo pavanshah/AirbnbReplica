@@ -27,7 +27,8 @@ var Users = new Schema({
 		postalcode : Number,
 		country : String
 	},
-	profilepic : {data : Buffer, contentType : String}
+	profilepic : {data : Buffer, contentType : String},
+	UserType : String
 				 
 });
 module.exports = mongoose.model("Users",Users);

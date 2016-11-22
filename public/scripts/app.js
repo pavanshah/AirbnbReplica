@@ -17,7 +17,10 @@ app.config(function($stateProvider, $urlRouterProvider) {
 		url:"/viewListings",
 		templateUrl:"public/views/viewListings.html",
 		controller:"ViewListingsController",
-		controllerAs:"vm"
+		controllerAs:"vm",
+		params: {
+            filters: null
+        },
 	})
 
 	
@@ -32,6 +35,16 @@ app.config(function($stateProvider, $urlRouterProvider) {
 		url:"/propertyDetails",
 		templateUrl:"public/views/propertyDetails.html",
 		controller:"PropertyDetailsController",
+		controllerAs:"vm",
+		params:{
+			property:null
+		}
+	})
+	
+	.state('becomeahost',{
+		url:"/becomeahost",
+		templateUrl:"public/views/becomeahost.html",
+		controller:"BecomeAHostController",
 		controllerAs:"vm"
 	})
 	//$location.path('/prelogin');
