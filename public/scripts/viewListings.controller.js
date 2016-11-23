@@ -1,10 +1,11 @@
 var app = angular.module('Airbnb');
 
-function viewListingsControllerFn($state,propertyService,locationService,$stateParams) {
+function viewListingsControllerFn($state,propertyService,locationService,$stateParams,bookingDataService) {
 	
 	var vm = this;
 
 	vm.viewPropertyDetails = function(property) {
+    bookingDataService.setBooking(property);
 		$state.go("propertyDetails",{property:property});
 	}
   var icon = "http://maps.google.com/mapfiles/ms/icons/blue-dot.png";
