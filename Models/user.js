@@ -3,7 +3,6 @@ var Schema = mongoose.Schema;
 
 var Users = new Schema({
 	user_id : String,
-	type : Number,
 	firstname: String,
 	lastname : String,
 	email: String,
@@ -28,7 +27,9 @@ var Users = new Schema({
 		country : String
 	},
 	profilepic : {data : Buffer, contentType : String},
-	UserType : String
-				 
+	UserType : String,
+	user_status:String,
+	avgrating : Number,
+	Reviews : [{ratings : Number, feedback : String, trip_id: String, user_id : String}]	 
 });
 module.exports = mongoose.model("Users",Users);
