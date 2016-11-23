@@ -63,6 +63,10 @@ app.config(function($stateProvider, $urlRouterProvider) {
 		url:'/userBill',
 		templateUrl:"public/views/finalReciept.html"
 	})
+	.state('userHome',{
+		url:'/userHome',
+		templateUrl:"public/views/userHome.html"
+	})
 	//$location.path('/prelogin');
 	//html5mode(true);
 	
