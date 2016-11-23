@@ -53,7 +53,9 @@ app.config(function($stateProvider, $urlRouterProvider) {
 		templateUrl:"public/views/checkout.html",
 		params:{
 			property:null
-		}
+		},
+		controller:"CheckoutController",
+		controllerAs:"vm"
 	})
 
 	.state('orderSuccess',{
