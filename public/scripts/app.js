@@ -53,6 +53,11 @@ app.config(function($stateProvider, $urlRouterProvider) {
 		templateUrl:"public/views/checkout.html"
 
 	})
+
+	.state('orderSuccess',{
+		url:"/orderSuccess",
+		templateUrl:"public/views/orderSuccess.html"
+	})
 	//$location.path('/prelogin');
 	//html5mode(true);
 	
