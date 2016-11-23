@@ -22,6 +22,7 @@ var host = require("./routes/hosts");
 var bill = require("./routes/bill");
 var Hosts = require('./Models/host');
 var Users = require('./Models/user');
+var review = require("./routes/review");
 // all environments
 app.use(expressSession({
   secret: 'cmpe273_airbnb_team9',
@@ -106,6 +107,9 @@ app.post('/SearchHostBillsByMonth',bill.SearchHostBillsByMonth);
 app.post('/SearchUserBillsbyDate',bill.SearchUserBillsbyDate);
 app.post('/SearchUserBillsByMonth',bill.SearchUserBillsByMonth);
 app.post('/DeleteBill',bill.DeleteBill);
+
+app.post('/SubmitReviewAndRating',review.SubmitReviewAndRating);
+app.post('/GetReviews',review.GetReviews);
 
 app.post('/userSignUp',user.userSignup);
 //app.post('/userLogIn',user.userLogIn);
