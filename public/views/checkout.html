@@ -6,13 +6,13 @@
 		<br>
 		<br><br><br><br>
 		<div class="col-md-6">
-			<h2> Property Title </h2>
-			<h3> Description </h3>
+			<h2> {{vm.property.propertyTitle}} </h2>
+			<h3> {{vm.property.description}} </h3>
 
-			<h4> Start Date: 10/21/2016 </h4>
-			<h4> End Date : 10/22/2016 </h4>
+			<h4> Start Date: {{vm.bookingDates.start_date | date}} </h4>
+			<h4> End Date : {{vm.bookingDates.end_date | date}}</h4>
 			<h4> Number of Rooms: 2 </h4>
-			<h4> Base Price : </h4>
+			<h4> Base Price : {{vm.property.base_price | currency}} </h4>
 
 			<h3> Surcharges : </h3>
 
@@ -96,7 +96,7 @@
                 <div class="control-group">
                   <label   for="password_cvv">Card CVV</label>
                   <div class="controls">
-                    <input type="password" id="password_cvv" name="password_cvv" placeholder="" ng-model="password_cvv" class="span2 credit-card-field" maxlength="4" required>
+                    <input type="password" id="password_cvv" name="password_cvv" placeholder="" ng-model="vm.creditCard.password_cvv" class="span2 credit-card-field" maxlength="4" required>
                   </div>
                 </div>
           	
@@ -104,7 +104,7 @@
                 <br>
                 <div class="control-group">
                   <div class="controls">
-                    <button class="btn btn-primary" ng-click="processCard()">Pay Now</button>
+                    <button class="btn btn-primary" ng-click="vm.bookProperty()">Pay Now</button>
                   </div>
                 </div>
            

@@ -50,13 +50,34 @@ app.config(function($stateProvider, $urlRouterProvider) {
 
 	.state('checkout', {
 		url:"/checkout",
-		templateUrl:"public/views/checkout.html"
-
+		templateUrl:"public/views/checkout.html",
+		params:{
+			property:null
+		},
+		controller:"CheckoutController",
+		controllerAs:"vm"
 	})
 
 	.state('orderSuccess',{
 		url:"/orderSuccess",
 		templateUrl:"public/views/orderSuccess.html"
+	})
+
+	.state('userBill',{
+		url:'/userBill',
+		templateUrl:"public/views/finalReciept.html"
+	})
+	.state('userHome',{
+		url:'/userHome',
+		templateUrl:"public/views/userHome.html"
+	})
+	.state('logout',{
+		url:'/logout',
+		templateUrl:'public/views/logoutPage.html'
+	})
+	.state('userProfile',{
+		url:'/userProfile',
+		templateUrl:'public/views/userProfile.html'
 	})
 	//$location.path('/prelogin');
 	//html5mode(true);
