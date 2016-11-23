@@ -237,6 +237,21 @@ var getUserProfile = function(req,res){
 };
 
 
+var isUserLoggedIn = function(req,res) {
+
+	if(req.session.user==undefined||req.session.user==null)
+	{
+		console.log("No Session");
+		//res.status(400);
+		res.status(401);
+		res.json({"response":"Not Authenticated. Please login first"});
+	}
+	else{
+		res.status(200);
+		res.json({"response":"Authenticated."});	
+	}
+}
+
 exports.getUserProfile = getUserProfile;
 exports.userSignup = userSignup;
 //exports.userLogIn = userLogIn;
@@ -244,4 +259,5 @@ exports.deleteUser = deleteLogin;
 exports.updateUser = updateLogin;
 exports.getLoginUserDetails = getLoginUserDetails;
 exports.authenticateLocal = authenticateLocal;
+exports.isUserLoggedIn = isUserLoggedIn;
 

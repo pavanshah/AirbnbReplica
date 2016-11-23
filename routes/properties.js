@@ -121,23 +121,7 @@ var SearchPropertyByDistance = function(req,res){
        
     });
 
-/*	//var retrivedProperty = mongoose.model('Property',Property);
 
-	Property.findOne({"property_id":"1234"},function(err,property){
-
-		if(!err){
-
-			res.status(200);
-			res.json(property);
-		}
-		else
-		{
-			console.log(err)
-		}
-
-	})
-
-*/
 }
 
 var FilterProperties = function(req,res){
@@ -189,9 +173,9 @@ var bookProperty = function(req,callback) {
 	}
 	else*/
 	
-	console.log(req.body.property.property_id);
+	console.log(req.body.property_id);
 	console.log(req.session.user);
-	var query = {'property_id':req.body.property.property_id};
+	var query = {'property_id':req.body.property_id};
 	var obj = {"start_date":req.body.start_date, "end_date":req.body.end_date, "user_email":req.session.user.emailId};
 	Property.update(query,{$push:{bookings:obj}}, function(error, property) {
 		if(!error)
@@ -213,14 +197,8 @@ var SearchPropertyById = function (req,res){
 
 	//var retrivedProperty = mongoose.model('Property',Property);
 	console.log(req.body);
-	if(req.session.user==undefined||req.session.user==null)
-	{
-		console.log("No Session");
-		//res.status(400);
-		res.status(400);
-		res.json({"response":"Not Authenticated. Please login first"});
-	}
-else{
+	
+
 	Property.findOne({"property_id":req.body.property_id},function(err,property){
 		//console.log("err",err);
 		//console.log("property",property);
@@ -238,13 +216,20 @@ else{
 		}
 
 	});
-}
+
 }
 
 var ConfirmBooking = function (req,res){
 
 	console.log("ConfirmBooking called");
 
+	if(req.session.user==undefined||req.session.user==null)
+	{
+		console.log("No Session");
+		//res.status(400);
+		res.status(401);
+		res.json({"response":"Not Authenticated. Please login first"});
+	}
 
 	bookProperty(req,function(propertyResponse){
 

@@ -50,8 +50,10 @@ app.config(function($stateProvider, $urlRouterProvider) {
 
 	.state('checkout', {
 		url:"/checkout",
-		templateUrl:"public/views/checkout.html"
-
+		templateUrl:"public/views/checkout.html",
+		params:{
+			property:null
+		}
 	})
 
 	.state('orderSuccess',{
