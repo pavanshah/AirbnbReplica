@@ -71,6 +71,10 @@ app.config(function($stateProvider, $urlRouterProvider) {
 		url:'/logout',
 		templateUrl:'public/views/logoutPage.html'
 	})
+	.state('userProfile',{
+		url:'/userProfile',
+		templateUrl:'public/views/userProfile.html'
+	})
 	//$location.path('/prelogin');
 	//html5mode(true);
 	
