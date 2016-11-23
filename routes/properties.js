@@ -173,10 +173,10 @@ var bookProperty = function(req,callback) {
 	}
 	else*/
 	
-	console.log(req.body.property_id);
+	console.log(req.body);
 	console.log(req.session.user);
-	var query = {'property_id':req.body.property_id};
-	var obj = {"start_date":req.body.start_date, "end_date":req.body.end_date, "user_email":req.session.user.emailId};
+	var query = {'property_id':req.body.property.property_id};
+	var obj = {"start_date":req.body.bookingDates.start_date, "end_date":req.body.bookingDates.end_date, "user_email":req.session.user.emailId};
 	Property.update(query,{$push:{bookings:obj}}, function(error, property) {
 		if(!error)
 		{
@@ -248,9 +248,9 @@ var ConfirmBooking = function (req,res){
 							    "bill":{
 							        
 							    "billing_date" : new Date(),
-							    "from_date" : req.body.start_date,
-							    "to_date" : req.body.end_date,
-							    "property" : {"property_id":4444,"propertyTitle":"Pavan Best ViewTop Bread N Breakfast","host_id":"281521057"},
+							    "from_date" : req.body.bookingDates.start_date,
+							    "to_date" : req.body.bookingDates.end_date,
+							    "property" : req.body.property,
 							    "user" : {"userid":"281521057","email":"pavanshah77@gmail.com"},
 							    "trip_amount" : req.body.trip_amount
 							    

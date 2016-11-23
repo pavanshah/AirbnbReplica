@@ -1,9 +1,12 @@
 var app = angular.module('Airbnb');
 
-function propertyDetailsControllerFn($state,$stateParams,$http,$uibModal,loginService) {
+function propertyDetailsControllerFn($state,$stateParams,$http,$uibModal,loginService,bookingDataService) {
 	
 	var vm = this;
 	vm.property = {};
+	
+	vm.bookingDates = bookingDataService.getBooking().bookingDates;
+	
 	function getPropertyDetails(property) {
 		$http.post("/SearchPropertyById",{property_id:property.property_id}).
 		then(function(response) {
@@ -32,10 +35,8 @@ function propertyDetailsControllerFn($state,$stateParams,$http,$uibModal,loginSe
 	}
 
 	function openLoginModal() {
-
-		
-
-	 		var modalInstance = $uibModal.open({
+	
+		var modalInstance = $uibModal.open({
 	 			 animation : true,
 			     templateUrl: 'public/views/loginModal.html',
 		      	 size: "md",
@@ -82,20 +83,10 @@ function propertyDetailsControllerFn($state,$stateParams,$http,$uibModal,loginSe
 			openLoginModal();
 		})
 	}
-	/*vm.bookProperty = function(){
-
-		$http.post("/bookProperty",vm.property).
-		then(function(response) {
-			if(response.status==200){
-
-			}
-			else if(response.status==401){
-				openLoginModal();
-			}
-		})
-	}*/
-
-	getPropertyDetails($stateParams.property);
+	if($stateParams.property!=null)
+		getPropertyDetails($stateParams.property);
+	else
+		vm.property = bookingDataService.getBooking().property;
 	console.log($stateParams);
 }
 

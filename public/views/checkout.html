@@ -9,8 +9,8 @@
 			<h2> {{vm.property.propertyTitle}} </h2>
 			<h3> {{vm.property.description}} </h3>
 
-			<h4> Start Date: 10/21/2016 </h4>
-			<h4> End Date : 10/22/2016 </h4>
+			<h4> Start Date: {{vm.bookingDates.start_date | date}} </h4>
+			<h4> End Date : {{vm.bookingDates.end_date | date}}</h4>
 			<h4> Number of Rooms: 2 </h4>
 			<h4> Base Price : {{vm.property.base_price | currency}} </h4>
 
