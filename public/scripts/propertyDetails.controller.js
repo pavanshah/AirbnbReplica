@@ -7,11 +7,23 @@ function propertyDetailsControllerFn($state,$stateParams,$http) {
 	function getPropertyDetails(property) {
 		$http.post("/SearchPropertyById",{property_id:property.property_id}).
 		then(function(response) {
+			console.log(response);
 			if(response.status==200){
+
 				vm.property= response.data;
 				console.log("property",vm.property);
 			}
-		})
+			else
+			{
+				console.log(response);
+			}
+		},function(err)
+		{
+
+					console.log(err.data.response);
+					//Open the login popup
+				
+		});
 	}
 
 	getPropertyDetails($stateParams.property);

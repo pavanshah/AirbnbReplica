@@ -5,7 +5,7 @@ var Schema = mongoose.Schema;
 var bill = require('../Models/bill');
 var uniqueIDGenerator = require('../routes/uniqueIDGenerator');
 
-var GenerateBill = function (req,res){
+var GenerateBill = function (req,callback){
 
 	console.log("inside generate bill");
 	
@@ -18,11 +18,13 @@ var GenerateBill = function (req,res){
 
 		if(!err){
 			console.log(result);
-			res.status(200);
-			res.json({"result":"Bill Generated"});
+			//res.status(200);
+			callback({"status":200,"result":"Bill Generated","bill":result});
 		}
 		else
-			console.log(err);
+			{console.log(err);
+			callback({"status":400,"result":"Failed to Generate bill"});
+		}
 	});
 	
 }
