@@ -8,6 +8,7 @@ var Hosts = new Schema({
 	lastname : String,
 	email: String,
 	birthdate : Date,
+	host_status : String,
 	password : String,
 	address : {
 		street: String,

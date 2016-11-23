@@ -46,12 +46,13 @@ var authenticateHost = function (req,res,next){
 
 var HostSignUp = function(req,res){
 	console.log("Inside signup host");
-	console.log(req.body.hostSignUp);
+	console.log(req.body.host);
 	console.log("Testing input");
-	console.log(req.body.hostSignUp.email);
+	console.log(req.body.host.email);
 	console.log("Testing output");
+	req.body.host.host_status = "active";
 	
-	Hosts.findOne({"email":req.body.hostSignUp.email},function(err,host){
+	Hosts.findOne({"email":req.body.host.email},function(err,host){
 		console.log("Inside find");
 		if(err){
 			console.log("inside find one error");
@@ -68,13 +69,13 @@ var HostSignUp = function(req,res){
 			.send({"result":"Invalid details"});
 			return;
 		}
-		req.body.hostSignUp.host_id = uniqueIDGenerator.returnUniqueID();
-		req.body.hostSignUp.type = 2;
+		req.body.host.host_id = uniqueIDGenerator.returnUniqueID();
+		req.body.host.type = 2;
 		var salt = bcrypt.genSaltSync(10);
-		var hash = bcrypt.hashSync(req.body.hostSignUp.password, salt);
-		req.body.hostSignUp.password = hash;
+		var hash = bcrypt.hashSync(req.body.host.password, salt);
+		req.body.host.password = hash;
 		
-		var newHost = new Hosts(req.body.hostSignUp);
+		var newHost = new Hosts(req.body.host);
 		newHost.save(function(err,result){
 			console.log("Inside saving record");
 			if(!err){
@@ -139,7 +140,7 @@ var HostLogIn = function(req,res){
 var DeleteHost = function(req,res){
 	console.log("Inside Host Delete");
 	
-	Hosts.find({ "email":req.body.DeleteHost.email }).remove( function(err,removed){		
+	Hosts.update({"email":req.body.host.email}, {$set : {host_status : "inactive" }}, function(err,removed){	
 		console.log(removed);
 		if(err || removed == null){
 			res
@@ -159,11 +160,11 @@ var DeleteHost = function(req,res){
 var UpdateHost = function(req,res){
 	console.log("Inside Host Update");
 	
-	req.body.UpdateHost.avgrating = 0;
+	req.body.host.avgrating = 0;
 	
-	var query = {'email':req.body.UpdateHost.email};
+	var query = {'email':req.body.host.email};
 	
-	Hosts.findOneAndUpdate(query, req.body.UpdateHost, {upsert:false}, function(err, doc){
+	Hosts.findOneAndUpdate(query, req.body.host, {upsert:false}, function(err, doc){
 		
 	    if (err) {
 	    	res
