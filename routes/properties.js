@@ -6,7 +6,7 @@ var Property = require('../Models/property');
 var uniqueIDGenerator = require('../routes/uniqueIDGenerator');
 var daterange = require('daterange');
 var _ = require('underscore');
-
+var Bill = require('./bill');
 
 var CreateProperty = function (req,res){
 
@@ -177,22 +177,34 @@ var UpdateProperty = function(req,res){
 	});
 }
 
-var bookProperty = function(req,res) {
+var bookProperty = function(req,callback) {
+
+	console.log("inside book property");
+
+	/*if(req.session.user==undefined||req.session.user==null)
+	{
+		console.log("No Session");
+		//res.status(400);
+		callback({"status":400,"response":"Not Authenticated. Please login first"});
+	}
+	else*/
+	
 	console.log(req.body.property.property_id);
-	console.log(req.session.user.emailId);
+	console.log(req.session.user);
 	var query = {'property_id':req.body.property.property_id};
 	var obj = {"start_date":req.body.start_date, "end_date":req.body.end_date, "user_email":req.session.user.emailId};
 	Property.update(query,{$push:{bookings:obj}}, function(error, property) {
 		if(!error)
 		{
-			res.status(200);
-			res.json({"result":"Property Booked"});
+			//res.status(200);
+			callback({"status":200,"result":"Property Booked","property":property});
 		}
 		else{
 			console.log(error);
 		}
 		
 	});
+
 }
 
 
@@ -220,9 +232,74 @@ var SearchPropertyById = function (req,res){
 	});
 }
 
+var ConfirmBooking = function (req,res){
+
+	console.log("ConfirmBooking called");
+
+
+	bookProperty(req,function(propertyResponse){
+
+		console.log("Inside Response for bookProperty");
+		console.log(propertyResponse);
+
+		if(propertyResponse.status!=200)
+		{
+			res.status(400);
+			res.json(propertyResponse);
+		}
+		else
+		{
+			 
+			var billObj =  {
+							    "bill":{
+							        
+							    "billing_date" : new Date(),
+							    "from_date" : req.body.start_date,
+							    "to_date" : req.body.end_date,
+							    "property" : {"property_id":4444,"propertyTitle":"Pavan Best ViewTop Bread N Breakfast","host_id":"281521057"},
+							    "user" : {"userid":"281521057","email":"pavanshah77@gmail.com"},
+							    "trip_amount" : req.body.trip_amount
+							    
+							    }
+							}
+
+			req.body.bill = billObj.bill;
+
+			Bill.GenerateBill(req, function(billResponse){
+
+				console.log("inside bill response");
+
+				console.log(billResponse.bill);
+				console.log("Property Response");
+				console.log(propertyResponse);
+
+				if(propertyResponse.status==200&&billResponse.status==200)
+				{
+					var generatedBill = billResponse.bill;
+					console.log("final objects:");
+					console.log(generatedBill);
+
+					res.status(200);
+					res.json({"Result:":"Property Booked and Bill Generated","bill":generatedBill});
+					res.end;
+				}
+				else
+				{
+					res.status(400);
+					res.json({"Result":"Error Booking Property","PropertyResponse":propertyResponse.result,"BillingResponse":billResponse.result});
+				}
+
+			})
+			
+		}
+	});
+
+}
+
 exports.SearchPropertyById = SearchPropertyById;
 exports.SearchPropertyByDistance = SearchPropertyByDistance;
 exports.CreateProperty = CreateProperty;
 exports.FilterProperties = FilterProperties;
 exports.UpdateProperty = UpdateProperty;
+exports.ConfirmBooking = ConfirmBooking;
 exports.bookProperty = bookProperty;
