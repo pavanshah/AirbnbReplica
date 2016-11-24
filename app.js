@@ -132,7 +132,7 @@ app.post('/HostLogIn',host.authenticateHost);
 
  app.post('/HostSignUp',host.HostSignUp);
  app.post('/DeleteHost',host.DeleteHost);
- app.post('/UpdateHost',host.UpdateHost);
+ //app.post('/UpdateHost',host.UpdateHost); // commentting this since it will be done in user
  app.get('/GetHost',host.GetHost);
 
 app.post('/createTrip', trip.createTrip);//temporary
@@ -143,6 +143,7 @@ app.get("/getMainDashboard",admin.getMainDashboard);
 app.get("/getPropertyPerYear",admin.getPropertyPerYear);
 
 app.get("/logout",user.logout);
+app.post("/updateHost",user.updateHostProfile);
  /*app.post('/UpdateProperty',;*/
 
 mongoose.connect(mongoSessionConnectURL, function(){
