@@ -28,6 +28,7 @@
 			    <a href="#." class="forgot-link pull-right">Forgot password?</a>
    			</div>
    			<button class="modal-btn-primary" ng-click="vm.ok()">Log in</button>
+            <span class="invalidinput" ng-show="vm.serverError">{{vm.serverError}}</span>
    		</form>
    		<div class="custom-footer dont-have-account">
    			<a href="#." class="">Don't have an account?</a>

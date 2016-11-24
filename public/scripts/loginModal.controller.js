@@ -1,6 +1,6 @@
 var app = angular.module("Airbnb");
 
-function loginModalControllerFn($uibModalInstance) {
+function loginModalControllerFn($uibModalInstance,loginService) {
 	var vm = this;
 	vm.userData = {};
 	vm.required = false;
@@ -13,7 +13,22 @@ function loginModalControllerFn($uibModalInstance) {
 			}
 		else
 			{
-				$uibModalInstance.close(vm.userData);
+				 loginService.login(vm.userData).
+			     then(function(response) {
+			     	if(response==true){
+			     		loginService.getUserProfile().
+			     		then(function(user) {
+			     			vm.serverError="";
+			     			$uibModalInstance.close(user);
+			     		})
+			     	}
+			     	if(response.status==400){
+			     		vm.serverError = response.data.message;
+			     	}
+			     },function(err) {
+			     	vm.serverError = er;
+			     })
+				
 			}
   	};
 

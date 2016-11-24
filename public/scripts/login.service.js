@@ -9,11 +9,15 @@ function loginServiceFn($http,bookingDataService) {
 		
 		return $http.post("/userLogIn",userData).
 		then(function(response) {
+			console.log("response",response);
 			if(response.status==200){
 				if(response.data.userLoggedIn){
 					return response.data.userLoggedIn;
 				}
 			}
+		},function(err) {
+			console.log("err",err);
+			return err;
 		})
 	}
 
