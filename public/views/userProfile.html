@@ -38,7 +38,7 @@
           User ID
         </label>
         <div class="col-sm-9">
-        <input type="text" size="30" id="user_user_id" ng-model="vm.user.user_id">
+        <input type="text" size="30" id="user_user_id" ng-model="vm.user.user_id" readonly disabled>
       </div>
       </div>
       <div class="row row-condensed space-4">
@@ -47,7 +47,7 @@
         </label>
         <div class="col-sm-9">
           
-      <input id="user_First_name" size="30" type="text" value="" ng-model="vm.user.firstName">
+      <input id="user_First_name" size="30" type="text" value="" ng-model="vm.user.firstname">
 
         </div>
       </div> 
@@ -58,7 +58,7 @@
         </label>
         <div class="col-sm-9">
           
-      <input id="user_last_name" size="30" type="text" value="" ng-model="vm.user.lastName">
+      <input id="user_last_name" size="30" type="text" value="" ng-model="vm.user.lastname">
 
           <div class="text-muted space-top-1">This is only shared once you have a confirmed booking with another Airbnb user.</div>
         </div>
@@ -118,13 +118,13 @@
           FirstName
         </label>
         <div class="col-sm-9">
-          <input id="user_Credit_card_Firstname" name="user_credit_card_name"  size="30" type="text" ng-model="vm.user.carddetails.firstname">
+          <input id="user_Credit_card_Firstname" name="user_credit_card_name"  size="30" type="text" ng-model="vm.user.creditcard.firstname">
         </div>
         <label for="user_Credit_card_Lastname">
           LastName
         </label>
         <div class="col-sm-9">
-          <input id="user_Credit_card_Lastname" name="user_credit_card_name"  size="30" type="text" ng-model="vm.user.carddetails.lasttname">
+          <input id="user_Credit_card_Lastname" name="user_credit_card_name"  size="30" type="text" ng-model="vm.user.creditcard.lastname">
         </div>
 
           
@@ -134,7 +134,7 @@
           Number
         </label>
         <div class="col-sm-9">
-          <input id="user_Credit_card_Number" name="user_credit_card_Number"  size="30" type="text" ng-model="vm.user.carddetails.creditcard">
+          <input id="user_Credit_card_Number" name="user_credit_card_Number"  size="30" type="text" ng-model="vm.user.creditcard.creditcard">
         </div>
 
           
@@ -145,9 +145,9 @@
         </label>
         <div class="col-sm-9">
          Month
-          <input id="user_Credit_card_ExpiryMonth" name="user_Credit_card_ExpiryMonth"  size="10" type="text" ng-model="vm.user.carddetails.expirymonth">
+     <input id="user_Credit_card_ExpiryMonth" name="user_Credit_card_ExpiryMonth"  size="10" type="text" ng-model="vm.user.creditcard.expirymonth">
           Year
-          <input id="user_Credit_card_ExpiryYear" name="user_Credit_card_ExpiryYear" size="10" type="text" ng-model="vm.user.carddetails.expiryyear">
+          <input id="user_Credit_card_ExpiryYear" name="user_Credit_card_ExpiryYear" size="10" type="text" ng-model="vm.user.creditcard.expiryyear">
         </div>              
       </div>
 
@@ -157,7 +157,7 @@
         </label>
         <div class="col-sm-9">
          
-          <input id="user_Credit_card_zipcode" name="user_Credit_card_zipcode"  size="20" type="text" ng-model="vm.user.carddetails.postalcode">
+          <input id="user_Credit_card_zipcode" name="user_Credit_card_zipcode"  size="20" type="text" ng-model="vm.user.creditcard.postalcode">
           
         </div>
 
@@ -168,7 +168,7 @@
         </label>
         <div class="col-sm-9">
          
-          <input id="user_Credit_card_country" name="user_Credit_card_country"  size="30" type="text" ng-model="vm.user.carddetails.country">
+          <input id="user_Credit_card_country" name="user_Credit_card_country"  size="30" type="text" ng-model="vm.user.creditcard.country">
           
         </div>
 

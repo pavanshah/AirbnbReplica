@@ -7,9 +7,11 @@ function UpdateProfileControllerFn($state,$http) {
 
 		$http.get('/getUserProfile').then(function(response){
 
-		console.log(response);
+		console.log(response.data.user);
 		
-		
+		vm.user=response.data.user;
+		console.log(vm.user.firstname);
+
 
 
 	});
