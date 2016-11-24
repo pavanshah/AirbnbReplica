@@ -1,4 +1,4 @@
-var app = angular.module('Airbnb',['ui.bootstrap','ui.router','google.places','nvd3','ngMaterial','ngAnimate','ngAria','ngRoute']);
+var app = angular.module('Airbnb',['ui.bootstrap','ui.router','google.places','nvd3','ngMaterial','ngAnimate','ngAria','ngRoute','ngSanitize']);
 
 app.config(function($stateProvider, $urlRouterProvider) {
 
@@ -94,6 +94,12 @@ app.config(function($stateProvider, $urlRouterProvider) {
 		url:'/userProfile',
 		templateUrl:'public/views/userProfile.html',
 		controller:"UpdateProfileController",
+		controllerAs:"vm"
+	})
+	.state('hostProfile',{
+		url:'/hostProfile',
+		templateUrl:'public/views/hostProfile.html',
+		controller:"hostProfile",
 		controllerAs:"vm"
 	})
 	//$location.path('/prelogin');

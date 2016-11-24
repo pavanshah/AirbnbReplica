@@ -85,5 +85,45 @@ var GetReviews = function(req, res)
 }
 
 
+var getRatingsForTrip = function(req,res) {
+	console.log("bhakdbhjdvshfwhfvwhvfhzv"+req.body.host_id+""+req.session.user.emailId);
+	Users.findOne({$and: [{"user_id":req.body.host_id},{"Reviews":{$elemMatch:{"user_id":req.session.user.emailId}}}]}, function(err, user){
+		if(err)
+		{
+			res.status(401).json({"result":"Not able to fetch user ratings"});
+		}
+		else
+		{
+			var a=[];
+			if(user != null)
+			{
+			a=user.Reviews;
+			a.forEach(function(element){
+				if(element.user_id == req.session.user.emailId)
+				{
+					console.log("ratingksasakaksahs"+element);
+					res
+					.status(200)
+					.json({"result":element});
+				}
+			});
+			if(user.Reviews.length == 0)
+			{
+				res.
+				status(200).
+				json({"result":null});
+			}
+		}
+
+			/*console.log("ratingksasakaksahs"+user);
+			res
+			.status(200)
+			.json({"result":user});*/
+		}
+	});
+}
+
+
 exports.SubmitReviewAndRating = SubmitReviewAndRating;
 exports.GetReviews = GetReviews;
+exports.getRatingsForTrip = getRatingsForTrip;
