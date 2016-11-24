@@ -1,8 +1,7 @@
- <div class="container-fluid">
- <br>
- <br>
- <br>
- <br>
+<br>
+
+ <div class="container-fluid back">
+ <br> 
  
 	<div class="row cardDonut" >
 		<div class="col-md-4">
@@ -25,7 +24,7 @@
 			<br>
 			<br>			
 			<div>
-				 <nvd3 options="vm.topHostsOptions" data="vm.topHostsdata"></nvd3> 
+				 <nvd3 options="topHostsOptions" data="topHostsdata"></nvd3> 
 				<div class="text-center fontchange" >Top 10 Hosts based on revenue</div>	
 			</div>
 		</div>
@@ -34,9 +33,11 @@
 			<br>
 			<br>					
 			<div>										
-				<nvd3 options="vm.lineOptions"
-      data="vm.lineData"
-      config="vm.config"></nvd3>
+		<nvd3 options="lineOptions"
+      data="lineData"
+      config="vm.config"></nvd3> 
+            
+      
       <div class="text-center fontchange" >City wise Revenue</div>
       
 			</div>
@@ -44,13 +45,23 @@
 	</div>
 	
 	<div class="row card" >
- 		 
+ 		 <div class="row" style="margin-left:30px;margin-bottom:20px;">
+ 		 	
+ 		 	<md-input-container>
+	          <label>Year</label>
+	          <md-select ng-model="yearselected" ng-change="update()">
+	            <md-option><em>2016</em></md-option>
+	            <md-option><em>2015</em></md-option>
+	            
+	          </md-select>
+        	</md-input-container>
+ 		 </div>
 						
 					
 					
 				
-				<nvd3 options="vm.barOptions"
-      data="vm.barData"
+				<nvd3 options="barOptions"
+      data="barData"
       config="vm.config"></nvd3>
 		<div class="text-center fontchange" >Top Properties with highest revenue</div>	
 		
@@ -70,6 +81,8 @@
 			</div>
 		</div>
 	</div> -->
+	
+
  </div> 
  <br>
  <br>

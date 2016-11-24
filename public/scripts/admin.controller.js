@@ -7,16 +7,48 @@ app.controller('AdminController',['$scope',function($scope){
 var app = angular.module('Airbnb');
 
 
-function AdminControllerFn($state) {	
+function AdminControllerFn($state,$scope,$http) {	
 	var vm = this;
 	
+	$scope.update = function(){
+		console.log("changed"+$scope.yearselected);
+		var yearDetails = {"year":$scope.yearselected};
+		$http({
+			method : "GET",
+			url : '/getPropertyPerYear',
+			params : yearDetails
+		}).success(function(details) {
+			//console.log("account---"+details.condition[0].itemid);
+	    	console.log(details);
+		});		
 		
-		vm.topHostsOptions = {
+	}
+	
+	$scope.$on('$viewContentLoaded', function() {
+	    //call it here
+		$http({
+			method : "GET",
+			url : '/getMainDashboard',		
+		}).success(function(details) {
+			console.log("cart get success");
+			console.log(details);
+			if(details.result == "login"){
+				window.location.assign("/#/adminLogin");
+			}
+			$scope.topHostsdata = details.result;
+			$scope.barData[0].values = details.barchart;
+			$scope.lineData  = details.linechart;
+		});
+		
+	});
+	
+	
+		$scope.topHostsOptions = {
             chart: {
                 type: 'pieChart',
                 height: 400,
-                x: function(d){return d.key;},
-                y: function(d){return d.revenue;},
+                x: function(d){return d.host_name;},
+                y: function(d){return d.cost;},
                 showLabels: true,
                 duration: 500,
                 labelThreshold: 0.01,
@@ -32,61 +64,62 @@ function AdminControllerFn($state) {
             }
         };
 
-	vm.topHostsdata = [
+	//sql test 
+	$scope.topHostsdata = [
             {
-                key: "Yashas",
-                revenue:"100",
-                y: 5
+                host_name: "Yashas",
+                cost:"100"
+                
             },
             {
-                key: "Kushal",
-                revenue:"120",
-                y: 2
+            	host_name: "Kushal",
+                cost:"120"
+                
             },
             {
-                key: "Pavan",
-                revenue:"101",
-                y: 9
+            	host_name: "Pavan",
+                cost:"101"
+                
             },
             {
-                key: "Apoorv",
-                revenue:"80",
-                y: 7
+            	host_name: "Apoorv",
+                cost:"80"
+                
             },
             {
-                key: "Pravez",
-                revenue:"110",
-                y: 4
+            	host_name: "Pravez",
+                cost:"110"
+                
             },
             {
-                key: "Vansh",
-                revenue:"130",
-                y: 3
+            	host_name: "Vansh",
+                cost:"130"
+                
             },
             {
-                key: "Shim",
-                revenue:"150",
-                y: 5
+            	host_name: "Shim",
+                cost:"150"
+                
             }
             ,
             {
-                key: "Gandhi",
-                revenue:"160",
-                y: 5
+            	host_name: "Gandhi",
+                cost:"160"
+                
             },
             {
-                key: "Nehru",
-                revenue:"100",
-                y: 5
+            	host_name: "Nehru",
+                cost:"100"
+                
             },
             {
-                key: "Modi",
-                revenue:"60",
-                y: 5
+            	host_name: "Modi",
+                cost:"60"
+                
             }
         ];
 	
-
+//sql test ends
 	
 /*	var chart = nv.models.discreteBarChart();
 	d3.select('#chart svg').datum([
@@ -173,7 +206,7 @@ function AdminControllerFn($state) {
 		    }]}*/
 	
 	//bar graph code starts
-	vm.barOptions = {
+	$scope.barOptions = {
 		    chart: {
 		        type: 'discreteBarChart',
 		        height: 400,
@@ -201,7 +234,7 @@ function AdminControllerFn($state) {
 		};
 	
 	
-	vm.barData = [{
+	$scope.barData = [{
 	    key: "Cumulative Return",
 	    values: [
 	        { "label" : "Property 1" , "value" : 29.765957771107 },
@@ -300,7 +333,7 @@ function AdminControllerFn($state) {
 	//historical bar chart ends	    
 
 	//cumilative line chart code starts
-	 vm.lineOptions = {
+	/*$scope.lineOptions = {
 	            chart: {
 	                type: 'cumulativeLineChart',
 	                height: 400,
@@ -312,7 +345,7 @@ function AdminControllerFn($state) {
 	                },
 	                x: function(d){ return d[0]; },
 	                y: function(d){ return d[1]/100; },
-	                average: function(d) { return d.mean/100; },
+	                average: function(d) { return d.mean; },
 
 	                color: d3.scale.category10().range(),
 	                duration: 300,
@@ -323,6 +356,7 @@ function AdminControllerFn($state) {
 	                    axisLabel: 'X Axis',
 	                    tickFormat: function(d) {
 	                        //return d3.time.format('%y')(new Date(d))
+	                    	
 	                    	return (d);
 	                    },
 	                    showMaxMin: false,
@@ -332,13 +366,61 @@ function AdminControllerFn($state) {
 	                yAxis: {
 	                    axisLabel: 'Y Axis',
 	                    tickFormat: function(d){
+	                    	console.log(d);
 	                        return (d);
 	                    },
 	                    axisLabelDistance: 0
 	                }
 	            }
 	        };
+*/
+	
+	$scope.lineOptions = {
+            chart: {
+                type: 'cumulativeLineChart',
+                height: 400,
+                
+                margin : {
+                    
+                    right: 20,
+                    
+                    left: 70
+                },
+                x: function(d){ return d[0]; },
+                y: function(d){ 
+                	//console.log(d[1]);
+                	return d[1]; },
+                average: function(d) { return d.mean; },
 
+                color: d3.scale.category10().range(),
+                duration: 300,
+                useInteractiveGuideline: true,
+                clipVoronoi: true,
+                showControls: false,
+
+                xAxis: {
+                    axisLabel: 'Year',
+                    tickFormat: function(d) {
+                        //return d3.time.format('%y')(new Date(d))
+                    	
+                    	return (d);
+                    },
+                    showMaxMin: true,
+                    staggerLabels: true,
+                    axisLabelDistance: 10
+                },
+
+                yAxis: {
+                    axisLabel: 'Revenue increase in %',
+                    tickFormat: function(d) { return parseFloat(d).toFixed(1) + "%"; },
+                    axisLabelDistance: 10
+                }
+            }
+        };
+
+	
+	
+	
 	        /*vm.lineData = [
 	            {
 	                key: "Long",
@@ -365,10 +447,21 @@ function AdminControllerFn($state) {
 	            }
 	        ];
 */	
-	 vm.lineData = [
+	/*
+	$scope.xFunction = function(){
+		return function(d){
+			return d[0];
+		};
+	}
+	$scope.yFunction = function(){
+		return function(d){
+			return d[1];
+		};
+	}*/
+	 $scope.lineData = [
 		            {
 		                key: "New York",
-		                values: [ [ 2010 , 110] , [ 2011 , 186] , [ 2012 , 218] , [ 2013 , 310] , [ 2014 , 200] , [ 2015 , 325]]
+		                values: [ [ 2010 , 3000] , [ 2011 , 2899] , [ 2012 , 3400] , [ 2013 , 3120] , [ 2014 , 2200] , [ 2015 , 6000]]
 		                
 		                
 		            },
@@ -457,9 +550,7 @@ function AdminControllerFn($state) {
 	                    y: 10
 	                }
 	                ];
-	                
-
-	 
+	                	 
 	 
 }
 

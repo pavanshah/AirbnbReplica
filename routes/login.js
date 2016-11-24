@@ -168,10 +168,13 @@ var deleteLogin = function(req,res){
 
 
 
-var updateLogin = function(req,res){
-	console.log("Inside user Update");
-	var query = {'email':req.body.UpdateLogin.email};
-	Users.findOneAndUpdate(query, req.body.UpdateLogin, {upsert:false}, function(err, doc){
+var updateProfile = function(req,res){
+	console.log("Inside user Profile Update");
+	var query = {'email':req.body.user.email};
+
+	//console.log(req.body.user);
+	
+	Users.findOneAndUpdate(query, req.body.user, {upsert:false}, function(err, doc){
 		
 	    if (err) {
 	    	res
@@ -179,20 +182,21 @@ var updateLogin = function(req,res){
 			.send({"result":"Bad request"});
 			return;
 	    }
+	    else {
+	    	console.log(doc);
 	res
  	.status(200)
  	.send({"result":"User Updated"});
-		res
-		.status(200)
-		.send({"result":"User Updated"});
-	});
+		
+	};
+	})	
 };
 
 var getLoginUserDetails = function(req,res){
 	console.log("Inside Get user");
 	
  	
- 	Users.findOne({"email":req.query.email},function(err,user){
+ 	Users.findOne({"email":req.session.user.emailId},function(err,user){
  		if(err || user == null){
  			res
  			.status(404)
@@ -208,12 +212,22 @@ var getLoginUserDetails = function(req,res){
 };
 
 var getUserProfile = function(req,res){
+
+	if(req.session.user==undefined||req.session.user==null)
+	{
+		console.log("No Session");
+		//res.status(400);
+		res.status(401);
+		res.json({"response":"Not Authenticated. Please login first"});
+	}
+
+else{
 	console.log("Inside Get LoggedIn user service");
 	 	
  	Users.findOne({"email":req.session.user.emailId},function(err,user){
  		if(err || user == null){
  			res
- 			.status(404)
+ 			.status(400)
  			.send({"result":"user not found"});
  			return;
  			
@@ -226,14 +240,18 @@ var getUserProfile = function(req,res){
 		    "email": user.email,
 		    "user_id": user.user_id,
 		    "type": user.type,
-		    "UserType": user.UserType
+		    "UserType": user.UserType,
+		    "phone" :user.phone,
+		    "address": user.address,
+		    "creditcard":user.carddetails,
  		};
  				
  		res
  		.status(200)
- 		.send({"LoggedIn User":UserObject});
+ 		.send({"user":UserObject});
  	});
 	
+	}
 };
 
 
@@ -252,12 +270,19 @@ var isUserLoggedIn = function(req,res) {
 	}
 }
 
+var logout = function(req,res) {
+	
+	req.session.destroy();
+	res.json({"userLoggedIn":false});
+
+}
+
 exports.getUserProfile = getUserProfile;
 exports.userSignup = userSignup;
 //exports.userLogIn = userLogIn;
 exports.deleteUser = deleteLogin;
-exports.updateUser = updateLogin;
+exports.updateUser = updateProfile;
 exports.getLoginUserDetails = getLoginUserDetails;
 exports.authenticateLocal = authenticateLocal;
 exports.isUserLoggedIn = isUserLoggedIn;
-
+exports.logout = logout;
