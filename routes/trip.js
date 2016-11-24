@@ -63,22 +63,74 @@ var Trip = new Schema({
 });					*/
 
 var createTrip = function (tripObject,callback) {
-	console.log("abdhakbbfkhbkhbabfhkabfbahbdkb"+tripObject.body);
+	//console.log("abdhakbbfkhbkhbabfhkabfbahbdkb"+tripObject);
 	console.log("property_id"+tripObject.property.property_id);
 	console.log("user_id"+tripObject.user_id);
 	globalTripObject = tripObject;
 	query = {"property_id":tripObject.property.property_id};
-	Property.find(query, function(err,property){
+	var trip_id = uniqueIDGenerator.returnUniqueID();
+
+	var fetchProperty = Property.findOne(query);
+	fetchProperty.exec(function(err,propertyData){
 		if(err)
 		{
 			callback({"status":400,"result":"Failed to fetch property in Create Trip"});
 		}
 		else
 		{
-			console.log("propertyy final"+property);
-			globalProperty = property;
+			//console.log("propertyyyyyyyyyyyy final"+propertyData);
+			globalProperty = propertyData;
 			//console.log("ljabfbhea"+tripObject);
-			var trip_id = uniqueIDGenerator.returnUniqueID();
+			//console.log("dafsrcwrrchwrvxwjfxutwefxutfvxfzxjvcfejf"+globalProperty);
+			//console.log("temp000o::::::::::::"+propertyData.property_id);
+			var trip_data = {
+				"trip_id" : trip_id,
+				"property" : {
+					"property_id" : globalProperty.property_id,
+					"propertyTitle" : globalProperty.propertyTitle,
+					"description" : globalProperty.description,
+					"propertyPictures" : globalProperty.propertyPictures,
+					"qty" : globalProperty.qty,
+					"category" : globalProperty.category
+				},
+				"host_id" : globalProperty.host_id,
+				"user_id" : globalTripObject.user_id,
+				"bill" : {
+					"billing_id" : globalTripObject.bill.billing_id,
+					"trip_amount" : globalTripObject.bill.trip_amount, 
+				},
+				"trip_start_date" : globalTripObject.trip_start_date,
+				"trip_end_date" : globalTripObject.trip_end_date 
+			};
+
+			var finalTripObject = Trips(trip_data);
+			console.log(finalTripObject);
+			finalTripObject.save(function(err, result){
+				if(err)
+				{
+					callback({"status":400,"result":"Failed to fetch property in Create Trip"});
+				}
+				else
+				{
+					callback({"status":200,"result":"Trip Created","trip_details":result});
+				}
+			});
+		}
+	});
+
+	/*
+	Property.find(query, function(err,propertyData){
+		if(err)
+		{
+			callback({"status":400,"result":"Failed to fetch property in Create Trip"});
+		}
+		else
+		{
+			console.log("propertyyyyyyyyyyyy final"+propertyData);
+			globalProperty = propertyData;
+			//console.log("ljabfbhea"+tripObject);
+			console.log("dafsrcwrrchwrvxwjfxutwefxutfvxfzxjvcfejf"+globalProperty);
+			console.log("temp000o::::::::::::"+propertyData.property_id);
 			var trip_data = {
 				"trip_id" : trip_id,
 				"property" : {
@@ -113,7 +165,7 @@ var createTrip = function (tripObject,callback) {
 			});
 		}
 	});
-
+*/
 
 }
 

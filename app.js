@@ -134,6 +134,7 @@ app.post('/HostLogIn',host.authenticateHost);
  app.post('/UpdateHost',host.UpdateHost);
  app.get('/GetHost',host.GetHost);
 
+app.post('/createTrip', trip.createTrip);//temporary
 
 app.get("/isUserLoggedIn",user.isUserLoggedIn);
 
