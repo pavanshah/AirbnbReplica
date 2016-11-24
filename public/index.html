@@ -8,18 +8,20 @@
 	<link rel="stylesheet" type="text/css" href="public/css/modal.css">
 	<link rel="stylesheet" type="text/css" href="public/css/calendar.css">
 	<link rel="stylesheet" type="text/css" href="public/css/admin.css">
+	<link rel="stylesheet" type="text/css" href="public/css/logout-popup.css">
 	<link rel="stylesheet" type="text/css" href="public/css/property-details.css">
 	<link rel="stylesheet" href="/bower_components/angular-google-places-autocomplete/src/autocomplete.css">
 	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/angular-nvd3/1.0.8/angular-nvd3.min.js">
 
-	<link rel="stylesheet" type="text/css" href="public/css/normalize.css">
+	<!-- <link rel="stylesheet" type="text/css" href="public/css/normalize.css"> -->
 	<link rel="stylesheet" type="text/css" href="public/css/star-rating.css">
-	<link rel="stylesheet" type="text/css" href="public/css/webkit-background-size.css">
+	<!-- <link rel="stylesheet" type="text/css" href="public/css/webkit-background-size.css"> -->
+
 
 </head>
 <body ng-controller="MainController as vm">
 	<!-- Header -->
-	<nav class="navbar navbar-default navbar">
+	<nav class="navbar navbar-default navbar-fixed-top">
 	  <div class="container-fluid">
 	    <!-- Brand and toggle get grouped for better mobile display -->
 	    <div class="navbar-header">
@@ -49,8 +51,20 @@
 	    			<li class="visible-xs"><a href="#"><span>Download the App</span></a></li>
 			        <li class=""><a href="#/becomeahost"><span class="have-border">Become a Host</span></a></li>
 			        <li class="hidden-xs"><a href="#"><span>Help</span></a></li>
-			        <li class="" ng-click="vm.openSignupModal()"><a href=""><span>Sign Up</span></a></li>
-			        <li class="" ng-click="vm.openLoginModal()"><a href=""><span>Log In</span></a></li>
+			        <li class="" ng-if="!vm.user.email" ng-click="vm.openSignupModal()"><a href=""><span>Sign Up</span></a></li>
+			        <li class="" ng-if="!vm.user.email" ng-click="vm.openLoginModal()"><a href=""><span>Log In</span></a></li>
+			        <li class="" ng-if="vm.user.email"><a href="" class="logout-popup-wrapper position-relative">
+			        	<span ng-bind="vm.user.firstname"></span>
+		        		<div class="logout-popup position-absolute">
+			        		<ul class="clearfix">
+			        			<li>Edit Profile</li>
+			        			<li>Refer A Friend</li>
+			        			<li>Account Settings</li>
+			        			<li>Business Travel</li>
+			        			<li>Logout</li>
+			        		</ul>
+			        	</div>
+			        </a></li>
 			        <li class="visible-xs"><a href="#"><span>Discover</span></a></li>
 			        <li class="visible-xs"><a href="#"><span>Search</span></a></li>
 			        <li class="visible-xs"><a href="#"><span>How it Works</span></a></li>

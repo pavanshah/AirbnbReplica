@@ -21,7 +21,7 @@ function loginServiceFn($http) {
 		return $http.get("/getUserProfile").
 		then(function(response) {
 			if(response.status==200){
-				userData = response.data;
+				userData = response.data.user;
 				return userData;
 			}
 		})
