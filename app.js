@@ -23,6 +23,7 @@ var bill = require("./routes/bill");
 var Hosts = require('./Models/host');
 var Users = require('./Models/user');
 var review = require("./routes/review");
+var admin = require("./routes/admin");
 // all environments
 app.use(expressSession({
   secret: 'cmpe273_airbnb_team9',
@@ -138,6 +139,7 @@ app.post('/createTrip', trip.createTrip);//temporary
 
 app.get("/isUserLoggedIn",user.isUserLoggedIn);
 
+app.get("/getMainDashboard",admin.getMainDashboard);
 
  /*app.post('/UpdateProperty',;*/
 

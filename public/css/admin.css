@@ -1,7 +1,7 @@
 
 .card{
 	background-color: white;		
-	border-style: none solid solid solid;	
+	border-style: solid solid solid solid;	
 	border-width: 1px 1px 1px 1px;	
 	border-color: #d6d6d6;
 	padding:20px;
@@ -13,13 +13,13 @@
 
 .cardDonut{
 	background-color: white;		
-	border-style: none solid solid solid;	
+	border-style: solid solid solid solid;	
 	border-width: 1px 1px 1px 1px;	
 	border-color: #d6d6d6;
-	padding-top:10px;
+	padding-top:10px;	
 	padding-bottom:10px;
-	margin-left:10px;
-	margin-right:10px;
+	margin-left:20px;
+	margin-right:20px;
 	margin-bottom:10px;
 }
 
