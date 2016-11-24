@@ -4,6 +4,21 @@ var app = angular.module('Airbnb');
 function mainControllerFn($uibModal,loginService) {
  	var vm =this;
  	vm.user = {};
+
+ 	loginService.getUserProfile().
+ 	then(function(userData) {
+ 		vm.user = userData;
+ 	},function(err) {
+ 		vm.user = {};
+ 	})
+
+ 	vm.logout = function() {
+ 		loginService.logout().
+ 		then(function(response) {
+ 			vm.user = {};
+ 		});
+ 	}
+
  	vm.openLoginModal = function() {
 
  		var modalInstance = $uibModal.open({

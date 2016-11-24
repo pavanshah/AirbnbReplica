@@ -270,6 +270,13 @@ var isUserLoggedIn = function(req,res) {
 	}
 }
 
+var logout = function(req,res) {
+	
+	req.session.destroy();
+	res.json({"userLoggedIn":false});
+
+}
+
 exports.getUserProfile = getUserProfile;
 exports.userSignup = userSignup;
 //exports.userLogIn = userLogIn;
@@ -278,4 +285,4 @@ exports.updateUser = updateProfile;
 exports.getLoginUserDetails = getLoginUserDetails;
 exports.authenticateLocal = authenticateLocal;
 exports.isUserLoggedIn = isUserLoggedIn;
-
+exports.logout = logout;
