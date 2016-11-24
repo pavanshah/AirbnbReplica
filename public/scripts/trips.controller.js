@@ -1,11 +1,32 @@
 var app = angular.module("Airbnb");
 
+
 var TripControllerFn = function ($http,tripsService) {
 	
 	var vm = this;
 
+	vm.rate = 1;
+  	vm.max = 5;
+  	vm.isReadonly = false;
+
+  	vm.hoveringOver = function(value) {
+    vm.overStar = value;
+    //alert(vm.overStar);
+    //vm.percent = 100 * (value / vm.max);
+  };
+
+  	vm.clickStar = function(value) {
+  		vm.ratedStar = value;
+  		alert(vm.ratedStar);
+  	};
+	
+
 	vm.trips ={};
 	
+	vm.temp = function() {
+		console.log("inside star");
+	}
+
 	var getTrips = function(){
 		tripsService.getTrips().
 		then(function (response) {
