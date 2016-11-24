@@ -1,7 +1,7 @@
 var app = angular.module('Airbnb');
 
 
-function mainControllerFn($uibModal,loginService) {
+function mainControllerFn($uibModal,loginService,$state) {
  	var vm =this;
  	vm.user = {};
 
@@ -17,6 +17,10 @@ function mainControllerFn($uibModal,loginService) {
  		then(function(response) {
  			vm.user = {};
  		});
+ 	}
+
+ 	vm.trips = function() {
+ 		$state.go("userHome");
  	}
 
  	vm.openLoginModal = function() {
