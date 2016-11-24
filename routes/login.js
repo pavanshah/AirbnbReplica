@@ -170,11 +170,11 @@ var deleteLogin = function(req,res){
 
 var updateProfile = function(req,res){
 	console.log("Inside user Profile Update");
-	var query = {'email':req.body.UpdateLogin.email};
+	var query = {'email':req.body.user.email};
 
-	console.log(req.body);
-	/*
-	Users.findOneAndUpdate(query, req.body.UpdateLogin, {upsert:false}, function(err, doc){
+	//console.log(req.body.user);
+	
+	Users.findOneAndUpdate(query, req.body.user, {upsert:false}, function(err, doc){
 		
 	    if (err) {
 	    	res
@@ -182,13 +182,14 @@ var updateProfile = function(req,res){
 			.send({"result":"Bad request"});
 			return;
 	    }
+	    else {
+	    	console.log(doc);
 	res
  	.status(200)
  	.send({"result":"User Updated"});
-		res
-		.status(200)
-		.send({"result":"User Updated"});
-	});*/
+		
+	};
+	})	
 };
 
 var getLoginUserDetails = function(req,res){
