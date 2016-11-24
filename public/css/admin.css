@@ -22,6 +22,15 @@
 	margin-right:0px;
 	margin-top:30px;
 	margin-bottom:10px;
+	
+    
+}
+
+.fonthost{
+	font-family: "Helvetica neue",Helvetica,Arial,Sans-serif;
+    font-size: 15px;	
+ 	font-weight: 700;
+ 	color : #626262;
 }
 
 .fontchange{
@@ -34,4 +43,17 @@
 
 .back{
 background-color: #e2e2e2;	
+}
+
+.cardHost{
+	background-color: white;		
+	border-style: solid solid solid solid;	
+	border-width: 1px 1px 1px 1px;	
+	border-color: #d6d6d6;
+	padding-top:5px;	
+	padding-bottom:5px;
+	margin-left:15px;
+	margin-right:15px;
+	margin-top:2px;
+	margin-bottom:2px;
 }
