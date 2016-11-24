@@ -27,22 +27,24 @@
          <div class="width-100">
          
          <form name="signupform" novalidate>
-               <input type="text" name="firstname" ng-model="vm.firstname" placeholder="First name" class="name-field" required>
-               <span class="invalidinput" ng-show="vm.required && !vm.firstname.length">Firstname is required</span>
+               <input type="text" name="firstname" ng-model="vm.user.firstname" placeholder="First name" class="name-field" required>
+               <span class="invalidinput" ng-show="vm.required && !vm.user.firstname.length">Firstname is required</span>
                
-               <input type="text" name="lastname" ng-model="vm.lastname" placeholder="Last name" class="name-field">
-               <span class="invalidinput" ng-show="vm.required && !vm.lastname.length">Lastname is required</span>
+               <input type="text" name="lastname" ng-model="vm.user.lastname" placeholder="Last name" class="name-field">
+               <span class="invalidinput" ng-show="vm.required && !vm.user.lastname.length">Lastname is required</span>
                
-               <input type="text" name="email" ng-model="vm.email" placeholder="Email address" class="mail-field" ng-change = "vm.setEmailFlag()">
-               <span class="invalidinput" ng-show="vm.required && !vm.email.length">Email is required</span>
+               <input type="text" name="email" ng-model="vm.user.email" placeholder="Email address" class="mail-field" ng-change = "vm.setEmailFlag()">
+               <span class="invalidinput" ng-show="vm.required && !vm.user.email.length">Email is required</span>
                <span class="invalidinput" ng-show="vm.emailflag">Email-id is invalid</span>
                
-               <input type="password" name="password" ng-model = "vm.password" placeholder="Create a Password" class="pwd-field">
-               <span class="invalidinput" ng-show="vm.required && !vm.password.length">Password is required</span>
+               <input type="password" name="password" ng-model = "vm.user.password" placeholder="Create a Password" class="pwd-field">
+               <span class="invalidinput" ng-show="vm.required && !vm.user.password.length">Password is required</span>
                
                <div class="birthday-wrapper">
                   <p class="bold-font">Birthday</p>
-                  <select class="month-list">
+                  <span ><input type="date" ng-model="vm.user.birthdate" class="form-control check-in-box"  placeholder="birthdate"/></span>
+                  
+                  <!-- <select class="month-list" ng-model="vm.user.birthdate.month">
                      <option>Month</option>
                      <option>January</option>
                      <option>February</option>
@@ -57,7 +59,7 @@
                      <option>November</option>
                      <option>December</option>
                   </select>
-                  <select class="day-list">
+                  <select class="day-list" ng-model="vm.user.birthdate.date">
                      <option>Day</option>
                      <option>1</option>
                      <option>2</option>
@@ -91,7 +93,7 @@
                      <option>30</option>
                      <option>31</option>
                   </select>
-                  <select class="year-list">
+                  <select class="year-list" ng-model="vm.user.birthdate.year">
                      <option>Year</option>
                      <option value="2016">2016</option>
                      <option value="2015">2015</option>
@@ -214,7 +216,7 @@
                      <option value="1898">1898</option>
                      <option value="1897">1897</option>
                      <option value="1896">1896</option>
-                  </select>
+                  </select> -->
                </div>
                <div class="coupons-promotions-wrap">
                   <label for="promotions" class="promotions-checkbox">
@@ -225,8 +227,8 @@
 
                 <div class="user-type-radio">
                   <label for="userType">Sign up as:</label>
-                     <input type="radio" id="userType" name="userType" value="User"> User 
-                     <input type="radio" id="userType" name="userType" value="Host"> Host</br>
+                     <input type="radio" id="userType" ng-model="vm.user.UserType" name="userType" value="User"> User 
+                     <input type="radio" id="userType" ng-model="vm.user.UserType" selected name="userType" value="Host"> Host</br>
                   </label>
                </div>
         </form>

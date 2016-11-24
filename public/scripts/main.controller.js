@@ -1,7 +1,7 @@
 var app = angular.module('Airbnb');
 
 
-function mainControllerFn($uibModal,loginService,$state) {
+function mainControllerFn($uibModal,loginService,$state,$log) {
  	var vm =this;
  	vm.user = {};
 
@@ -61,6 +61,30 @@ function mainControllerFn($uibModal,loginService,$state) {
 	      	 controller:'SignupModalController',
 	      	 controllerAs:"vm"
 	    });
+
+	    modalInstance.result.then(function (userData) {
+		     vm.userData = userData;
+		     loginService.signup(userData).
+		     then(function(response) {
+				if(response.status==200){
+					loginService.login(userData).
+				     then(function(isLoggedIn) {
+				     	if(isLoggedIn){
+				     		loginService.getUserProfile().
+				     		then(function(user) {
+				     			vm.user = user;
+				     		})
+				     	}
+				     })
+				}		     	
+
+		     })
+		    
+
+		     console.log("userData",vm.userData);
+		    }, function () {
+		      $log.info('Modal dismissed at: ' + new Date());
+		});
  	}
  } 
 
