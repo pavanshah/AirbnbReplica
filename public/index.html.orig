@@ -104,9 +104,12 @@
 <script type="text/javascript" src="public/scripts/signupModal.controller.js"></script>
 <script type="text/javascript" src="public/scripts/admin.controller.js"></script>
 <script type="text/javascript" src="public/scripts/checkout.controller.js"></script>
+<<<<<<< HEAD
 <script type="text/javascript" src="public/scripts/UpdateProfileController.js"></script>
+=======
 <script type="text/javascript" src="public/scripts/trips.service.js"></script>
 <script type="text/javascript" src="public/scripts/trips.controller.js"></script>
+>>>>>>> 402622852d1027bb66fc93394d1b8e4705a5a968
 
 <meta charset="utf-8">  <!-- it's important for d3.js -->
 <script src="bower_components/d3/d3.js"></script>
