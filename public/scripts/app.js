@@ -92,11 +92,9 @@ app.config(function($stateProvider, $urlRouterProvider) {
 	})
 	.state('hostProfile',{
 		url:'/hostProfile',
-		templateUrl:'public/views/hostProfile.html'
-	})
-	.state('hostEditProfile',{
-		url:'/hostProfileEdit',
-		templateUrl:'public/views/hostEditProfile.html'
+		templateUrl:'public/views/hostProfile.html',
+		controller:"hostProfile",
+		controllerAs:"vm"
 	})
 	//$location.path('/prelogin');
 	//html5mode(true);
