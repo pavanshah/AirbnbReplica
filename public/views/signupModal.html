@@ -236,6 +236,7 @@
             <p class="terms-n-condn">By signing up, I agree to Airbnb’s <a href="#."></a>Terms of Service</a>, <a href="#.">Nondiscrimination Policy</a>, <a href="#.">Payments Terms of Service</a>, <a href="#.">Privacy Policy</a>, <a href="#.">Guest Refund Policy</a>, and <a href="#.">Host Guarantee Terms.</a></p>
             <div class="login-options-wrap">
                <button class="modal-btn-primary login-option" ng-click="vm.ok()"><img class="media-icon" src="public/images/modal-images/email.png">Sign up</button>
+               <span class="invalidinput" ng-show="vm.serverError">{{vm.serverError}}</span>
             </div>
             
             <div class="custom-footer">
