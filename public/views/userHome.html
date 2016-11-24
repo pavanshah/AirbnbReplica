@@ -1,3 +1,4 @@
+  <br><br><br>
   <div class="subnav hide-print">
   <div class="page-container-responsive">
     <ul class="subnav-list">
@@ -5,10 +6,10 @@
         <a href="#" aria-selected="false" class="subnav-item" id="dashboard-item">Dashboard</a>
       </li>
       <li>
-        <a href="#" aria-selected="false" class="subnav-item cohosting-ml-tooltip-trigger" id="your-trips-item">Your Trips</a>
+        <a href="#" aria-selected="true" class="subnav-item cohosting-ml-tooltip-trigger" id="your-trips-item">Your Trips</a>
       </li>
       <li>
-           <a href="#/bills" aria-selected="false" class="subnav-item" id="your-bills-item" >Your Bills</a>
+           <a href="#" aria-selected="false" class="subnav-item" id="your-bills-item" >Your Bills</a>
       </li>
       <li>
         <a href="#" aria-selected="false" class="subnav-item" id="user-profile-item">Profile</a>
@@ -30,33 +31,36 @@
             <div class="row trip-detail">
             <div ng-repeat = "trips in vm.trips track by $index">
               <div class="col-md-6">
-                <strong> {{trips.trip_id}}</strong>
+                <!-- <h3>#{{$index + 1}}</h3><br>
+                <strong>{{trips.trip_id}}</strong> -->
                 <h3>{{trips.property.propertyTitle}}</h3>
                 
                 <img src="{{trips.property.propertyPictures[0]}}">
-                <p>{{trips.property.description}}</p>
+                <!-- <p>{{trips.property.description}}</p> -->
                 <br>
                 <br>
               </div>
               <div class="col-md-6">
-                <strong><p> {{trips.trip_start_date}}</p></strong>
-                <strong><p> {{trips.trip_end_date}}</p></strong>
-
-                <strong><p>{{trips.property.category}}</p></strong>
-                <strong><p>{{trips.property.qty}}</p></strong>
+              <br><br><br>
+                <strong><p><span style="font-size: 20px;"> Check-In Date: </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{trips.trip_start_date | date}}</p></strong>
+                <strong><p><span style="font-size: 20px;">Check-out Date: </span>&nbsp;{{trips.trip_end_date | date}}</p></strong>
+                <strong><p> <span style="font-size: 20px;"> {{trips.property.qty}}&nbsp;&nbsp;{{trips.property.category}}&nbsp;&nbsp;booked</span></p></strong>
+                <!-- <strong><p>Category {{trips.property.category}}</p></strong>
+                <strong><p>Quantity {{trips.property.qty}}</p></strong> -->
                 <h4>{{trips.bill.trip_amount}}</h4>
                 <br> 
                 <br>
-                <br>
                 <h2> Ratings and Review Rakhva hoy to ahiyan rakhi sakay </h2>
               </div>
+              <div ng-if="($index+1) != vm.trips.length">
               <hr style="width:80%; border-color:#ff7e82; margin-bottom:40px;"> 
+              </div>
               </div>
             </div>
   
                  
 
-            <div class="row trip-detail">
+<!--             <div class="row trip-detail">
                   <div class="col-md-6">
                     <strong> trip_id #2</strong>
                     <h3>Trip.Property.PropertyTitle</h3>
@@ -78,7 +82,7 @@
                   <br>
                   <h2> Ratings and Review Rakhva hoy to ahiyan rakhi sakay </h2>
                  </div>
-             </div>
+             </div> -->
           </div>
         </div>
 
