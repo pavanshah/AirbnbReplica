@@ -7,6 +7,7 @@ var uniqueIDGenerator = require('../routes/uniqueIDGenerator');
 var daterange = require('daterange');
 var _ = require('underscore');
 var Bill = require('./bill');
+var Trip = require('./trip');
 
 var CreateProperty = function (req,res){
 
@@ -273,9 +274,34 @@ var ConfirmBooking = function (req,res){
 					console.log("final objects:");
 					console.log(generatedBill);
 
-					res.status(200);
-					res.json({"Result:":"Property Booked and Bill Generated","bill":generatedBill});
-					res.end;
+
+
+					var tripObject = {
+						//trip_id : String,
+						"property" : {
+							"property_id" : billResponse.bill.property.property_id
+						},
+						"user_id":"281521057" ,//change the userid to session userid
+						"user_emailId" : req.session.user.emailId,
+						"bill" : {
+							"billing_id": billResponse.bill.billing_id,
+							"trip_amount" : billResponse.bill.trip_amount
+						},	
+						"trip_start_date" : billResponse.bill.from_date,
+						"trip_end_date" : billResponse.bill.to_date	
+					};
+
+					//req.body.tripObject = tripObject;
+
+					Trip.createTrip(tripObject, function(tripResponse){
+						if(propertyResponse.status==200&&billResponse.status==200&&tripResponse.status==200)
+						{
+							res.status(200);
+							res.json({"Result:":"Property Booked, Bill Generated and Trip created","trip":tripResponse.trip_details});
+							res.end;
+						}
+					} );
+
 				}
 				else
 				{
@@ -284,6 +310,8 @@ var ConfirmBooking = function (req,res){
 				}
 
 			})
+
+
 			
 		}
 	});

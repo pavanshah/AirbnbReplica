@@ -13,6 +13,7 @@ var Trip = new Schema({
 	},
 	host_id : String,
 	user_id : String,
+	user_emailId : String,
 	bill : {
 		billing_id: String,
 		trip_amount : Number

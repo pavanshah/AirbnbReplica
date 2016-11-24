@@ -125,7 +125,8 @@ app.post('/userLogIn',user.authenticateLocal);
 app.post('/UpdateProperty',property.UpdateProperty);
 app.post('/bookProperty', property.ConfirmBooking);
 
-
+var trip = require('./routes/trip');
+app.get('/getTrips', trip.getTrips);
 
 app.post('/HostLogIn',host.authenticateHost);
 
@@ -133,6 +134,8 @@ app.post('/HostLogIn',host.authenticateHost);
  app.post('/DeleteHost',host.DeleteHost);
  app.post('/UpdateHost',host.UpdateHost);
  app.get('/GetHost',host.GetHost);
+
+app.post('/createTrip', trip.createTrip);//temporary
 
 app.get("/isUserLoggedIn",user.isUserLoggedIn);
 
