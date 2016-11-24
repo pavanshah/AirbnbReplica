@@ -113,13 +113,13 @@
       <input id="street" name="user_address_street"  size="30" type="text" ng-model="vm.user.address.street">
       City
       <input id="city" name="user_address_city" size="30" type="text" ng-model="vm.user.address.city"
-      ng-pattern="/^[a-zA-Z]*$/">
+      ng-pattern="/^[a-zA-Z\_\- ]*$/">
       <span class="invalidinput" ng-show="profileForm.user_address_city.$error.pattern">Text Input Only</br></span>
       State
       <input id="state" name="user_address_state" size="30" type="text" ng-model="vm.user.address.state" ng-pattern="/^[a-zA-Z]*$/">
       <span class="invalidinput" ng-show="profileForm.user_address_state.$error.pattern">Text Input Only</br></span>
       ZipCode
-      <input id="Zipcode" name="user_address_zipcode" size="30" type="text" ng-model="vm.user.address.zipcode" ng-pattern = "/^[1-9]{1}[0-9]{5}$/">
+      <input id="Zipcode" name="user_address_zipcode" size="30" type="text" ng-model="vm.user.address.zipcode" ng-pattern = "/^[0-9]{5}$/">
 
       <span class="invalidinput" ng-show="profileForm.user_address_zipcode.$error.pattern">Not a valid zip code</br></span>
 
@@ -165,7 +165,7 @@
           Number
         </label>
         <div class="col-sm-9">
-          <input id="user_Credit_card_Number" name="user_credit_card_Number"  size="30" type="text" ng-model="vm.user.creditcard.creditcard" ng-pattern = "/^[1-9]{1}[0-9]{16}$/">
+          <input id="user_Credit_card_Number" name="user_credit_card_Number"  size="30" type="text" ng-model="vm.user.creditcard.creditcard" ng-pattern = "/^[0-9]{16}$/">
 
       <span class="invalidinput" ng-show="creditCardForm.user_credit_card_Number.$error.pattern">Not a valid credit card number</span>
         </div>
@@ -178,12 +178,12 @@
         </label>
         <div class="col-sm-9">
          Month
-     <input id="user_Credit_card_ExpiryMonth" name="user_Credit_card_ExpiryMonth"  size="10" type="text" ng-model="vm.user.creditcard.expirymonth" ng-pattern = "/^[1-9]{1}[0-9]{2}$/">
+     <input id="user_Credit_card_ExpiryMonth" name="user_Credit_card_ExpiryMonth"  size="10" type="text" ng-model="vm.user.creditcard.expirymonth" ng-pattern = "/^[0-9]{2}$/">
 
           <span class="invalidinput" ng-show="creditCardForm.user_Credit_card_ExpiryMonth.$error.pattern">Not a valid month</br></span>
 
           Year
-          <input id="user_Credit_card_ExpiryYear" name="user_Credit_card_ExpiryYear" size="10" type="text" ng-model="vm.user.creditcard.expiryyear" ng-pattern = "/^[1-9]{1}[0-9]{4}$/">
+          <input id="user_Credit_card_ExpiryYear" name="user_Credit_card_ExpiryYear" size="10" type="text" ng-model="vm.user.creditcard.expiryyear" ng-pattern = "/^[0-9]{4}$/">
 
           <span class="invalidinput" ng-show="creditCardForm.user_Credit_card_ExpiryYear.$error.pattern">Not a valid year</br></span>
 
@@ -196,7 +196,7 @@
         </label>
         <div class="col-sm-9">
          
-          <input id="user_Credit_card_zipcode" name="user_Credit_card_zipcode"  size="20" type="text" ng-model="vm.user.creditcard.postalcode" ng-pattern = "/^[1-9]{1}[0-9]{5}$/">
+          <input id="user_Credit_card_zipcode" name="user_Credit_card_zipcode"  size="20" type="text" ng-model="vm.user.creditcard.postalcode" ng-pattern = "/^[0-9]{5}$/">
 
       <span class="invalidinput" ng-show="creditCardForm.user_Credit_card_zipcode.$error.pattern">Not a valid zip code</br></span>
           
