@@ -69,7 +69,9 @@ app.config(function($stateProvider, $urlRouterProvider) {
 	})
 	.state('userHome',{
 		url:'/userHome',
-		templateUrl:"public/views/userHome.html"
+		templateUrl:"public/views/userHome.html",
+		controller:"TripsController",
+		controllerAs:"vm"
 	})
 	.state('logout',{
 		url:'/logout',
