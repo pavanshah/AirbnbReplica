@@ -95,6 +95,8 @@ var getRatingsForTrip = function(req,res) {
 		else
 		{
 			var a=[];
+			if(user != null)
+			{
 			a=user.Reviews;
 			a.forEach(function(element){
 				if(element.user_id == req.session.user.emailId)
@@ -111,6 +113,7 @@ var getRatingsForTrip = function(req,res) {
 				status(200).
 				json({"result":null});
 			}
+		}
 
 			/*console.log("ratingksasakaksahs"+user);
 			res
