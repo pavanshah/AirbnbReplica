@@ -118,7 +118,7 @@ app.post('/deleteUser',user.deleteUser);
 app.post('/updateUser',user.updateUser);
 app.get('/getLoginUserDetails',user.getLoginUserDetails);
 app.get('/getUserProfile',user.getUserProfile);
- 
+app.post('/starthosting',host.checkStarthosting);
 app.post('/userLogIn',user.authenticateLocal);	
 app.post('/getRatingsForTrip', review.getRatingsForTrip);
 

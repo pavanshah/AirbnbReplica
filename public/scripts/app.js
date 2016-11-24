@@ -90,6 +90,12 @@ app.config(function($stateProvider, $urlRouterProvider) {
 		controller:"UpdateProfileController",
 		controllerAs:"vm"
 	})
+	.state('hostProfile',{
+		url:'/hostProfile',
+		templateUrl:'public/views/hostProfile.html',
+		controller:"hostProfile",
+		controllerAs:"vm"
+	})
 	//$location.path('/prelogin');
 	//html5mode(true);
 	
