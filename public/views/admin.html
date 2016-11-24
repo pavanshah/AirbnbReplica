@@ -1,4 +1,4 @@
- <div class="container-fluid">
+ <div class="container-fluid" style:"background-color: red;">
  <br>
  <br>
  <br>
@@ -25,7 +25,7 @@
 			<br>
 			<br>			
 			<div>
-				 <nvd3 options="vm.topHostsOptions" data="vm.topHostsdata"></nvd3> 
+				 <nvd3 options="topHostsOptions" data="topHostsdata"></nvd3> 
 				<div class="text-center fontchange" >Top 10 Hosts based on revenue</div>	
 			</div>
 		</div>
@@ -34,9 +34,11 @@
 			<br>
 			<br>					
 			<div>										
-				<nvd3 options="vm.lineOptions"
-      data="vm.lineData"
-      config="vm.config"></nvd3>
+		<nvd3 options="lineOptions"
+      data="lineData"
+      config="vm.config"></nvd3> 
+            
+      
       <div class="text-center fontchange" >City wise Revenue</div>
       
 			</div>
@@ -49,8 +51,8 @@
 					
 					
 				
-				<nvd3 options="vm.barOptions"
-      data="vm.barData"
+				<nvd3 options="barOptions"
+      data="barData"
       config="vm.config"></nvd3>
 		<div class="text-center fontchange" >Top Properties with highest revenue</div>	
 		
@@ -70,6 +72,8 @@
 			</div>
 		</div>
 	</div> -->
+	
+
  </div> 
  <br>
  <br>
