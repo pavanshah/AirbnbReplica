@@ -96,6 +96,11 @@ app.config(function($stateProvider, $urlRouterProvider) {
 		controller:"hostProfile",
 		controllerAs:"vm"
 	})
+	.state('addProperty',{
+		url:'/addProperty',
+		templateUrl:'public/views/addProperty.html',
+
+	})
 	//$location.path('/prelogin');
 	//html5mode(true);
 	

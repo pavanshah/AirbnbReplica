@@ -165,6 +165,8 @@ var UpdateProperty = function(req,res){
 var bookProperty = function(req,callback) {
 
 	console.log("inside book property");
+	//calculateBill(req);
+
 
 	/*if(req.session.user==undefined||req.session.user==null)
 	{
@@ -181,7 +183,7 @@ var bookProperty = function(req,callback) {
 	Property.update(query,{$push:{bookings:obj}}, function(error, property) {
 		if(!error)
 		{
-			//res.status(200);
+			//res.status(200);*/
 			callback({"status":200,"result":"Property Booked","property":property});
 		}
 		else{
@@ -258,8 +260,10 @@ var ConfirmBooking = function (req,res){
 							    }
 							}
 
-			req.body.bill = billObj.bill;
+			
 
+			req.body.bill = billObj.bill;
+			
 			Bill.GenerateBill(req, function(billResponse){
 
 				console.log("inside bill response");
@@ -298,7 +302,7 @@ var ConfirmBooking = function (req,res){
 						{
 							res.status(200);
 							res.json({"Result:":"Property Booked, Bill Generated and Trip created","trip":tripResponse.trip_details});
-							res.end;
+							
 						}
 					} );
 
@@ -312,11 +316,114 @@ var ConfirmBooking = function (req,res){
 			})
 
 
+
 			
 		}
 	});
 
 }
+
+var calculateBill = function (req,res)
+{
+	//console.log("base price: "+ req.body.property.base_price);
+
+	var noWeekends =0,billAmount=0,weekend_surge=0,holiday_surge=0;
+	var WeeklyDiscount=false,MonthlyDiscount=false,HolidaySeason=false;
+	var NumberOfDays = (((new Date(req.body.bookingDates.end_date) - new Date(req.body.bookingDates.start_date))/86400000)+1);
+	if(NumberOfDays>6){
+		if(NumberOfDays>30){
+			MonthlyDiscount=true;
+		}
+		else
+			WeeklyDiscount = true;
+	}
+	var NumberofWeekends = 0;
+	console.log("Number of days:"+NumberOfDays);
+
+	for(var i=0;i<NumberOfDays;i++){
+
+		var currentDate = new Date(req.body.bookingDates.start_date);
+		currentDate.setDate(currentDate.getDate() + i);
+
+		console.log(currentDate+"is Current Date a weekend: "+ ((currentDate.getDay()==0 )|| (currentDate.getDay()==6)));
+		if((currentDate.getDay()==0 )|| (currentDate.getDay()==6))
+		{
+			NumberofWeekends++;
+		}
+	}
+
+	if((((new Date(req.body.bookingDates.end_date)).getMonth()==11)||((new Date(req.body.bookingDates.end_date)).getMonth()==10)) && (((new Date(req.body.bookingDates.start_date)).getMonth()==11)||((new Date(req.body.bookingDates.start_date)).getMonth()==10)))
+	{
+		HolidaySeason = true;
+	}
+
+
+	console.log("Weekend"+WeeklyDiscount + "Monthly"+ MonthlyDiscount +"PeakSeason"+ HolidaySeason);
+
+	console.log(req.body.property.princing_catalog);
+
+
+		if(HolidaySeason==true){
+
+			base_bill = Math.round( (NumberOfDays * req.body.property.base_price) * 1e2 ) / 1e2  ;
+			holiday_surge = Math.round((base_bill * req.body.property.princing_catalog.seasonal_surge) *1e2) /1e2;
+			discount_amount = 0;
+			bill_amount = holiday_surge; 
+		}
+
+		else if(MonthlyDiscount==true)
+		{
+			base_bill = Math.round( (NumberOfDays * req.body.property.base_price) * 1e2)/1e2;
+
+			weekend_surge = Math.round((NumberofWeekends * req.body.property.base_price * (req.body.property.princing_catalog.weekend_surge -1 ))*1e2)/1e2;
+
+			discount_amount = ((base_bill + weekend_surge) *(req.body.property.princing_catalog.monthly_discount));
+
+			bill_amount = Math.round( (base_bill + weekend_surge - discount_amount) *1e2)/1e2 ;
+
+
+			console.log("Base Bill:"+base_bill+" Weekend surge :"+weekend_surge+"discount_amount: "+discount_amount+ " Final Bill :"+billAmount);
+		}
+
+		else if(WeeklyDiscount==true)
+		{
+			base_bill = Math.round((NumberOfDays * req.body.property.base_price)*1e2)/1e2;
+			weekend_surge = Math.round((NumberofWeekends * req.body.property.base_price * (req.body.property.princing_catalog.weekend_surge -1 ))*1e2)/1e2;
+			discount_amount = Math.round(((base_bill + weekend_surge) *(req.body.property.princing_catalog.weekly_discount))*1e2)/1e2; 
+			console.log("discount amount:"+ discount_amount + "weekly surge:"+req.body.property.princing_catalog.weekly_discount);
+			bill_amount = Math.round((base_bill + weekend_surge) *1e2)/1e2;
+			console.log("Base Bill:"+base_bill+" Weekend surge :"+weekend_surge+" Weekly discount_amount: "+discount_amount+ " Final Bill :"+billAmount);
+
+		}
+
+		var GeneratedBill = {
+
+			"base_bill":base_bill,
+			"holiday_surge" : holiday_surge,
+			"discount_amount" : discount_amount,
+			"weekend_surge" : weekend_surge,
+			"Total_Bill": bill_amount,
+
+			"weekly_discount": req.body.property.princing_catalog.weekly_discount,
+			"monthly_discount" :req.body.property.princing_catalog.monthly_discount,
+			"Seasonal_surge_rate" : req.body.property.princing_catalog.seasonal_surge,
+			"Weekend_surge_rate" : req.body.property.princing_catalog.weekend_surge,
+
+			"NumberOfDays" : NumberOfDays,
+			"NumberofWeekends" : NumberofWeekends,
+			"Monthly_Discount_Applicable" : MonthlyDiscount,
+			"Weekly_Discount_Applicable" : WeeklyDiscount,
+			"HolidaySeason" : HolidaySeason,
+		}
+
+
+		res.status(200);
+		res.json({"Bill_details":GeneratedBill});
+
+}
+
+exports.calculateBill =calculateBill;
+
 
 exports.SearchPropertyById = SearchPropertyById;
 exports.SearchPropertyByDistance = SearchPropertyByDistance;
@@ -325,3 +432,5 @@ exports.FilterProperties = FilterProperties;
 exports.UpdateProperty = UpdateProperty;
 exports.ConfirmBooking = ConfirmBooking;
 exports.bookProperty = bookProperty;
+
+
