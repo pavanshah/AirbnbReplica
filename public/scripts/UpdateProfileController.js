@@ -11,10 +11,19 @@ function UpdateProfileControllerFn($state,$http) {
 		
 		vm.user=response.data.user;
 		console.log(vm.user.firstname);
-
-
-
 	});
+
+
+	vm.UpdateProfile = function() {
+
+		console.log("calling updateProfile");
+		$http.post('/updateUser',{"user":vm.user}).then(function(response){
+
+			console.log(response.data);
+
+		})
+	}
+
 	}
 	vm.PopulateUserForm();
 	
