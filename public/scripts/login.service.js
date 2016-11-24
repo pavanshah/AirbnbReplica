@@ -38,6 +38,7 @@ function loginServiceFn($http,bookingDataService) {
 			then(function(response) {
 				userData = {};
 				bookingDataService.deleteBooking();
+				
 				return response;
 			})
 	}
