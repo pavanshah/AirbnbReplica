@@ -37,12 +37,29 @@ var authenticateHost = function (req,res,next){
 	 	//console.log(req.session.emailId);
 		res.json({"HostLoggedIn":true});
 		return;
-		 //return res.redirect('/');
+		 //return res.redirect('/');;
 	});
 	
 })(req, res, next);
 };
-
+//this function is to check if host is logged in or not.
+//if not logged in signup/login modal will be displayed
+//if user is logged in host profile will be shown.
+var checkStarthosting = function(req,res){
+	console.log("inside get host");
+	console.log(req.session.emailId);
+	if(req.session.emailId === undefined){
+		console.log("setting the response");
+		res
+		.send({"result":"user not logged in"});
+		return;
+		//res.json({"result":"Host not logged in"});
+		
+	} else {
+		res.status(200);
+		
+	}
+}
 
 var HostSignUp = function(req,res){
 	console.log("Inside signup host");
@@ -201,6 +218,7 @@ var GetHost = function(req,res){
 	
 }; 
 
+exports.checkStarthosting = checkStarthosting;
 exports.HostSignUp = HostSignUp;
 exports.DeleteHost = DeleteHost;
 exports.UpdateHost = UpdateHost;
