@@ -51,7 +51,7 @@ var checkStarthosting = function(req,res){
 	if(req.session.emailId === undefined){
 		console.log("setting the response");
 		res
-		.send({"result":"user not logged in"});
+		.send({"result":400});
 		return;
 		//res.json({"result":"Host not logged in"});
 		
