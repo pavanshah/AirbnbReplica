@@ -141,6 +141,8 @@ app.get("/isUserLoggedIn",user.isUserLoggedIn);
 
 app.get("/getMainDashboard",admin.getMainDashboard);
 
+
+app.get("/logout",user.logout);
  /*app.post('/UpdateProperty',;*/
 
 mongoose.connect(mongoSessionConnectURL, function(){
