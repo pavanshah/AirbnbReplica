@@ -14,12 +14,26 @@
 			<h4> Number of Rooms: 2 </h4>
 			<h4> Base Price : {{vm.property.base_price | currency}} </h4>
 
-			<h3> Surcharges : </h3>
+			<h3> Bill Details : </h3>
+      <h4> Total Stay {{vm.Bill_details.NumberOfDays}} Days</h4>
+      <h4> Surges </h4>
+
+      <h4> Base Cost: {{vm.Bill_details.base_bill}} </h4>
+
+      <h4 ng-if="vm.Bill_details.HolidaySeason==true"> Holiday Season Surge: {{vm.Bill_details.holiday_surge}} </h4>
+      <h4 ng-if="vm.Bill_details.Monthly_Discount_Applicable==false && vm.Bill_details.weekend_surge!=0"> No. of Weekend Days : {{vm.Bill_details.NumberofWeekends}} </h4>
+      <h4 ng-if="vm.Bill_details.Monthly_Discount_Applicable==false && vm.Bill_details.weekend_surge!=0"> Weekend Surge : {{vm.Bill_details.weekend_surge}} </h4> 
+
+      <h4> Discounts </h4>
+
+      <h4 ng-if="vm.Bill_details.Monthly_Discount_Applicable==true"> Monthly Discount Rate : {{vm.Bill_details.monthly_discount}} % </h4>
+
+      <h4 ng-if="vm.Bill_details.Weekly_Discount_Applicable==true"> Weekly Discount Rate : {{vm.Bill_details.weekly_discount}} % </h4>
+
+      <h4 ng-if="vm.Bill_details.discount_amount!=0"> Total Discount : {{vm.Bill_details.discount_amount}} </h4> 
 
 
-
-			<h4> Price : </h4>
-
+      <h4> Total Amount {{vm.Bill_details.Total_Bill}} </h4>
 		</div>
 		<div class="col-md-6">
               <form class="form-horizontal">

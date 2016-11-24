@@ -100,6 +100,7 @@ passport.deserializeUser(function(key, done) {
  app.post('/SearchPropertyByDistance',property.SearchPropertyByDistance);
  app.post('/FilterProperties',property.FilterProperties);
  app.post('/SearchPropertyById',property.SearchPropertyById);
+ app.post('/CalculateBill',property.calculateBill);
 app.post('/GenerateBill',bill.GenerateBill);
 app.post('/SearchBillsByMonth',bill.SearchBillsByMonth);
 app.post('/SearchBillsbyDate',bill.SearchBillsbyDate);
@@ -141,6 +142,7 @@ app.get("/isUserLoggedIn",user.isUserLoggedIn);
 
 app.get("/getMainDashboard",admin.getMainDashboard);
 app.get("/getPropertyPerYear",admin.getPropertyPerYear);
+app.get("/getHostsForAdmin",admin.getHostsForAdmin);
 
 app.get("/logout",user.logout);
 app.post("/updateHost",user.updateHostProfile);

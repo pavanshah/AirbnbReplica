@@ -6,17 +6,17 @@
  <div class="subnav hide-print">
   <div class="page-container-responsive">
     <ul class="subnav-list">
-      <li>
+      <!-- <li>
         <a href="#" aria-selected="false" class="subnav-item" id="dashboard-item">Dashboard</a>
-      </li>
+      </li> -->
       <li>
-        <a href="#" aria-selected="false" class="subnav-item cohosting-ml-tooltip-trigger" id="your-trips-item">Your Trips</a>
+        <a ui-sref="userHome" aria-selected="false" class="subnav-item cohosting-ml-tooltip-trigger" id="your-trips-item">Your Trips</a>
       </li>
       <li>
            <a href="#/bills" aria-selected="false" class="subnav-item" id="your-bills-item" >Your Bills</a>
       </li>
       <li>
-        <a href="#" aria-selected="true" class="subnav-item" id="user-profile-item">Profile</a>
+        <a ui-sref="userProfile" aria-selected="true" class="subnav-item" id="user-profile-item">Profile</a>
       </li>
        
     </ul>
@@ -144,7 +144,8 @@
           <input id="user_Credit_card_Firstname" name="cc_firstname"  size="30" type="text" ng-model="vm.user.creditcard.firstname" ng-pattern="/^[a-zA-Z]*$/">
           <span class="invalidinput" ng-show="creditCardForm.cc_firstname.$error.pattern">Text Input Only</br></span>
         </div>
-
+    </div>
+    <div class="row row-condensed space-4">
         <label for="user_Credit_card_Lastname">
         </br>
         </br>

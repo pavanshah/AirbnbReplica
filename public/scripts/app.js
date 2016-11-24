@@ -31,6 +31,12 @@ app.config(function($stateProvider, $urlRouterProvider) {
 		controllerAs:"vm"
 	})
 	
+	.state('adminHostSearch',{
+		url:"/adminHostSearch",
+		templateUrl:"public/views/adminHostSearch.html",
+		controller:"AdminHostSearchController",
+		controllerAs:"vm"
+	})
 	
 	.state('adminLogin',{
 		url:"/adminLogin",
@@ -95,6 +101,11 @@ app.config(function($stateProvider, $urlRouterProvider) {
 		templateUrl:'public/views/hostProfile.html',
 		controller:"hostProfile",
 		controllerAs:"vm"
+	})
+	.state('addProperty',{
+		url:'/addProperty',
+		templateUrl:'public/views/addProperty.html',
+
 	})
 	//$location.path('/prelogin');
 	//html5mode(true);

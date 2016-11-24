@@ -1,12 +1,84 @@
 var bodyParser = require('body-parser').json();
 var mysqlPool = require("./mysql").pool;
+var mongo = require("./mongo");
+var mongoURL = "mongodb://apps92:shim123@ds155727.mlab.com:55727/airbnbproto";
+var mongoose = require('mongoose');
+var Schema = mongoose.Schema;
+var Users = require('../Models/user');
+
+var getHostsForAdmin = function(req,res){
+	console.log(req.query);
+	
+	if(req.query.query == "new"){
+		console.log("Inside new");
+		
+		Users.find({},function(err,user){
+			console.log(user);
+			
+	
+			res
+			.status(200)
+			.send({"result":user});
+		})
+	}
+	else{
+		var searchObject = {};
+		
+		if(req.query.type != "" && req.query.address != ""){
+			searchObject = {"UserType":req.query.type,"address.city":req.query.address.toLowerCase()};
+		}
+		else if(req.query.address != ""){
+			searchObject = {"address.city":req.query.address.toLowerCase()}; 
+		}
+		else if(req.query.type != ""){
+			searchObject = {"UserType":req.query.type}; 
+		}
+		
+		//if(req.query.type != "" && req.query.address != ""){
+		
+		console.log(searchObject);
+		Users.find(searchObject,function(err,user){
+			console.log(user);
+	
+			res
+			.status(200)
+			.send({"result":user});
+		})
+		
+		//}
+	}
+	
+}
 
 var getPropertyPerYear = function(req,res){
 	console.log("inside get property per year");
 	console.log(req.query);
-	res
-	.status(200)
-	.send({"result":"Got details"});
+	
+	mysqlPool.getConnection(function(err, connection) {
+		if(err){
+			console.log("failed to connec in error");
+			console.log(err);
+
+			res
+			.status(200)
+			.send({"result":"failed"});
+			return;
+		}
+		
+		var sqlBarChart = "select property_name as label,sum(total_cost) value from billinglogs where date = "+req.query.year +" group by property_name limit 10";
+        connection.query(sqlBarChart,function(err,barResults){
+        	
+        	var barResultsJson = JSON.stringify(barResults);
+            var barResultOutput = JSON.parse(barResultsJson);
+            connection.release();
+            res
+			.status(200)
+			.send({"result":barResultOutput});
+			return;
+        });
+		
+	})
+	
 }
 var getMainDashboard = function(req,res){
 	console.log("I am here to get dashboard details");
@@ -94,3 +166,4 @@ var getMainDashboard = function(req,res){
 
 exports.getMainDashboard = getMainDashboard;
 exports.getPropertyPerYear = getPropertyPerYear;
+exports.getHostsForAdmin = getHostsForAdmin;

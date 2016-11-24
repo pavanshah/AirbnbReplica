@@ -16,6 +16,7 @@ function mainControllerFn($uibModal,loginService,$state,$log) {
  		loginService.logout().
  		then(function(response) {
  			vm.user = {};
+ 			$state.go("home");
  		});
  	}
 
