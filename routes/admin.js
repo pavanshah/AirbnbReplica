@@ -1,5 +1,13 @@
 var bodyParser = require('body-parser').json();
 var mysqlPool = require("./mysql").pool;
+
+var getPropertyPerYear = function(req,res){
+	console.log("inside get property per year");
+	console.log(req.query);
+	res
+	.status(200)
+	.send({"result":"Got details"});
+}
 var getMainDashboard = function(req,res){
 	console.log("I am here to get dashboard details");
 	req.session.admin = "loggedin";
@@ -85,3 +93,4 @@ var getMainDashboard = function(req,res){
 }
 
 exports.getMainDashboard = getMainDashboard;
+exports.getPropertyPerYear = getPropertyPerYear;

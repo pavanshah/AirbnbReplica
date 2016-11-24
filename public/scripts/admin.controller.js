@@ -12,11 +12,11 @@ function AdminControllerFn($state,$scope,$http) {
 	
 	$scope.update = function(){
 		console.log("changed"+$scope.yearselected);
-		
+		var yearDetails = {"year":$scope.yearselected};
 		$http({
 			method : "GET",
 			url : '/getPropertyPerYear',
-			params : scope.yearselected
+			params : yearDetails
 		}).success(function(details) {
 			//console.log("account---"+details.condition[0].itemid);
 	    	console.log(details);
