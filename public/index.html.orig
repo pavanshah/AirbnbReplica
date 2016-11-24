@@ -13,17 +13,9 @@
 	<link rel="stylesheet" href="/bower_components/angular-google-places-autocomplete/src/autocomplete.css">
 	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/angular-nvd3/1.0.8/angular-nvd3.min.js">
 
-	<link rel="stylesheet" type="text/css" href="public/css/normalize.css"> 
+	<!-- <link rel="stylesheet" type="text/css" href="public/css/normalize.css"> -->
 	<link rel="stylesheet" type="text/css" href="public/css/star-rating.css">
-	<link rel="stylesheet" type="text/css" href="public/css/webkit-background-size.css">
-
- <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/1.0.0/angular-material.min.css">
-<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-animate.min.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-aria.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-messages.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/angular_material/1.0.0/angular-material.min.js"></script>
-    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-route.js"></script> 
+	<!-- <link rel="stylesheet" type="text/css" href="public/css/webkit-background-size.css"> -->
 
 
 </head>
@@ -69,7 +61,7 @@
 			        			<li>Refer A Friend</li>
 			        			<li>Account Settings</li>
 			        			<li>Business Travel</li>
-			        			<li ng-click="vm.logout()">Logout</li>
+			        			<li>Logout</li>
 			        		</ul>
 			        	</div>
 			        </a></li>
@@ -111,11 +103,13 @@
 <script type="text/javascript" src="public/scripts/loginModal.controller.js"></script>
 <script type="text/javascript" src="public/scripts/signupModal.controller.js"></script>
 <script type="text/javascript" src="public/scripts/admin.controller.js"></script>
-<script type="text/javascript" src="public/scripts/adminLogin.controller.js"></script>
 <script type="text/javascript" src="public/scripts/checkout.controller.js"></script>
+<<<<<<< HEAD
 <script type="text/javascript" src="public/scripts/UpdateProfileController.js"></script>
+=======
 <script type="text/javascript" src="public/scripts/trips.service.js"></script>
 <script type="text/javascript" src="public/scripts/trips.controller.js"></script>
+>>>>>>> 402622852d1027bb66fc93394d1b8e4705a5a968
 
 <meta charset="utf-8">  <!-- it's important for d3.js -->
 <script src="bower_components/d3/d3.js"></script>
