@@ -10,7 +10,19 @@ var app = angular.module('Airbnb');
 function AdminControllerFn($state,$scope,$http) {	
 	var vm = this;
 	
-	
+	$scope.update = function(){
+		console.log("changed"+$scope.yearselected);
+		var yearDetails = {"year":$scope.yearselected};
+		$http({
+			method : "GET",
+			url : '/getPropertyPerYear',
+			params : yearDetails
+		}).success(function(details) {
+			//console.log("account---"+details.condition[0].itemid);
+	    	console.log(details);
+		});		
+		
+	}
 	
 	$scope.$on('$viewContentLoaded', function() {
 	    //call it here
@@ -20,7 +32,9 @@ function AdminControllerFn($state,$scope,$http) {
 		}).success(function(details) {
 			console.log("cart get success");
 			console.log(details);
-			
+			if(details.result == "login"){
+				window.location.assign("/#/adminLogin");
+			}
 			$scope.topHostsdata = details.result;
 			$scope.barData[0].values = details.barchart;
 			$scope.lineData  = details.linechart;
@@ -536,9 +550,7 @@ function AdminControllerFn($state,$scope,$http) {
 	                    y: 10
 	                }
 	                ];
-	                
-
-	 
+	                	 
 	 
 }
 

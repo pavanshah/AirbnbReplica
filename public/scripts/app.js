@@ -1,4 +1,4 @@
-var app = angular.module('Airbnb',['ui.bootstrap','ui.router','google.places','nvd3']);
+var app = angular.module('Airbnb',['ui.bootstrap','ui.router','google.places','nvd3','ngMaterial','ngAnimate','ngAria','ngRoute']);
 
 app.config(function($stateProvider, $urlRouterProvider) {
 
@@ -31,6 +31,13 @@ app.config(function($stateProvider, $urlRouterProvider) {
 		controllerAs:"vm"
 	})
 	
+	
+	.state('adminLogin',{
+		url:"/adminLogin",
+		templateUrl:"public/views/adminLogin.html",
+		controller:"AdminLoginController",
+		controllerAs:"vm"
+	})
 	.state('propertyDetails',{
 		url:"/propertyDetails",
 		templateUrl:"public/views/propertyDetails.html",

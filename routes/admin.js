@@ -1,7 +1,22 @@
 var bodyParser = require('body-parser').json();
 var mysqlPool = require("./mysql").pool;
+
+var getPropertyPerYear = function(req,res){
+	console.log("inside get property per year");
+	console.log(req.query);
+	res
+	.status(200)
+	.send({"result":"Got details"});
+}
 var getMainDashboard = function(req,res){
 	console.log("I am here to get dashboard details");
+	req.session.admin = "loggedin";
+	if(typeof req.session.admin === "undefined"){
+		res
+		.status(200)
+		.send({"result":"login"});
+		return;
+	}
 	
 	mysqlPool.getConnection(function(err, connection) {
 		sql = "select host_name,sum(total_cost) cost from billinglogs group by host_name order by cost desc limit 10";
@@ -78,3 +93,4 @@ var getMainDashboard = function(req,res){
 }
 
 exports.getMainDashboard = getMainDashboard;
+exports.getPropertyPerYear = getPropertyPerYear;

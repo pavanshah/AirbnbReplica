@@ -140,7 +140,7 @@ app.post('/createTrip', trip.createTrip);//temporary
 app.get("/isUserLoggedIn",user.isUserLoggedIn);
 
 app.get("/getMainDashboard",admin.getMainDashboard);
-
+app.get("/getPropertyPerYear",admin.getPropertyPerYear);
 
 app.get("/logout",user.logout);
  /*app.post('/UpdateProperty',;*/
