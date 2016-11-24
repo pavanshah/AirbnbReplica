@@ -6,13 +6,13 @@
 		<br>
 		<br><br><br><br>
 		<div class="col-md-6">
-			<h2> Property Title </h2>
-			<h3> Description </h3>
+			<h2> {{vm.property.propertyTitle}} </h2>
+			<h3> {{vm.property.description}} </h3>
 
-			<h4> Start Date: 10/21/2016 </h4>
-			<h4> End Date : 10/22/2016 </h4>
+			<h4> Start Date: {{vm.bookingDates.start_date | date}} </h4>
+			<h4> End Date : {{vm.bookingDates.end_date | date}}</h4>
 			<h4> Number of Rooms: 2 </h4>
-			<h4> Base Price : </h4>
+			<h4> Base Price : {{vm.property.base_price | currency}} </h4>
 
 			<h3> Surcharges : </h3>
 
@@ -37,7 +37,7 @@
            
                 <!-- Name -->
                 <div class="control-group">
-                  <label class="control-label"  for="username">Card Holder's Name</label>
+                  <label for="username">Card Holder's Name</label>
                   <div class="controls">
                     <input type="text" id="username" name="username" ng-model="cardName" placeholder="" class="credit-card-field"/>
                     <div class="input-validation" style="display:inline;"></div>
@@ -46,7 +46,7 @@
            
                 <!-- Card Number -->
                 <div class="control-group">
-                  <label class="control-label" for="cardNumber">Card Number</label>
+                  <label  for="cardNumber">Card Number</label>
                   <div class="controls">
                   <span>
                     <input type="text" pattern="[0-9]{16}" id="email" ng-model="cardNumber" name="cardNumber" placeholder="" class="input-xlarge credit-card-field" required/>
@@ -57,9 +57,10 @@
            
                 <!-- Expiry-->
                 <div class="control-group">
-                  <label class="control-label" for="expiry_month">Card Expiry Date</label>
-                  <div class="controls">
-                     <select class="span3 credit-card-field" name="expiry_month" ng-model="expiry_month" id="expiry_month" required>
+                  <label  for="expiry_month">Card Expiry Date</label>
+                  <div class="custom" style="max-width:100px;">
+                  <label for="expiry_month" > Month / Year</label>
+                     <select class="credit-card-field1" name="expiry_month" ng-model="expiry_month" id="expiry_month" required>
                       <option></option>
                       <option value="01">Jan (01)</option>
                       <option value="02">Feb (02)</option>
@@ -75,7 +76,8 @@
                       <option value="12">Dec (12)</option>
                     </select>
 
-                    <select class="span2 credit-card-field" name="expiry_year" ng-model="expiry_year" required>
+
+                    <select style="margin-left:105px; margin-top:-36;" class="credit-card-field1" name="expiry_year" ng-model="expiry_year" id="expiry_year" required>
                       <option value="16">2016</option>
                       <option value="17">2017</option>
                       <option value="18">2018</option>
@@ -86,21 +88,23 @@
                       <option value="23">2023</option>
                     </select>
                     
+                    
                   </div>
                 </div>
            
                 <!-- CVV -->
                 <div class="control-group">
-                  <label class="control-label"  for="password_cvv">Card CVV</label>
+                  <label   for="password_cvv">Card CVV</label>
                   <div class="controls">
-                    <input type="password" id="password_cvv" name="password_cvv" placeholder="" ng-model="password_cvv" class="span2 credit-card-field" maxlength="4" required>
+                    <input type="password" id="password_cvv" name="password_cvv" placeholder="" ng-model="vm.creditCard.password_cvv" class="span2 credit-card-field" maxlength="4" required>
                   </div>
                 </div>
           	
                 <!-- Submit -->
+                <br>
                 <div class="control-group">
                   <div class="controls">
-                    <button class="btn btn-primary" ng-click="processCard()">Pay Now</button>
+                    <button class="btn btn-primary" ng-click="vm.bookProperty()">Pay Now</button>
                   </div>
                 </div>
            

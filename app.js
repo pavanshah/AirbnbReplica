@@ -22,6 +22,7 @@ var host = require("./routes/hosts");
 var bill = require("./routes/bill");
 var Hosts = require('./Models/host');
 var Users = require('./Models/user');
+var review = require("./routes/review");
 // all environments
 app.use(expressSession({
   secret: 'cmpe273_airbnb_team9',
@@ -107,6 +108,9 @@ app.post('/SearchUserBillsbyDate',bill.SearchUserBillsbyDate);
 app.post('/SearchUserBillsByMonth',bill.SearchUserBillsByMonth);
 app.post('/DeleteBill',bill.DeleteBill);
 
+app.post('/SubmitReviewAndRating',review.SubmitReviewAndRating);
+app.post('/GetReviews',review.GetReviews);
+
 app.post('/userSignUp',user.userSignup);
 //app.post('/userLogIn',user.userLogIn);
 app.post('/deleteUser',user.deleteUser);
@@ -118,9 +122,10 @@ app.post('/userLogIn',user.authenticateLocal);
 
 
 app.post('/UpdateProperty',property.UpdateProperty);
-app.post('/bookProperty', property.bookProperty);
+app.post('/bookProperty', property.ConfirmBooking);
 
-
+var trip = require('./routes/trip');
+app.get('/getTrips', trip.getTrips);
 
 app.post('/HostLogIn',host.authenticateHost);
 
@@ -129,7 +134,9 @@ app.post('/HostLogIn',host.authenticateHost);
  app.post('/UpdateHost',host.UpdateHost);
  app.get('/GetHost',host.GetHost);
 
+app.post('/createTrip', trip.createTrip);//temporary
 
+app.get("/isUserLoggedIn",user.isUserLoggedIn);
 
 
  /*app.post('/UpdateProperty',;*/

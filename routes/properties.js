@@ -6,7 +6,8 @@ var Property = require('../Models/property');
 var uniqueIDGenerator = require('../routes/uniqueIDGenerator');
 var daterange = require('daterange');
 var _ = require('underscore');
-
+var Bill = require('./bill');
+var Trip = require('./trip');
 
 var CreateProperty = function (req,res){
 
@@ -121,23 +122,7 @@ var SearchPropertyByDistance = function(req,res){
        
     });
 
-/*	//var retrivedProperty = mongoose.model('Property',Property);
 
-	Property.findOne({"property_id":"1234"},function(err,property){
-
-		if(!err){
-
-			res.status(200);
-			res.json(property);
-		}
-		else
-		{
-			console.log(err)
-		}
-
-	})
-
-*/
 }
 
 var FilterProperties = function(req,res){
@@ -177,22 +162,34 @@ var UpdateProperty = function(req,res){
 	});
 }
 
-var bookProperty = function(req,res) {
-	console.log(req.body.property.property_id);
-	console.log(req.session.user.emailId);
+var bookProperty = function(req,callback) {
+
+	console.log("inside book property");
+
+	/*if(req.session.user==undefined||req.session.user==null)
+	{
+		console.log("No Session");
+		//res.status(400);
+		callback({"status":400,"response":"Not Authenticated. Please login first"});
+	}
+	else*/
+	
+	console.log(req.body);
+	console.log(req.session.user);
 	var query = {'property_id':req.body.property.property_id};
-	var obj = {"start_date":req.body.start_date, "end_date":req.body.end_date, "user_email":req.session.user.emailId};
+	var obj = {"start_date":req.body.bookingDates.start_date, "end_date":req.body.bookingDates.end_date, "user_email":req.session.user.emailId};
 	Property.update(query,{$push:{bookings:obj}}, function(error, property) {
 		if(!error)
 		{
-			res.status(200);
-			res.json({"result":"Property Booked"});
+			//res.status(200);
+			callback({"status":200,"result":"Property Booked","property":property});
 		}
 		else{
 			console.log(error);
 		}
 		
 	});
+
 }
 
 
@@ -201,6 +198,8 @@ var SearchPropertyById = function (req,res){
 
 	//var retrivedProperty = mongoose.model('Property',Property);
 	console.log(req.body);
+	
+
 	Property.findOne({"property_id":req.body.property_id},function(err,property){
 		//console.log("err",err);
 		//console.log("property",property);
@@ -218,6 +217,105 @@ var SearchPropertyById = function (req,res){
 		}
 
 	});
+
+}
+
+var ConfirmBooking = function (req,res){
+
+	console.log("ConfirmBooking called");
+
+	if(req.session.user==undefined||req.session.user==null)
+	{
+		console.log("No Session");
+		//res.status(400);
+		res.status(401);
+		res.json({"response":"Not Authenticated. Please login first"});
+	}
+
+	bookProperty(req,function(propertyResponse){
+
+		console.log("Inside Response for bookProperty");
+		console.log(propertyResponse);
+
+		if(propertyResponse.status!=200)
+		{
+			res.status(400);
+			res.json(propertyResponse);
+		}
+		else
+		{
+			 
+			var billObj =  {
+							    "bill":{
+							        
+							    "billing_date" : new Date(),
+							    "from_date" : req.body.bookingDates.start_date,
+							    "to_date" : req.body.bookingDates.end_date,
+							    "property" : req.body.property,
+							    "user" : {"userid":"281521057","email":"pavanshah77@gmail.com"},
+							    "trip_amount" : req.body.trip_amount
+							    
+							    }
+							}
+
+			req.body.bill = billObj.bill;
+
+			Bill.GenerateBill(req, function(billResponse){
+
+				console.log("inside bill response");
+
+				console.log(billResponse.bill);
+				console.log("Property Response");
+				console.log(propertyResponse);
+
+				if(propertyResponse.status==200&&billResponse.status==200)
+				{
+					var generatedBill = billResponse.bill;
+					console.log("final objects:");
+					console.log(generatedBill);
+
+
+
+					var tripObject = {
+						//trip_id : String,
+						"property" : {
+							"property_id" : billResponse.bill.property.property_id
+						},
+						"user_id":"281521057" ,//change the userid to session userid
+						"user_emailId" : req.session.user.emailId,
+						"bill" : {
+							"billing_id": billResponse.bill.billing_id,
+							"trip_amount" : billResponse.bill.trip_amount
+						},	
+						"trip_start_date" : billResponse.bill.from_date,
+						"trip_end_date" : billResponse.bill.to_date	
+					};
+
+					//req.body.tripObject = tripObject;
+
+					Trip.createTrip(tripObject, function(tripResponse){
+						if(propertyResponse.status==200&&billResponse.status==200&&tripResponse.status==200)
+						{
+							res.status(200);
+							res.json({"Result:":"Property Booked, Bill Generated and Trip created","trip":tripResponse.trip_details});
+							res.end;
+						}
+					} );
+
+				}
+				else
+				{
+					res.status(400);
+					res.json({"Result":"Error Booking Property","PropertyResponse":propertyResponse.result,"BillingResponse":billResponse.result});
+				}
+
+			})
+
+
+			
+		}
+	});
+
 }
 
 exports.SearchPropertyById = SearchPropertyById;
@@ -225,4 +323,5 @@ exports.SearchPropertyByDistance = SearchPropertyByDistance;
 exports.CreateProperty = CreateProperty;
 exports.FilterProperties = FilterProperties;
 exports.UpdateProperty = UpdateProperty;
+exports.ConfirmBooking = ConfirmBooking;
 exports.bookProperty = bookProperty;

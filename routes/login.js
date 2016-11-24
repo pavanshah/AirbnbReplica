@@ -11,19 +11,20 @@ var LocalStrategy = require('passport-local').Strategy;
 
 var userSignup = function(req,res){
 	console.log("Inside signup user");
-	req.body.userSignUp.user_id = uniqueIDGenerator.returnUniqueID();
+	req.body.user.user_id = uniqueIDGenerator.returnUniqueID();
+	req.body.user.user_status = "active";
 	var salt = bcrypt.genSaltSync(10); //encryption
-	if(typeof req.body.userSignUp.password !== "undefined"){
-		var hash = bcrypt.hashSync(req.body.userSignUp.password, salt); //encryption	
+	if(typeof req.body.user.password !== "undefined"){
+		var hash = bcrypt.hashSync(req.body.user.password, salt); //encryption	
 	}
-	if(req.body.userSignUp.password == null || req.body.userSignUp.firstname == null 
-			|| req.body.userSignUp.email == null ){
+	if(req.body.user.password == null || req.body.user.firstname == null 
+			|| req.body.user.email == null ){
 		res.json({"result":"These fields cannot be null"});
 		return;
 	} else{
-		req.body.userSignUp.password = hash;	
+		req.body.user.password = hash;	
 	}
-	Users.find({"email":req.body.userSignUp.email},function(err,user){
+	Users.find({"email":req.body.user.email},function(err,user){
 		console.log("found");
 		console.log(user);
 		
@@ -32,8 +33,8 @@ var userSignup = function(req,res){
 			res.json({"result":"user already present"});
 			return;
 		}
-		req.body.userSignUp.type = 1;
-		var user = new Users(req.body.userSignUp);
+
+		var user = new Users(req.body.user);
 		user.save(function(err,result){
 				if(!err){
 					console.log(result);
@@ -150,7 +151,7 @@ var userLogIn = function(req,res){
 };
 */
 var deleteLogin = function(req,res){
-	Users.find({ "email":req.body.DeleteUser.email }).remove(function(err,removed){		
+	Users.update({"email":req.body.user.email}, {$set : {user_status : "inactive" }}, function(err, removed){	
 		console.log(removed);
 		if(err || removed == null){
 			res
@@ -236,6 +237,21 @@ var getUserProfile = function(req,res){
 };
 
 
+var isUserLoggedIn = function(req,res) {
+
+	if(req.session.user==undefined||req.session.user==null)
+	{
+		console.log("No Session");
+		//res.status(400);
+		res.status(401);
+		res.json({"response":"Not Authenticated. Please login first"});
+	}
+	else{
+		res.status(200);
+		res.json({"response":"Authenticated."});	
+	}
+}
+
 exports.getUserProfile = getUserProfile;
 exports.userSignup = userSignup;
 //exports.userLogIn = userLogIn;
@@ -243,4 +259,5 @@ exports.deleteUser = deleteLogin;
 exports.updateUser = updateLogin;
 exports.getLoginUserDetails = getLoginUserDetails;
 exports.authenticateLocal = authenticateLocal;
+exports.isUserLoggedIn = isUserLoggedIn;
 
