@@ -120,7 +120,7 @@ app.get('/getLoginUserDetails',user.getLoginUserDetails);
 app.get('/getUserProfile',user.getUserProfile);
 app.post('/starthosting',host.checkStarthosting);
 app.post('/userLogIn',user.authenticateLocal);	
-
+app.post('/getRatingsForTrip', review.getRatingsForTrip);
 
 app.post('/UpdateProperty',property.UpdateProperty);
 app.post('/bookProperty', property.ConfirmBooking);

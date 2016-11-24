@@ -91,7 +91,10 @@ var authenticateLocal = function (req,res,next){
       return next(err);
     }
     if(!user) {
-      return res.redirect('/');
+    	res.status(400);
+		res.json(info);
+		return;
+     // return res.redirect('/');
     }
     req.logIn(user, {session:false}, function(err) {
       if(err) {

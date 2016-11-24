@@ -14,11 +14,6 @@ var TripControllerFn = function ($http,tripsService) {
     //alert(vm.overStar);
     //vm.percent = 100 * (value / vm.max);
   };
-
-  	vm.clickStar = function(value) {
-  		vm.ratedStar = value;
-  		alert(vm.ratedStar);
-  	};
 	
 
 	vm.trips ={};
@@ -27,6 +22,7 @@ var TripControllerFn = function ($http,tripsService) {
 		console.log("inside star");
 	}
 
+	vm.rating = 0;
 	var getTrips = function(){
 		tripsService.getTrips().
 		then(function (response) {
@@ -37,6 +33,23 @@ var TripControllerFn = function ($http,tripsService) {
               if(!response.property.propertyPictures || response.property.propertyPictures.length==0){
                 response.property.propertyPictures = ["public/images/room-list-images/room-1-a.png"];
               }
+              response.rating = 0;
+              $http.post('/getRatingsForTrip',{"host_id":response.host_id}).
+              then(function(rating) {
+              	if(rating.status == 200)
+              	{
+              		console.log("kad fjdaf"+rating.data.result.feedback);
+              		if(rating.data.result != null)
+              		{
+	              		response.rating = 1;
+	              		response.rate = rating.data.result.ratings;
+	              		response.review = rating.data.result.feedback;
+
+	              		console.log("adfbhadbfa"+response.review);
+              		}
+              	}
+              });
+
             })}
 
 			vm.trips = response;
