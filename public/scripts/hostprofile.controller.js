@@ -9,6 +9,10 @@ function HostProfileFn($state,$scope,$http) {
 	$scope.email = '';
 	$scope.phonenumber = '';
 	$scope.gender = '';
+	$scope.address = '';
+	$scope.birthYear = '';
+	$scope.birthDay = '';
+	$scope.birthMonth = '';
 	
 	$scope.save = function(){
 		console.log("save button clicked");
@@ -17,6 +21,12 @@ function HostProfileFn($state,$scope,$http) {
 		console.log($scope.email);
 		console.log($scope.phonenumber);
 		console.log($scope.gender);
+		console.log($scope.address);
+		console.log($scope.birthYear);
+		console.log($scope.birthDay);
+		console.log($scope.birthMonth);
+		
+		
 	}
 	
 	
