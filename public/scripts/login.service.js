@@ -38,10 +38,21 @@ function loginServiceFn($http,bookingDataService) {
 			})
 	}
 
+	function signup(userData) {
+
+		return $http.post("/userSignup",{user:userData}).
+		then(function(response) {
+			
+			return response;
+			
+		})
+	}
+
 	return{
 		login:login,
 		getUserProfile:getUserProfile,
-		logout:logout
+		logout:logout,
+		signup:signup
 	}
 }
 
