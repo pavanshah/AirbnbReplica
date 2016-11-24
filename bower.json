@@ -20,6 +20,11 @@
     "angular-nvd3": "^1.0.9",
     "underscore": "^1.8.3",
     "angular-material": "^1.1.1"
+    "angular-sanitize": "^1.5.8",
+    "ng-marviluz": "ng-material#^0.0.4",
+    "ngAnimate": "*",
+    "angular-aria": "^1.5.8",
+    "angular-route": "^1.5.8"
   },
   "devDependencies": {
     "daterange.js": "daterange#^0.3.0"
