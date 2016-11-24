@@ -20,8 +20,11 @@ function AdminControllerFn($state,$scope,$http) {
 		}).success(function(details) {
 			//console.log("account---"+details.condition[0].itemid);
 	    	console.log(details);
-		});		
-		
+	    	
+	    	if(details.result != "failed"){
+	    		$scope.barData[0].values = details.result;
+	    	}
+		});				
 	}
 	
 	$scope.$on('$viewContentLoaded', function() {
@@ -222,7 +225,7 @@ function AdminControllerFn($state,$scope,$http) {
 		        valueFormat: function(d){
 		            return d3.format(',.4f')(d);
 		        },
-		        transitionDuration: 500,
+		        transitionDuration: 1000,
 		        xAxis: {
 		            axisLabel: 'X Axis'
 		        },
