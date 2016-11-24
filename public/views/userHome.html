@@ -48,12 +48,13 @@
                 <strong><p> <span style="font-size: 20px;"> {{trips.property.qty}}&nbsp;&nbsp;{{trips.property.category}}&nbsp;&nbsp;booked</span></p></strong>
                 <!-- <strong><p>Category {{trips.property.category}}</p></strong>
                 <strong><p>Quantity {{trips.property.qty}}</p></strong> -->
-                <span uib-rating ng-model="vm.rate" max="vm.max" read-only="vm.isReadonly" on-click="vm.clickStar(value)" on-hover="vm.hoveringOver(value)" on-leave="vm.overStar = null" titles="['one','two','three']" aria-labelledby="default-rating"></span>
+                <span uib-rating ng-model="trips.rate" max="vm.max" read-only="vm.isReadonly" on-hover="vm.hoveringOver(value)" on-leave="vm.overStar = null" titles="['one','two','three']" aria-labelledby="default-rating"></span>
+                Rating:{{vm.rate}}
                 <!-- <i class=" star-rating-star " aria-hidden="true" ng-click="vm.temp()"></i>
                 <i class="fa fa-star" aria-hidden="true" ng-click="vm.temp()"></i> -->
                 <br> 
                 <br>
-                <h2> Ratings and Review Rakhva hoy to ahiyan rakhi sakay </h2>
+                <h2> {{trips.review}} </h2>
               </div>
               <div ng-if="($index+1) != vm.trips.length">
               <hr style="width:80%; border-color:#ff7e82; margin-bottom:40px;"> 
