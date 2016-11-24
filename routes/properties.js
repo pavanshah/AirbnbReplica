@@ -282,6 +282,7 @@ var ConfirmBooking = function (req,res){
 							"property_id" : billResponse.bill.property.property_id
 						},
 						"user_id":"281521057" ,//change the userid to session userid
+						"user_emailId" : req.session.user.emailId,
 						"bill" : {
 							"billing_id": billResponse.bill.billing_id,
 							"trip_amount" : billResponse.bill.trip_amount
