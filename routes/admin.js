@@ -2,6 +2,13 @@ var bodyParser = require('body-parser').json();
 var mysqlPool = require("./mysql").pool;
 var getMainDashboard = function(req,res){
 	console.log("I am here to get dashboard details");
+	req.session.admin = "loggedin";
+	if(typeof req.session.admin === "undefined"){
+		res
+		.status(200)
+		.send({"result":"login"});
+		return;
+	}
 	
 	mysqlPool.getConnection(function(err, connection) {
 		sql = "select host_name,sum(total_cost) cost from billinglogs group by host_name order by cost desc limit 10";

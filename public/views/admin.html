@@ -1,8 +1,7 @@
- <div class="container-fluid" style:"background-color: red;">
- <br>
- <br>
- <br>
- <br>
+<br>
+
+ <div class="container-fluid back">
+ <br> 
  
 	<div class="row cardDonut" >
 		<div class="col-md-4">
@@ -46,7 +45,17 @@
 	</div>
 	
 	<div class="row card" >
- 		 
+ 		 <div class="row" style="margin-left:30px;margin-bottom:20px;">
+ 		 	
+ 		 	<md-input-container>
+	          <label>Year</label>
+	          <md-select ng-model="yearselected" ng-change="update()">
+	            <md-option><em>2016</em></md-option>
+	            <md-option><em>2015</em></md-option>
+	            
+	          </md-select>
+        	</md-input-container>
+ 		 </div>
 						
 					
 					
