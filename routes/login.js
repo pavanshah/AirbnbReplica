@@ -168,9 +168,12 @@ var deleteLogin = function(req,res){
 
 
 
-var updateLogin = function(req,res){
-	console.log("Inside user Update");
+var updateProfile = function(req,res){
+	console.log("Inside user Profile Update");
 	var query = {'email':req.body.UpdateLogin.email};
+
+	console.log(req.body);
+	/*
 	Users.findOneAndUpdate(query, req.body.UpdateLogin, {upsert:false}, function(err, doc){
 		
 	    if (err) {
@@ -185,14 +188,14 @@ var updateLogin = function(req,res){
 		res
 		.status(200)
 		.send({"result":"User Updated"});
-	});
+	});*/
 };
 
 var getLoginUserDetails = function(req,res){
 	console.log("Inside Get user");
 	
  	
- 	Users.findOne({"email":req.query.email},function(err,user){
+ 	Users.findOne({"email":req.session.user.emailId},function(err,user){
  		if(err || user == null){
  			res
  			.status(404)
@@ -213,7 +216,7 @@ var getUserProfile = function(req,res){
  	Users.findOne({"email":req.session.user.emailId},function(err,user){
  		if(err || user == null){
  			res
- 			.status(404)
+ 			.status(400)
  			.send({"result":"user not found"});
  			return;
  			
@@ -226,12 +229,15 @@ var getUserProfile = function(req,res){
 		    "email": user.email,
 		    "user_id": user.user_id,
 		    "type": user.type,
-		    "UserType": user.UserType
+		    "UserType": user.UserType,
+		    "phone" :user.phone,
+		    "address": user.address,
+		    "creditcard":user.carddetails,
  		};
  				
  		res
  		.status(200)
- 		.send({"LoggedIn User":UserObject});
+ 		.send({"user":UserObject});
  	});
 	
 };
@@ -256,7 +262,7 @@ exports.getUserProfile = getUserProfile;
 exports.userSignup = userSignup;
 //exports.userLogIn = userLogIn;
 exports.deleteUser = deleteLogin;
-exports.updateUser = updateLogin;
+exports.updateUser = updateProfile;
 exports.getLoginUserDetails = getLoginUserDetails;
 exports.authenticateLocal = authenticateLocal;
 exports.isUserLoggedIn = isUserLoggedIn;

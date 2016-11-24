@@ -77,7 +77,9 @@ app.config(function($stateProvider, $urlRouterProvider) {
 	})
 	.state('userProfile',{
 		url:'/userProfile',
-		templateUrl:'public/views/userProfile.html'
+		templateUrl:'public/views/userProfile.html',
+		controller:"UpdateProfileController",
+		controllerAs:"vm"
 	})
 	//$location.path('/prelogin');
 	//html5mode(true);
