@@ -211,6 +211,16 @@ var getLoginUserDetails = function(req,res){
 };
 
 var getUserProfile = function(req,res){
+
+	if(req.session.user==undefined||req.session.user==null)
+	{
+		console.log("No Session");
+		//res.status(400);
+		res.status(401);
+		res.json({"response":"Not Authenticated. Please login first"});
+	}
+
+else{
 	console.log("Inside Get LoggedIn user service");
 	 	
  	Users.findOne({"email":req.session.user.emailId},function(err,user){
@@ -240,6 +250,7 @@ var getUserProfile = function(req,res){
  		.send({"user":UserObject});
  	});
 	
+	}
 };
 
 
