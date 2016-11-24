@@ -35,16 +35,9 @@ function mainControllerFn($uibModal,loginService,$state,$log) {
 	    });
 
 	     modalInstance.result.then(function (userData) {
-		     vm.userData = userData;
-		     loginService.login(userData).
-		     then(function(isLoggedIn) {
-		     	if(isLoggedIn){
-		     		loginService.getUserProfile().
-		     		then(function(user) {
-		     			vm.user = user;
-		     		})
-		     	}
-		     })
+
+		     vm.user = userData;
+		    
 
 		     console.log("userData",vm.userData);
 		    }, function () {
