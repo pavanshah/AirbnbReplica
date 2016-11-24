@@ -28,30 +28,33 @@
             <br>
             <br>
             <div class="row trip-detail">
+            <div ng-repeat = "trips in vm.trips track by $index">
               <div class="col-md-6">
-                <strong> trip_id #1</strong>
-                <h3>Trip.Property.PropertyTitle</h3>
-                Property Image
-                <img src="/public/images/room-list-images/room-1-b.png">
-                <p>Trip.Property.description was awesome place</p>
+                <strong> {{trips.trip_id}}</strong>
+                <h3>{{trips.property.propertyTitle}}</h3>
+                
+                <img src="{{trips.property.propertyPictures[0]}}">
+                <p>{{trips.property.description}}</p>
                 <br>
                 <br>
               </div>
               <div class="col-md-6">
-                <strong><p> Trip.start_date</p></strong>
-                <strong><p> Trip.end_date</p></strong>
+                <strong><p> {{trips.trip_start_date}}</p></strong>
+                <strong><p> {{trips.trip_end_date}}</p></strong>
 
-                <strong><p>Trip.Property.Category</p></strong>
-                <strong><p>Trip.Room Quantity</p></strong>
-                <h4>Booking amount</h4>
+                <strong><p>{{trips.property.category}}</p></strong>
+                <strong><p>{{trips.property.qty}}</p></strong>
+                <h4>{{trips.bill.trip_amount}}</h4>
                 <br> 
                 <br>
                 <br>
                 <h2> Ratings and Review Rakhva hoy to ahiyan rakhi sakay </h2>
               </div>
+              <hr style="width:80%; border-color:#ff7e82; margin-bottom:40px;"> 
+              </div>
             </div>
   
-      <hr style="width:80%; border-color:#ff7e82; margin-bottom:40px;">            
+                 
 
             <div class="row trip-detail">
                   <div class="col-md-6">
