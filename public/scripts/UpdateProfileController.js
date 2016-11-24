@@ -9,6 +9,7 @@ function UpdateProfileControllerFn($state,$http) {
 
 		console.log(response);
 		
+		
 
 
 	});
