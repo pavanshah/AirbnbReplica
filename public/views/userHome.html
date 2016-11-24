@@ -44,17 +44,31 @@
               <br><br><br>
                 <strong><p><span style="font-size: 20px;"> Check-In Date: </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{trips.trip_start_date | date}}</p></strong>
                 <strong><p><span style="font-size: 20px;">Check-out Date: </span>&nbsp;{{trips.trip_end_date | date}}</p></strong>
-                <h4><span style="font-size: 20px;"> Trip Cost: </span>{{trips.bill.trip_amount}}</h4>
+                <strong><P><span style="font-size: 20px;"> Trip Cost: </span>{{trips.bill.trip_amount}}</P></strong>
                 <strong><p> <span style="font-size: 20px;"> {{trips.property.qty}}&nbsp;&nbsp;{{trips.property.category}}&nbsp;&nbsp;booked</span></p></strong>
                 <!-- <strong><p>Category {{trips.property.category}}</p></strong>
                 <strong><p>Quantity {{trips.property.qty}}</p></strong> -->
-                <span uib-rating ng-model="trips.rate" max="vm.max" read-only="vm.isReadonly" on-hover="vm.hoveringOver(value)" on-leave="vm.overStar = null" titles="['one','two','three']" aria-labelledby="default-rating"></span>
-                Rating:{{vm.rate}}
-                <!-- <i class=" star-rating-star " aria-hidden="true" ng-click="vm.temp()"></i>
-                <i class="fa fa-star" aria-hidden="true" ng-click="vm.temp()"></i> -->
                 <br> 
                 <br>
+
+                <div ng-if="trips.rating == 0">
+                  <div class="space-top-5 btn btn-large btn-primary btn-invite-friends">
+                  <a href="#">
+                    <div class="text-white invite">Share Experience
+                    </div>
+                 </a>
+                </div>
+                </div>
+
+                <div ng-if="trips.rating ==1 ">
+                  <span uib-rating ng-model="trips.rate" max="vm.max" read-only="vm.isReadonly" on-hover="vm.hoveringOver(value)" on-leave="vm.overStar = null" titles="['one','two','three']" aria-labelledby="default-rating"></span>
+                <!-- Rating:{{vm.rate}} -->
+                <!-- <i class=" star-rating-star " aria-hidden="true" ng-click="vm.temp()"></i>
+                <i class="fa fa-star" aria-hidden="true" ng-click="vm.temp()"></i> -->
+                
                 <h2> {{trips.review}} </h2>
+                </div>
+
               </div>
               <div ng-if="($index+1) != vm.trips.length">
               <hr style="width:80%; border-color:#ff7e82; margin-bottom:40px;"> 
