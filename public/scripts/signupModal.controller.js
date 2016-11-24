@@ -1,6 +1,6 @@
 var app = angular.module("Airbnb");
 
-function signupModalControllerFn($uibModalInstance) {
+function signupModalControllerFn($uibModalInstance,loginService) {
 	var vm = this;
 	vm.user = {};
 	vm.user.UserType = "User"
@@ -43,8 +43,19 @@ function signupModalControllerFn($uibModalInstance) {
 			}
 		else
 			{
-				//vm.user.birthdate = new Date(vm.user.birthdate.month+" "+ vm.user.birthdate.date+","+vm.user.birthdate.year);
-				$uibModalInstance.close(vm.user);
+				loginService.signup(vm.user).
+				then(function(response) {
+					if(response.status==200){
+						$uibModalInstance.close(vm.user);	
+						vm.serverError = "";	
+					}
+					
+				},function(err) {
+					if(err.status==400){
+						vm.serverError = err.data.result;
+					}
+				})
+				
 			}
   	};
   	

@@ -64,21 +64,18 @@ function mainControllerFn($uibModal,loginService,$state,$log) {
 
 	    modalInstance.result.then(function (userData) {
 		     vm.userData = userData;
-		     loginService.signup(userData).
-		     then(function(response) {
-				if(response.status==200){
-					loginService.login(userData).
-				     then(function(isLoggedIn) {
-				     	if(isLoggedIn){
-				     		loginService.getUserProfile().
-				     		then(function(user) {
-				     			vm.user = user;
-				     		})
-				     	}
-				     })
-				}		     	
+			 loginService.login(userData).
+			     then(function(isLoggedIn) {
+			     	if(isLoggedIn){
+			     		loginService.getUserProfile().
+			     		then(function(user) {
+			     			vm.user = user;
+			     		})
+			     	}
+			     })
+					     	
 
-		     })
+		     
 		    
 
 		     console.log("userData",vm.userData);
