@@ -68,6 +68,7 @@ function propertyDetailsControllerFn($state,$stateParams,$http,$uibModal,loginSe
 	}
 
 	vm.authenticateUser = function() {
+		//calculateBill();
 		$http.get("/isUserLoggedIn").
 		then(function(response) {
 			console.log("response",response);
@@ -88,6 +89,9 @@ function propertyDetailsControllerFn($state,$stateParams,$http,$uibModal,loginSe
 	else
 		vm.property = bookingDataService.getBooking().property;
 	console.log($stateParams);
+
+	
+
 }
 
 app.controller('PropertyDetailsController',propertyDetailsControllerFn);
