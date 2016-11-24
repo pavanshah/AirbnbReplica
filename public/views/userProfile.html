@@ -38,6 +38,10 @@
   </div>
   <div class="col-md-5">
 <h3> Profile</h3>
+
+
+<form name = "profileForm" novalidate>
+
   <div class="row row-condensed space-4">
         <label for="user_user_id">
           User ID
@@ -52,7 +56,8 @@
         </label>
         <div class="col-sm-9">
           
-      <input id="user_First_name" size="30" type="text" value="" ng-model="vm.user.firstname">
+      <input id="user_First_name" name = "firstname" size="30" type="text" value="" ng-model="vm.user.firstname" ng-pattern="/^[a-zA-Z]*$/">
+      <span class="invalidinput" ng-show="profileForm.firstname.$error.pattern">Text Input Only</span>
 
         </div>
       </div> 
@@ -63,7 +68,8 @@
         </label>
         <div class="col-sm-9">
           
-      <input id="user_last_name" size="30" type="text" value="" ng-model="vm.user.lastname">
+      <input id="user_last_name" size="30" type="text" name = "lastname" value="" ng-model="vm.user.lastname" ng-pattern="/^[a-zA-Z]*$/">
+      <span class="invalidinput" ng-show="profileForm.lastname.$error.pattern">Text Input Only</span>
 
           <div class="text-muted space-top-1">This is only shared once you have a confirmed booking with another Airbnb user.</div>
         </div>
@@ -77,8 +83,8 @@
         </label>
         <div class="col-sm-9">
           
-        <input id="user_email" name="user[email]" size="30" type="text" value="" ng-model="vm.user.email">
-
+        <input id="user_email" name="email" size="30" type="email" value="" ng-model="vm.user.email">
+        <span class="invalidinput" ng-show="profileForm.email.$error.email">Not a valid email id</span>
           <div class="text-muted space-top-1">We won’t share your private email address with other Airbnb users. <a href="https://www.airbnb.com/help/article/694" target="blank">Learn more</a>.</div>
         </div>
       </div>
@@ -89,7 +95,8 @@
         </label>
         <div class="col-sm-9">
           
-        <input id="user_Phone" name="user_phone" size="30" type="text" ng-model="vm.user.phone">
+        <input id="user_Phone" name="user_phone" size="30" type="number" ng-model="vm.user.phone" ng-pattern = "/^[1-9]{1}[0-9]{9}$/">
+        <span class="invalidinput" ng-show="profileForm.user_phone.$error.pattern">Not a valid mobile number</span>
 
           
         </div>
@@ -105,17 +112,28 @@
       Street
       <input id="street" name="user_address_street"  size="30" type="text" ng-model="vm.user.address.street">
       City
-      <input id="city" name="user_address_city" size="30" type="text" ng-model="vm.user.address.city">
+      <input id="city" name="user_address_city" size="30" type="text" ng-model="vm.user.address.city"
+      ng-pattern="/^[a-zA-Z]*$/">
+      <span class="invalidinput" ng-show="profileForm.user_address_city.$error.pattern">Text Input Only</br></span>
       State
-      <input id="state" name="user_address_state" size="30" type="text" ng-model="vm.user.address.state">
+      <input id="state" name="user_address_state" size="30" type="text" ng-model="vm.user.address.state" ng-pattern="/^[a-zA-Z]*$/">
+      <span class="invalidinput" ng-show="profileForm.user_address_state.$error.pattern">Text Input Only</br></span>
       ZipCode
-      <input id="Zipcode" name="user_address_zipcode" size="30" type="text" ng-model="vm.user.address.zipcode">
+      <input id="Zipcode" name="user_address_zipcode" size="30" type="text" ng-model="vm.user.address.zipcode" ng-pattern = "/^[1-9]{1}[0-9]{5}$/">
+
+      <span class="invalidinput" ng-show="profileForm.user_address_zipcode.$error.pattern">Not a valid zip code</br></span>
+
       Country
-      <input id="Country" name="user_address_country" size="30" type="text" ng-model="vm.user.address.country">
+      <input id="Country" name="user_address_country" size="30" type="text" ng-model="vm.user.address.country" ng-pattern="/^[a-zA-Z]*$/">
+      <span class="invalidinput" ng-show="profileForm.user_address_country.$error.pattern">Text Input Only</br></span>
+
+
         </div>
-      </div>
-      
+      </div>    
   </div>
+</form>
+
+<form name = "creditCardForm" novalidate>
   <div class="col-md-5">
   <h3> Credit Card Info</h3>
     <div class="row row-condensed space-4">
@@ -123,13 +141,21 @@
           FirstName
         </label>
         <div class="col-sm-9">
-          <input id="user_Credit_card_Firstname" name="user_credit_card_name"  size="30" type="text" ng-model="vm.user.creditcard.firstname">
+          <input id="user_Credit_card_Firstname" name="cc_firstname"  size="30" type="text" ng-model="vm.user.creditcard.firstname" ng-pattern="/^[a-zA-Z]*$/">
+          <span class="invalidinput" ng-show="creditCardForm.cc_firstname.$error.pattern">Text Input Only</br></span>
         </div>
+
         <label for="user_Credit_card_Lastname">
+        </br>
+        </br>
+        </br>
           LastName
         </label>
         <div class="col-sm-9">
-          <input id="user_Credit_card_Lastname" name="user_credit_card_name"  size="30" type="text" ng-model="vm.user.creditcard.lastname">
+          <input id="user_Credit_card_Lastname" name="cc_lastname"  size="30" type="text" ng-model="vm.user.creditcard.lastname" ng-pattern="/^[a-zA-Z]*$/">
+
+        <span class="invalidinput" ng-show="creditCardForm.cc_lastname.$error.pattern">Text Input Only</br></span>
+
         </div>
 
           
@@ -139,7 +165,9 @@
           Number
         </label>
         <div class="col-sm-9">
-          <input id="user_Credit_card_Number" name="user_credit_card_Number"  size="30" type="text" ng-model="vm.user.creditcard.creditcard">
+          <input id="user_Credit_card_Number" name="user_credit_card_Number"  size="30" type="text" ng-model="vm.user.creditcard.creditcard" ng-pattern = "/^[1-9]{1}[0-9]{16}$/">
+
+      <span class="invalidinput" ng-show="creditCardForm.user_credit_card_Number.$error.pattern">Not a valid credit card number</span>
         </div>
 
           
@@ -150,9 +178,15 @@
         </label>
         <div class="col-sm-9">
          Month
-     <input id="user_Credit_card_ExpiryMonth" name="user_Credit_card_ExpiryMonth"  size="10" type="text" ng-model="vm.user.creditcard.expirymonth">
+     <input id="user_Credit_card_ExpiryMonth" name="user_Credit_card_ExpiryMonth"  size="10" type="text" ng-model="vm.user.creditcard.expirymonth" ng-pattern = "/^[1-9]{1}[0-9]{2}$/">
+
+          <span class="invalidinput" ng-show="creditCardForm.user_Credit_card_ExpiryMonth.$error.pattern">Not a valid month</br></span>
+
           Year
-          <input id="user_Credit_card_ExpiryYear" name="user_Credit_card_ExpiryYear" size="10" type="text" ng-model="vm.user.creditcard.expiryyear">
+          <input id="user_Credit_card_ExpiryYear" name="user_Credit_card_ExpiryYear" size="10" type="text" ng-model="vm.user.creditcard.expiryyear" ng-pattern = "/^[1-9]{1}[0-9]{4}$/">
+
+          <span class="invalidinput" ng-show="creditCardForm.user_Credit_card_ExpiryYear.$error.pattern">Not a valid year</br></span>
+
         </div>              
       </div>
 
@@ -162,7 +196,9 @@
         </label>
         <div class="col-sm-9">
          
-          <input id="user_Credit_card_zipcode" name="user_Credit_card_zipcode"  size="20" type="text" ng-model="vm.user.creditcard.postalcode">
+          <input id="user_Credit_card_zipcode" name="user_Credit_card_zipcode"  size="20" type="text" ng-model="vm.user.creditcard.postalcode" ng-pattern = "/^[1-9]{1}[0-9]{5}$/">
+
+      <span class="invalidinput" ng-show="creditCardForm.user_Credit_card_zipcode.$error.pattern">Not a valid zip code</br></span>
           
         </div>
 
@@ -173,7 +209,8 @@
         </label>
         <div class="col-sm-9">
          
-          <input id="user_Credit_card_country" name="user_Credit_card_country"  size="30" type="text" ng-model="vm.user.creditcard.country">
+          <input id="user_Credit_card_country" name="user_Credit_card_country"  size="30" type="text" ng-model="vm.user.creditcard.country" ng-pattern="/^[a-zA-Z]*$/">
+      <span class="invalidinput" ng-show="creditCardForm.user_Credit_card_country.$error.pattern">Text Input Only</br></span>
           
         </div>
 
@@ -182,7 +219,9 @@
         <br>
         <br>
         <br>
-        <button type="button" class="btn btn-primary" ng-click="vm.UpdateProfile()"> Update Profile </button>
+        <button type="button" class="btn btn-primary" ng-click="vm.UpdateProfile()" ng-disabled="creditCardForm.$invalid || profileForm.$invalid"> Update Profile </button>
+
+</form>
 
 </div>
 
