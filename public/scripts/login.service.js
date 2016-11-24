@@ -9,11 +9,15 @@ function loginServiceFn($http,bookingDataService) {
 		
 		return $http.post("/userLogIn",userData).
 		then(function(response) {
+			console.log("response",response);
 			if(response.status==200){
 				if(response.data.userLoggedIn){
 					return response.data.userLoggedIn;
 				}
 			}
+		},function(err) {
+			console.log("err",err);
+			return err;
 		})
 	}
 
@@ -34,14 +38,26 @@ function loginServiceFn($http,bookingDataService) {
 			then(function(response) {
 				userData = {};
 				bookingDataService.deleteBooking();
+				
 				return response;
 			})
+	}
+
+	function signup(userData) {
+
+		return $http.post("/userSignup",{user:userData}).
+		then(function(response) {
+			
+			return response;
+			
+		})
 	}
 
 	return{
 		login:login,
 		getUserProfile:getUserProfile,
-		logout:logout
+		logout:logout,
+		signup:signup
 	}
 }
 

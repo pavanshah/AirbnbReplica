@@ -35,7 +35,7 @@ function viewListingsControllerFn($state,propertyService,locationService,$stateP
                 property.propertyPictures = ["public/images/room-list-images/room-1-a.png"];
               }
             })
-            mapCenter = {lat: vm.properties[1].location[1], lng: vm.properties[1].location[0]};
+            mapCenter = {lat: vm.properties[0].location[1], lng: vm.properties[0].location[0]};
             drawMarkersOnMap(vm.properties); 
           }
           else{
