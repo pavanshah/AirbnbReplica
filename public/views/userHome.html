@@ -23,7 +23,12 @@
     <div id="your-trips-app-container">
       
         <div class="panel row space-top-4">
-          <div class="col-md-12">
+        <div class="col-md-12" ng-if="vm.trips.length == 0 || vm.trips == ''">
+        <div class="col-md-1"></div>
+          <div class="col-md-10"><img src="public/images/notripsfound.png"></div>
+        <div class="col-md-1"></div>
+        </div>
+          <div class="col-md-12" ng-if="vm.trips.length != 0">
 
             <h2> My Trips</h2>
             <br>
@@ -69,11 +74,11 @@
                   <br><br>
                 </div>
                 <div ng-if="trips.submitted == 1">
-                    Review Submitted
+                    <strong><h3> Review Submitted</h3></strong>
                     <br><br>
                   </div>
                   <div ng-if="trips.submitted == 0">
-                    Error in submitting review
+                    <strong><h3>Error in submitting review</h3></strong>
                     <br><br>
                   </div>
 
