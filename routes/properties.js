@@ -97,7 +97,7 @@ var SearchPropertyByDistance = function(req,res){
     //long = -122;
 
     // Opens a generic Mongoose Query. Depending on the post body we will...
-    var query = Property.find({});
+    var query = Property.find({ qty: { $gte: req.body.qty } });
 
     // ...include filter by Max Distance (converting miles to meters)
     if(distance){
