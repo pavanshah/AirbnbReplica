@@ -2,6 +2,7 @@ var app = angular.module('Airbnb',['ui.bootstrap','ui.router','google.places','n
 
 app.config(function($stateProvider, $urlRouterProvider) {
 
+
 	$urlRouterProvider.otherwise('/');
 
 	$stateProvider
@@ -110,4 +111,21 @@ app.config(function($stateProvider, $urlRouterProvider) {
 	//$location.path('/prelogin');
 	//html5mode(true);
 	
+});
+
+app.run(function($rootScope,$http,$state) {
+  $rootScope.$on('$stateChangeStart',
+   function(event, toState  , toParams
+                   , fromState, fromParams) 
+    {
+      if(toState.name=="admin"){
+      	$http.get("/isUserLoggedIn").
+      	then(function(response) {
+      		
+      	},function (err) {
+      		event.preventDefault();
+      		$state.go("home");
+      	})
+      }
+    });
 });
