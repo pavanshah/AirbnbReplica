@@ -33,4 +33,8 @@ var Users = new Schema({
 	avgrating : Number,
 	Reviews : [{ratings : Number, feedback : String, trip_id: String, user_id : String}]	 
 });
+
+Users.methods.isActive = function(user) {
+	return user.user_status == "active";
+};
 module.exports = mongoose.model("Users",Users);

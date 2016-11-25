@@ -26,6 +26,11 @@ module.exports = function(passport) {
     }
     console.log("Correct password");
   
+    if(!user.isActive(user)){
+      console.log("inactive");
+      return done(null, false, { message: 'Your account is waiting for Admin approval.' }); 
+    }
+
   return done(null, user);
 });
 }
