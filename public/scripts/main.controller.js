@@ -10,7 +10,20 @@ function mainControllerFn($uibModal,loginService,$state,$log) {
  		vm.user = userData;
  	},function(err) {
  		vm.user = {};
- 	})
+ 	});
+
+ 	vm.homeNavigation = function () {
+ 		
+ 		if(vm.user.UserType=="Admin"){
+ 			$state.go("admin");
+ 		}
+ 		if(vm.user.UserType=="Host"){
+ 			$state.go("becomehost");
+ 		}
+ 		if(vm.user.UserType=="User"){
+ 			$state.go("home");
+ 		}
+ 	}
 
  	vm.logout = function() {
  		loginService.logout().

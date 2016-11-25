@@ -16,6 +16,8 @@ var userSignup = function(req,res){
 
 	if(req.body.user.UserType=="Host")
 		req.body.user.user_status = "inactive";
+	else
+		req.body.user.user_status = "active";
 	
 	var salt = bcrypt.genSaltSync(10); //encryption
 	if(typeof req.body.user.password !== "undefined"){
