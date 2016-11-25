@@ -107,6 +107,13 @@ app.config(function($stateProvider, $urlRouterProvider) {
 		templateUrl:'public/views/addProperty.html',
 
 	})
+	.state('hostCardDetails',{
+		url:'/hostCardDetails',
+		templateUrl:'public/views/HostCardDetails.html',
+		controller:"hostCardDetails",
+		controllerAs:"vm"
+
+	})
 	//$location.path('/prelogin');
 	//html5mode(true);
 	
