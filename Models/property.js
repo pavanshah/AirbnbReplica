@@ -18,7 +18,8 @@ address : {
 	state: String,
 	city:String,
 	zipcode:String,
-	country:String
+	country:String,
+	formatted:String
 			 },
 
  description:String,
