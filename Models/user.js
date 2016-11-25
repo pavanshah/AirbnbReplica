@@ -8,6 +8,7 @@ var Users = new Schema({
 	email: String,
 	birthdate : Date,
 	password : String,
+	gender : String,
 	address : {
 		street: String,
 		state: String,

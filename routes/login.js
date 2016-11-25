@@ -7,6 +7,7 @@ var bcrypt = require('bcryptjs');
 var uniqueIDGenerator = require('../routes/uniqueIDGenerator');
 var passport = require('passport');
 require('./passport')(passport);
+var moment = require('moment');
 var LocalStrategy = require('passport-local').Strategy;
 
 var userSignup = function(req,res){
@@ -168,7 +169,40 @@ var deleteLogin = function(req,res){
 		.send({"result":"User Deleted"});
 	} );
  	};
+//updateHostProfile function updates host profile details
+var updateHostProfile = function(req,res){
+ 		console.log("Inside user Profile Update");
+ 		var dateString = req.body.birthMonth + "-" + req.body.birthDay + "-" + req.body.birthYear;
+ 		console.log(dateString);
+ 		console.log(req.body);
+ 		var momentObj = moment(dateString, 'MM-DD-YYYY');
+ 		var hostBirthDay = momentObj.format('YYYY-MM-DD');
+ 		console.log(hostBirthDay);
+ 		req.body.birthdate = hostBirthDay; //to save the host birthday
+ 		req.body.UserType = "host";
+ 		
+ 		var query = {'email':req.body.email};
 
+ 		//console.log(req.body.user);
+ 		
+ 		Users.findOneAndUpdate(query, req.body, {upsert:false}, function(err, doc){
+ 			
+ 		    if (err) {
+ 		    	res
+ 				.status(400)
+ 				.send({"result":"Bad request"});
+ 				return;
+ 		    }
+ 		    else {
+ 		    	console.log(doc);
+ 		res
+ 	 	.status(200)
+ 	 	.send({"result":"User Updated"});
+ 			
+ 		};
+ 		})
+ 		
+};
 
 
 var updateProfile = function(req,res){
@@ -280,6 +314,7 @@ var logout = function(req,res) {
 
 }
 
+exports.updateHostProfile = updateHostProfile;
 exports.getUserProfile = getUserProfile;
 exports.userSignup = userSignup;
 //exports.userLogIn = userLogIn;

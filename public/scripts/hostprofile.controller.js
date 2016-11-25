@@ -25,6 +25,16 @@ function HostProfileFn($state,$scope,$http) {
 		console.log($scope.birthYear);
 		console.log($scope.birthDay);
 		console.log($scope.birthMonth);
+		$http.post('/updateHost',{"firstname":$scope.firstname,"lastname":$scope.lastname,
+			"email":$scope.email,"phonenumber":$scope.phonenumber,"gender":$scope.gender,
+			"address":$scope.address,"birthYear":$scope.birthYear,"birthDay":$scope.birthDay,
+			"birthMonth":$scope.birthMonth
+			}).then(function(response){
+
+			console.log(response.data);
+
+		})
+		
 		
 		
 	}
