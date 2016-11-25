@@ -123,7 +123,29 @@ var getRatingsForTrip = function(req,res) {
 	});
 }
 
+var submitReviewForTrip = function(req, res) {
+	console.log("review submit"+req.body);
+
+	var query = {"user_id":req.body.host_id};
+
+	
+
+	Users.update(query, {$push : {Reviews : {ratings : req.body.rate, feedback : req.body.review, user_id : req.session.user.emailId}}}, function(err,response) {
+		if(err)
+		{
+			res.status(401).json({"result":"no user found"});
+		}
+		else
+		{
+			res.status(200).json({"result":"review submitted"});
+		}
+	});
+
+	//res.status(200).json({"result":"submitted"});
+}
+
 
 exports.SubmitReviewAndRating = SubmitReviewAndRating;
 exports.GetReviews = GetReviews;
 exports.getRatingsForTrip = getRatingsForTrip;
+exports.submitReviewForTrip = submitReviewForTrip;
