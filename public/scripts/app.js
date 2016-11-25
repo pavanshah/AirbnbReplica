@@ -110,6 +110,13 @@ app.config(function($stateProvider, $urlRouterProvider) {
 		controllerAs:"vm"
 
 	})
+
+	.state('hostAnalytics',{
+		url:"/hostAnalytics",
+		templateUrl:"public/views/hostAnalytics.html",
+		controller:"hostAnalyticsController",
+		controllerAs:"vm"
+	})
 	//$location.path('/prelogin');
 	//html5mode(true);
 	
