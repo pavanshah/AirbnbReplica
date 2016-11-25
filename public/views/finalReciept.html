@@ -1,4 +1,6 @@
-
+<br>
+<br>
+<br>
 
 	<div class="receipt-wrapper">
 		<div class="container">
@@ -6,9 +8,8 @@
 				<div class="receipt-header clearfix">
 					<div class="pull-left">
 						<h2 class="receipt-title no-margin">Customer Receipt</h2>
-						<p class="confirmation-code">CONFIRMATION CODE: 3WAM4Y</p>
-						<p class="date-n-no">WED, MARCH 07, 2012</p>
-						<p class="date-n-no">RECEIPT # 4024402681</p>
+						<p>Billing Date{{vm.bill.billing_date}}</p>
+						<p>Bill ID:{{vm.bill.billing_id}}</p>
 					</div>
 					<div class="pull-right primary-details">
 						<p>AIRBNB</p>
@@ -19,134 +20,66 @@
 				<div class="receipt-content">
 					<div class="summary width-100">
 						<div class="make-table width-100">
-							<div class="table-column col-lg-6 col-md-6 col-sm-6 col-xs-12">
+							<div class="table-column col-lg-12 col-md-12 col-sm-12 col-xs-12">
 								<img class="column-icon" src="public/images/receipt-images/person.png">
-								<h3>Chris Coyier</h3>
-								<span>NAME</span>
+								<h3>vm.bill.user.email{{vm.bill.user.email}}</h3>
+								<span>User</span>
 							</div>
-							<div class="table-column col-lg-6 col-md-6 col-sm-6 col-xs-12">
-								<img class="column-icon" src="public/images/receipt-images/location.png">
-								<h3>Austin, TX</h3>
-								<span>TRAVEL DESTINATION</span>
+							
+						</div>
+						<div class="make-table width-100">
+							<div class="table-column col-lg-12 col-md-12 col-sm-12 col-xs-12">
+								<img class="column-icon" src="public/images/receipt-images/accomodation.png">
+								<h3>vm.property.propertyTitle{{vm.property.propertyTitle}}</h3>
+								<span>ACCOMODATION Property</span>
 							</div>
 						</div>
 						<div class="make-table width-100">
-							<div class="table-column col-lg-6 col-md-6 col-sm-6 col-xs-12">
+							<div class="table-column col-lg-12 col-md-12 col-sm-12 col-xs-12">
 								<img class="column-icon" src="public/images/receipt-images/accomodation.png">
-								<h3>1200 Shelley Ave<br>Austin, TX 78703<br>United States</h3>
+								<h3>vm.property.address.formatted{{vm.property.address.formatted}}</h3>
 								<span>ACCOMODATION ADDRESS</span>
 							</div>
-							<div class="table-column col-lg-6 col-md-6 col-sm-6 col-xs-12">
-								<img class="column-icon" src="public/images/receipt-images/property.png">
-								<h3>Central Austin Upscale Luxury Home</h3>
-								<span>PROPERTY</span>
-							</div>
 						</div>
 						<div class="make-table width-100">
-							<div class="table-column col-lg-6 col-md-6 col-sm-6 col-xs-12">
+							<div class="table-column col-lg-12 col-md-12 col-sm-12 col-xs-12">
 								<img class="column-icon" src="public/images/receipt-images/acc-type.png">
-								<h3>Entire home/apt</h3>
+								<h3>Entire home/apt{{vm.property.category}}</h3>
 								<span>ACCOMODATION TYPE</span>
 							</div>
-							<div class="table-column col-lg-6 col-md-6 col-sm-6 col-xs-12">
-								<img class="column-icon" src="public/images/receipt-images/guests.png">
-								<h3>4</h3>
-								<span>GUESTS</span>
-							</div>
+							
 						</div>
+						
 						<div class="make-table width-100">
 							<div class="table-column col-lg-6 col-md-6 col-sm-6 col-xs-12">
 								<img class="column-icon" src="public/images/receipt-images/checkedin.png">
-								<h3>THU, MARCH 08, 2012<br>12:00 PM (noon)</h3>
+								<h3>Start Date{{vm.bill.from_date}}</h3>
 								<span>CHECK IN</span>
 							</div>
 							<div class="table-column col-lg-6 col-md-6 col-sm-6 col-xs-12">
 								<img class="column-icon" src="public/images/receipt-images/checkout.png">
-								<h3>TUE, MARCH 13, 2012<br>12:00 PM (noon)</h3>
+								<h3>End Date {{vm.bill.to_date}}</h3>
 								<span>CHECK OUT</span>
 							</div>
 						</div>
 						<div class="make-table width-100">
-							<div class="table-column col-lg-6 col-md-6 col-sm-6 col-xs-12">
+							<div class="table-column col-lg-12 col-md-12 col-sm-12 col-xs-12">
 								<img class="column-icon" src="public/images/receipt-images/nights.png">
-								<h3>5</h3>
-								<span>NIGHTS</span>
-							</div>
-							<div class="table-column col-lg-6 col-md-6 col-sm-6 col-xs-12">
-								<img class="column-icon" src="public/images/receipt-images/deposit.png">
-								<h3>$1000</h3>
-								<span>SECURITY DEPOSIT</span>
+								<h3>5 {{vm.bill.to_date - vm.bill.front_date}}</h3>
+								<span>NIGHTS </span>
 							</div>
 						</div>
 					</div>
 					<div class="payment-details width-100">
 						<h2 class="title">Payment Details</h2>
-						<div class="make-table width-100">
-							<div class="table-column col-lg-8 col-md-8 col-sm-7 col-xs-12">
-								<span class="key">ACCOMODATIONS</span>
-							</div>
-							<div class="table-column col-lg-4 col-md-4 col-sm-5 col-xs-12">
-								<span class="value">$5000 <span class="subtext">($1000 per night)</span></span>
-							</div>
-						</div>
-						<div class="make-table width-100">
-							<div class="table-column col-lg-8 col-md-8 col-sm-7 col-xs-12">
-								<span class="key">AIRBNB SERVICE FEE</span>
-							</div>
-							<div class="table-column col-lg-4 col-md-4 col-sm-5 col-xs-12">
-								<span class="value">$300</span>
-							</div>
-						</div>
-						<div class="make-table width-100">
-							<div class="table-column col-lg-8 col-md-8 col-sm-7 col-xs-12">
-								<span class="key">AIRBNB SERVICE CONCIERGE<span class="subtext"><sup>BETA</sup>Premium Guest Services - Details below</span></span>
-							</div>
-							<div class="table-column col-lg-4 col-md-4 col-sm-5 col-xs-12">
-								<span class="value">FREE</span>
-							</div>
-						</div>
-						<div class="make-table width-100">
-							<div class="table-column col-lg-8 col-md-8 col-sm-7 col-xs-12">
-								<span class="pull-right key">TOTAL</span>
-							</div>
-							<div class="table-column col-lg-4 col-md-4 col-sm-5 col-xs-12">
-								<span class="value">$5300</span>
-							</div>
-						</div>
-					</div>
+						
 					<div class="payment-details width-100">
 						<div class="make-table width-100">
 							<div class="table-column col-lg-8 col-md-8 col-sm-7 col-xs-12">
-								<span class="key">PAYMENT RECEIVED: THU, OCTOBER 27, 2011 (AMERICAN EXPRESS XXXXXXXXXXX1008)</span>
+								<span class="key">Booking Amount</span>
 							</div>
 							<div class="table-column col-lg-4 col-md-4 col-sm-5 col-xs-12">
-								<span class="value">$9388</span>
-							</div>
-						</div>
-						<div class="make-table width-100 refund">
-							<div class="table-column col-lg-8 col-md-8 col-sm-7 col-xs-12">
-								<span class="key">REFUNDED (AMERICAN EXPRESS XXXXXXXXXXX1008)</span>
-							</div>
-							<div class="table-column col-lg-4 col-md-4 col-sm-5 col-xs-12">
-								<span class="value">($4088)</span>
-							</div>
-						</div>
-						<div class="make-table width-100">
-							<div class="table-column col-lg-8 col-md-8 col-sm-7 col-xs-12">
-								<span class="pull-right key">BALANCE</span>
-							</div>
-							<div class="table-column col-lg-4 col-md-4 col-sm-5 col-xs-12">
-								<span class="value">$0</span>
-							</div>
-						</div>	
-					</div>
-					<div class="payment-details width-100">
-						<div class="make-table width-100">
-							<div class="table-column col-lg-8 col-md-8 col-sm-7 col-xs-12">
-								<span class="key">DEPOSIT HELD</span>
-							</div>
-							<div class="table-column col-lg-4 col-md-4 col-sm-5 col-xs-12">
-								<span class="value">$1000</span>
+								<span class="value">$1000{{vm.bill.trip_amount}}</span>
 							</div>
 						</div>
 					</div>
