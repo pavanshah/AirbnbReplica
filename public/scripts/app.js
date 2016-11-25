@@ -105,6 +105,8 @@ app.config(function($stateProvider, $urlRouterProvider) {
 	.state('addProperty',{
 		url:'/addProperty',
 		templateUrl:'public/views/addProperty.html',
+		controller:"AddPropertyController",
+		controllerAs:"vm"
 
 	})
 	//$location.path('/prelogin');
