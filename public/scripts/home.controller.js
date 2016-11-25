@@ -19,7 +19,8 @@ function homeControllerFn($state,$http,bookingDataService) {
 		var long = vm.travelLocation.geometry.location.lng();
 
 		bookingDataService.setBookingDates({start_date:vm.checkInDate,end_date:vm.checkOutDate});
-		$state.go("viewListings",{'filters':{'latitude':lat,'longitude':long,start_date:vm.checkInDate,end_date:vm.checkOutDate}});
+		bookingDataService.setBookingQty(vm.qty);
+		$state.go("viewListings",{'filters':{'latitude':lat,'longitude':long,start_date:vm.checkInDate,end_date:vm.checkOutDate,qty:vm.qty}});
 	}
 
 	//vm.checkInDate = new Date();
@@ -43,7 +44,7 @@ function homeControllerFn($state,$http,bookingDataService) {
 	    vm.checkOutDatePopUp.opened = true;
 	};
 
-
+	vm.qty = "1"; //default room 1
 	vm.findProperty = function () {
 		
 

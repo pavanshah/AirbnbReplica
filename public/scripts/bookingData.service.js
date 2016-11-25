@@ -19,13 +19,19 @@ function bookingDataServiceFn($http) {
 	function deleteBooking() {
 		activeBooking = {};
 	}
+
+	function setBookingQty(qty) {
+		activeBooking.qty = qty;
+	}
+
 	
 	
 	return{
 		setBooking:setBooking,
 		getBooking:getBooking,
 		setBookingDates:setBookingDates,
-		deleteBooking:deleteBooking
+		deleteBooking:deleteBooking,
+		setBookingQty:setBookingQty
 	}
 }
 
