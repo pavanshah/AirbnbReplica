@@ -71,7 +71,7 @@
 			        	<span ng-bind="vm.user.firstname"></span>
 		        		<div class="logout-popup position-absolute">
 			        		<ul class="clearfix">
-			        			<li ui-sref="userProfile">Edit Profile</li>
+			        			<li ng-click="vm.profile()">Edit Profile</li>
 			        			<li ng-click="vm.trips()">Your Trips</li>
 			        			<li>Refer A Friend</li>
 			        			<li>Account Settings</li>
