@@ -37,6 +37,11 @@ function mainControllerFn($uibModal,loginService,$state,$log) {
  		$state.go("userHome");
  	}
 
+ 	vm.profile = function()
+ 	{
+ 		$state.go("userProfile");
+ 	}
+
  	vm.openLoginModal = function() {
 
  		var modalInstance = $uibModal.open({
