@@ -39,9 +39,9 @@ jspm_packages
 .node_repl_history
 
 #logs
-<<<<<<< HEAD
+
 .LogFiles
-=======
+
 .public/LogFiles
 /public/LogFiles
->>>>>>> 80f18b1623c08101dabc79b433af199faa05c12d
+
