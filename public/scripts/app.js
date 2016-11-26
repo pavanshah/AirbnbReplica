@@ -39,6 +39,13 @@ app.config(function($stateProvider, $urlRouterProvider) {
 		controllerAs:"vm"
 	})
 	
+	.state('adminBillSearch',{
+		url:"/adminBillSearch",
+		templateUrl:"public/views/adminBillSearch.html",
+		controller:"AdminBillSearchController",
+		controllerAs:"vm"
+	})
+	
 	.state('adminLogin',{
 		url:"/adminLogin",
 		templateUrl:"public/views/adminLogin.html",
