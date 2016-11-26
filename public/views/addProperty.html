@@ -63,8 +63,8 @@
 					  	 <input type="radio" name="propertyCategory" id="propertyCategory" ng-model="vm.property.category" value="Entire Place"> Entire Place
 					  	 <br>
 					  	 <label for="ListingType"> Listing Type </label>
-					  	 <input type="radio" name="listingType" ng-model="vm.property.listingType" value="sale" required=""> Instant Booking 
-					  	 <input type="radio" name="listtingType" ng-model="vm.property.listingType" value="auction"> Best Bid <br>
+					  	 <input type="radio" name="listingType" ng-model="vm.property.ListingType" value="sale" required ng-change="vm.UpdateListingType()"> Instant Booking 
+					  	 <input type="radio" name="listtingType" ng-model="vm.property.ListingType" value="auction" required ng-change="vm.UpdateListingType()"> Best Bid <br>
 
 					 	<strong>Note: Auctionable Properties have start date and end date as the dates of stay. You must list your items accordingly. </strong>
 <input type="text" class="source-input white-bg" g-places-autocomplete ng-model="vm.travelLocation" placeholder="Input Property Address" ng-blur="vm.PopulateAddressFields()" required="">
@@ -99,13 +99,16 @@
 				     Country
 				        <input class ="form-control"
 				              id="country" ng-model="vm.property.address.country"> -->
-				    	
+				    	<div class="Quantity" ng-show="showPricingCatalog">
 				    	<label for="propertyQuantity"> Quantity</label>
 				    	<input type="text" class="form-control" id="propertyQuantity" ng-model="vm.property.qty" required="">
+				    	</div>
 
 				    	<label for="propertyBasePrice"> Base Price </label>
+				    	<span ng-show="vm.showBaseNote"> This will be the starting price for Bids. It is for combined duration.</span>
 				    	<input type="text" class="form-control" ng-model="vm.property.base_price" required="">
 
+				    	<div class="pricing catalog" ng-show="vm.showPricingCatalog">
 
 				    	<h3> Pricing Catalog </h3>
 
@@ -124,6 +127,7 @@
 				    	<label for="Monthly_Discount_Rate"> Monthly Discount Rate </label>
 				    	<input type="text" class="form-control" id="Monthly_Discount_Rate" ng-model="vm.property.princing_catalog.monthly_discount" required>
 
+				    	</div>
 
 
 

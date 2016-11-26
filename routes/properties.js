@@ -422,6 +422,28 @@ var calculateBill = function (req,res)
 
 }
 
+var getAuctionableProperties = function (req,res) {
+
+	today = new Date();
+	validListingDate = today.addDays(-3);
+
+	Propety.find({'ListingType':"auction","Listing_Date":{"gte":validListingDate}},function(err,properties){
+
+		if(!err){
+
+			res.status(200);
+			res.json(properties);
+		}
+		else
+		{
+			console.log(err)
+		}
+
+
+	});
+}
+
+exports.getAuctionableProperties = getAuctionableProperties;
 exports.calculateBill =calculateBill;
 
 
