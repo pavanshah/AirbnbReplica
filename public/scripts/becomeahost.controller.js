@@ -1,7 +1,7 @@
 var app = angular.module('Airbnb');
 
 
-function BecomeAHostControllerFn($state,$http) {	
+function BecomeAHostControllerFn($state,$http,$uibModal,$window) {	
 	var vm = this;
 	//vm.value = 1;
 	
@@ -15,8 +15,37 @@ function BecomeAHostControllerFn($state,$http) {
 		} else {
 			var lat = vm.travelLocation.geometry.location.lat();
 			var long = vm.travelLocation.geometry.location.lng();
-			$state.go("viewListings",{'filters':{'latitude':lat,'longitude':long}});
+			$state.go("viewListings",{'filters':{'latitude':lgetHostat,'longitude':long}});
 		}
+	}
+	
+	function openLoginModal() {
+		
+		var modalInstance = $http.open({
+	 			 animation : true,
+			     templateUrl: 'public/views/loginModal.html',
+		      	 size: "md",
+		      	 controller:'LoginModalController',
+		      	 controllerAs:"vm",
+		      	 backdrop : true
+		    });
+
+			  
+	 	
+	}
+	
+	function openHostHomePage() {
+		
+		var modalInstance = $uibModal.open({
+	 			 
+			     templateUrl: 'public/views/hostHomePage.html',
+		      	 controller:'hostHomePageController',
+		      	controllerAs:"vm"
+		      	 
+		    });
+
+			  
+	 	
 	}
 	
 	vm.Starthost = function(){
@@ -25,8 +54,10 @@ function BecomeAHostControllerFn($state,$http) {
 		then(function(response) {
 			console.log("here----");
 			console.log(response);
-			if(response.status==200){
-				
+			if(response.data.response==400){
+				openLoginModal();
+			} else {
+				window.location.assign("#/hostHomePage");
 			}
 		})
 		

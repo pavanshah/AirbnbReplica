@@ -356,8 +356,7 @@ else{
 
 var getHost = function(req,res){
 	console.log("inside get host");
-	req.session.emailId = "kushal.d.joshi@gmail.com"; //just for testing will be commented
-	if(req.session.emailId==undefined||req.session.emailId==null)
+	if(req.session.user==undefined||req.session.user==null)
 	{
 		console.log("No Session");
 		//res.status(400);

@@ -47,12 +47,12 @@ var authenticateHost = function (req,res,next){
 //if user is logged in host profile will be shown.
 var checkStarthosting = function(req,res){
 	console.log("inside get host");
-	console.log(req.session.user.emailId);
-	if(req.session.user.emailId === undefined){
+	//console.log(req.session.user.emailId);
+	if(typeof req.session.user == "undefined"){
 		console.log("setting the response");
-		res.status(400)
-		.send({"result":"user not logged in"});
+		res.send({"response":400});
 		return;
+		
 		//res.json({"result":"Host not logged in"});
 		
 	} else {
