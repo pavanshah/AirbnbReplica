@@ -192,6 +192,11 @@ var getBillByTripId = function(req,res) {
 	//console.log("get bill by trip id"+req.body.trip_id+"...bill id..."+req.body.bill_id);
 	console.log("sljbfjsdlb "+req.body.trip_id);
 	//console.log("req.data.trip_id"+req.data.trip_id);
+
+
+	//var tripObj = trip.findOne();
+
+
 	trip.find({"trip_id":req.body.trip_id},function(err,trip) {
 		if(err)
 		{
@@ -200,18 +205,37 @@ var getBillByTripId = function(req,res) {
 		else
 		{
 			tripObject = trip;
-			bill.find({"billing_id":"trip.bill.billing_id"},function(err,bill) {
+			console.log("abhjadbf"+tripObject.bill.billing_id);
+			var query = {"billing_id":tripObject.bill.billing_id};
+			var tripObj = bill.findOne(query);
+			tripObj.exec(function(err,billObject) {
 				if(err)
 				{
 					res.status(401).json({"result":"unable to fetch bill from trip id"});
 				}
 				else
 				{
-					bill.trip_start_date = tripObject.trip_start_date;
-					bill.trip_end_date = tripObject.trip_end_date;
-					res.status(200).json({"result":"fetched bill from trip id", "data":bill});
+					billObject.trip_start_date = tripObject.trip_start_date;
+					billObject.trip_end_date = tripObject.trip_end_date;
+					console.log("billlll"+billObject);
+					res.status(200).json({"result":"fetched bill from trip id", "bill":billObject});
 				}
 			});
+			
+			
+/*			bill.find({"billing_id":tripObject.bill.billing_id},function(err,billObject) {
+				if(err)
+				{
+					res.status(401).json({"result":"unable to fetch bill from trip id"});
+				}
+				else
+				{
+					billObject.trip_start_date = tripObject.trip_start_date;
+					billObject.trip_end_date = tripObject.trip_end_date;
+					console.log("billlll"+billObject);
+					res.status(200).json({"result":"fetched bill from trip id", "bill":billObject});
+				}
+			});*/
 		}
 	});
 
