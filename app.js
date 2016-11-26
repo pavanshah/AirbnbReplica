@@ -139,7 +139,8 @@ app.post('/HostLogIn',host.authenticateHost);
  app.post('/HostSignUp',host.HostSignUp);
  app.post('/DeleteHost',host.DeleteHost);
  //app.post('/UpdateHost',host.UpdateHost); // commentting this since it will be done in user
- app.get('/GetHost',host.GetHost);
+ //app.get('/GetHost',host.GetHost);
+ app.get('/getHostDetails',user.getHost);
 
 app.post('/createTrip', trip.createTrip);//temporary
 
