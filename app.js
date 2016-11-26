@@ -154,6 +154,8 @@ app.get("/getHostsForAdmin",admin.getHostsForAdmin);
 
 app.get("/logout",user.logout);
 app.post("/updateHost",user.updateHostProfile);
+app.post("/placeBid",property.placeBid);
+app.post("/getMaxBid",property.getMaxBid);
  /*app.post('/UpdateProperty',;*/
 
 
