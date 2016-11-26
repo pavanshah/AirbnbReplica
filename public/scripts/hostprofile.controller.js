@@ -13,7 +13,35 @@ function HostProfileFn($state,$scope,$http) {
 	$scope.birthYear = '';
 	$scope.birthDay = '';
 	$scope.birthMonth = '';
-	
+	/*"user": {
+	    "firstname": "Kushal",
+	    "lastname": "Joshi",
+	    "email": "kushal.d.joshi@gmail.com",
+	    "user_id": "364400311",
+	    "UserType": "host",
+	    "address": "San Jose",
+	    "birthYear": "1990",
+	    "birthMonth": "07",
+	    "birthDay": "17",
+	    "gender": "Male"
+	  }
+	  */
+	$scope.getHostDetails = function(){
+
+		$http.get('/getHostDetails').then(function(response){
+			console.log(response.data);
+			$scope.firstname = response.data.user.firstname;
+			$scope.lastname = response.data.user.lastname;
+			$scope.email = response.data.user.email;
+			$scope.phonenumber = response.data.user.phone;
+			$scope.gender = response.data.user.gender;
+			$scope.address = response.data.user.address;
+			$scope.birthYear = response.data.user.birthYear;
+			$scope.birthDay = response.data.user.birthDay;
+			$scope.birthMonth = response.data.user.birthMonth;
+	});
+	}
+	$scope.getHostDetails();
 	$scope.save = function(){
 		console.log("save button clicked");
 		console.log($scope.firstname);
@@ -30,17 +58,14 @@ function HostProfileFn($state,$scope,$http) {
 			"address":$scope.address,"birthYear":$scope.birthYear,"birthDay":$scope.birthDay,
 			"birthMonth":$scope.birthMonth
 			}).then(function(response){
-
-			console.log(response.data);
-
-		})
-		
-		
-		
+				console.log(response.data);
+			});
 	}
 	
+}
+	
 	
 		
-}
+
 
 app.controller('hostProfile',HostProfileFn);

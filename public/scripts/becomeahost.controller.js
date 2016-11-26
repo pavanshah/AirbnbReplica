@@ -25,8 +25,8 @@ function BecomeAHostControllerFn($state,$http) {
 		then(function(response) {
 			console.log("here----");
 			console.log(response);
-			if(response.data.result==400){
-				console.log("user not logged in");
+			if(response.status==200){
+				
 			}
 		})
 		
