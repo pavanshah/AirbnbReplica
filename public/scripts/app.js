@@ -127,6 +127,16 @@ app.config(function($stateProvider, $urlRouterProvider) {
 		controller:"hostAnalyticsController",
 		controllerAs:"vm"
 	})
+
+	.state('auctionablePropertyDetails',{
+		url:"/auctionablePropertyDetails",
+		templateUrl:"public/views/auctionablePropertyDetails.html",
+		controller:"AuctionablePropertyDetails",
+		controllerAs:"vm",
+		params:{
+			property:null
+		}
+	})
 	//$location.path('/prelogin');
 	//html5mode(true);
 	
