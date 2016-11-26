@@ -115,7 +115,14 @@ var authenticateLocal = function (req,res,next){
       console.log(user);
       console.log("storing in session");
 	 //console.log("Testing for user",res);
+	 if(user.avgrating==null||user.avgrating==undefined)
+	 {
+	 	user.avgrating=0;
+	 }
 	     var userObject = {
+	     	"firstname": user.firstname,
+	     	"lastname" : user.lastname,
+	     	"avgrating" : user.avgrating,
 	     	"emailId": user.email,
 	     	"UserType": user.UserType,
 	     	"user_id":user.user_id,

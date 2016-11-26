@@ -4,10 +4,12 @@ var Schema = mongoose.Schema;
 var Property = new Schema({
  property_id: String,
  host_id: String,
+ host:Object,
  category:String,
  qty:Number,
  base_price:Number,
  ListingType:String,
+ ListingDate:Date,
  location: {
  				type:[Number],
  				required:true
