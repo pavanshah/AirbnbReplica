@@ -416,6 +416,16 @@ var isUserLoggedIn = function(req,res) {
 		res.json({"response":"Not Authenticated. Please login first"});
 	}
 	else{
+
+		winston.remove(winston.transports.File);
+		winston.add(winston.transports.File, { filename: 'public/LogFiles/AirbnbAnalysis.json' });
+	 	winston.log('info', 'instant book button clicked', { page_name : 'checkout_page', user_email : req.session.user.emailId, city : req.session.user.address.city, state : req.session.user.address.state, country : req.session.user.address.country});
+
+	 	winston.remove(winston.transports.File);
+		winston.add(winston.transports.File, { filename: 'public/LogFiles/UserTracking.json' });
+		req.session.user.user_tracker.push("checkout_page");
+	 	winston.log('info', 'user tracker updated', {session_id : req.session.user.session_id, user_email : req.session.user.emailId, "user_tracker" : req.session.user.user_tracker});		
+
 		res.status(200);
 		res.json({"response":"Authenticated."});	
 	}
