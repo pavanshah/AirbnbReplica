@@ -24,6 +24,8 @@ var Hosts = require('./Models/host');
 var Users = require('./Models/user');
 var review = require("./routes/review");
 var admin = require("./routes/admin");
+var logAnalysis = require("./routes/logAnalysis");
+
 // all environments
 app.use(expressSession({
   secret: 'cmpe273_airbnb_team9',
@@ -96,6 +98,8 @@ passport.deserializeUser(function(key, done) {
  app.get('/', function(req, res) {
         res.sendfile('public/index.html'); // load the single view file (angular will handle the page changes on the front-end)
     });
+
+ app.get('/getAuctionableProperties',property.getAuctionableProperties);
  app.post('/CreateProperty',property.CreateProperty);
  app.post('/SearchPropertyByDistance',property.SearchPropertyByDistance);
  app.post('/FilterProperties',property.FilterProperties);
@@ -137,7 +141,8 @@ app.post('/HostLogIn',host.authenticateHost);
  app.post('/HostSignUp',host.HostSignUp);
  app.post('/DeleteHost',host.DeleteHost);
  //app.post('/UpdateHost',host.UpdateHost); // commentting this since it will be done in user
- app.get('/GetHost',host.GetHost);
+ //app.get('/GetHost',host.GetHost);
+ app.get('/getHostDetails',user.getHost);
 
 app.post('/createTrip', trip.createTrip);//temporary
 
@@ -151,6 +156,10 @@ app.get("/getBillForAdmin",admin.getBillForAdmin);
 app.get("/logout",user.logout);
 app.post("/updateHost",user.updateHostProfile);
  /*app.post('/UpdateProperty',;*/
+
+
+ //log analysis requests
+ app.post('/clicksPerPage', logAnalysis.clicksPerPage);
 
 mongoose.connect(mongoSessionConnectURL, function(){
   console.log('Connected to mongo at: ' + mongoSessionConnectURL);

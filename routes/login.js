@@ -115,11 +115,20 @@ var authenticateLocal = function (req,res,next){
       console.log(user);
       console.log("storing in session");
 	 //console.log("Testing for user",res);
+	 if(user.avgrating==null||user.avgrating==undefined)
+	 {
+	 	user.avgrating=0;
+	 }
 	     var userObject = {
+	     	"firstname": user.firstname,
+	     	"lastname" : user.lastname,
+	     	"avgrating" : user.avgrating,
 	     	"emailId": user.email,
 	     	"UserType": user.UserType,
 	     	"user_id":user.user_id,
-	     	"session_id" : uniqueIDGenerator.returnUniqueID()
+	     	"address" : user.address,
+	     	"session_id" : uniqueIDGenerator.returnUniqueID(),
+	     	"user_tracker" : []
 	     }
 	 	req.session.user = userObject;
 	 	console.log("session id "+req.session.user.session_id);
@@ -128,7 +137,14 @@ var authenticateLocal = function (req,res,next){
 	 	//remove previous file everytime and add the one in which next log is to be stored
 	 	winston.remove(winston.transports.File);
 		winston.add(winston.transports.File, { filename: 'public/LogFiles/AirbnbAnalysis.json' });
-	 	winston.log('info', 'login button clicked', { page_name : 'login_page', user_email : req.session.user.emailId, city : user.address.city, state : user.address.state, country : user.address.country});
+	 	winston.log('info', 'login button clicked', { page_name : 'login_page', user_email : req.session.user.emailId, city : req.session.user.address.city, state : req.session.user.address.state, country : req.session.user.address.country});
+
+	 	winston.remove(winston.transports.File);
+		winston.add(winston.transports.File, { filename: 'public/LogFiles/UserTracking.json' });
+		//req.session.user.user_tracker.push(["login_page", new Date]);
+		req.session.user.user_tracker.push("login_page");
+	 	winston.log('info', 'user tracker updated', {session_id : req.session.user.session_id, user_email : req.session.user.emailId, "user_tracker" : req.session.user.user_tracker});
+
 
 	 	//console.log(req.session.emailId);
 		res.json({"userLoggedIn":true});
@@ -191,36 +207,63 @@ var deleteLogin = function(req,res){
  	};
 //updateHostProfile function updates host profile details
 var updateHostProfile = function(req,res){
- 		console.log("Inside user Profile Update");
- 		var dateString = req.body.birthMonth + "-" + req.body.birthDay + "-" + req.body.birthYear;
- 		console.log(dateString);
- 		console.log(req.body);
- 		var momentObj = moment(dateString, 'MM-DD-YYYY');
- 		var hostBirthDay = momentObj.format('YYYY-MM-DD');
- 		console.log(hostBirthDay);
- 		req.body.birthdate = hostBirthDay; //to save the host birthday
- 		req.body.UserType = "host";
- 		
- 		var query = {'email':req.body.email};
-
- 		//console.log(req.body.user);
- 		
+		if(req.body.from != "card"){
+			console.log("Inside user Profile Update");
+	 		var dateString = req.body.birthMonth + "-" + req.body.birthDay + "-" + req.body.birthYear;
+	 		console.log(dateString);
+	 		console.log(req.body);
+	 		var momentObj = moment(dateString, 'MM-DD-YYYY');
+	 		var hostBirthDay = momentObj.format('YYYY-MM-DD');
+	 		console.log(hostBirthDay);
+	 		req.body.birthdate = hostBirthDay; //to save the host birthday
+	 		req.body.UserType = "host";
+	 		req.body.phone = req.body.phonenumber;
+	 		var query = {'email':req.body.email};
+	 		
+	 		Users.findOneAndUpdate(query, req.body, {upsert:false}, function(err, doc){
+	 			
+	 		    if (err) {
+	 		    	res
+	 				.status(400)
+	 				.send({"result":"Bad request"});
+	 				return;
+	 		    }
+	 		    else {
+	 		    	console.log(doc);
+	 		res
+	 	 	.status(200)
+	 	 	.send({"result":"user updated"});
+	 			
+	 		};
+	 		})	
+		} else
+		{
+		console.log(req.body);	
+		var query = {'email':req.body.email};
+		var carddetails = {
+				"creditcard" : req.body.cardNumber,
+				"expiryDate" : req.body.expiryDate,
+				"cvv"		 : req.body.cvv
+		}
+		req.body.carddetails = carddetails;
+		
+		console.log(req.body.carddetails);
  		Users.findOneAndUpdate(query, req.body, {upsert:false}, function(err, doc){
- 			
- 		    if (err) {
+ 			if (err) {
  		    	res
  				.status(400)
  				.send({"result":"Bad request"});
  				return;
- 		    }
+ 		    	}
  		    else {
  		    	console.log(doc);
- 		res
- 	 	.status(200)
- 	 	.send({"result":"User Updated"});
- 			
- 		};
+ 		    	res
+ 		    	 .status(200)
+ 		    	   .send({"result":"card details saved"});
+ 		    	};
  		})
+		}
+ 		
  		
 };
 
@@ -311,6 +354,58 @@ else{
 	}
 };
 
+var getHost = function(req,res){
+	console.log("inside get host");
+	req.session.emailId = "kushal.d.joshi@gmail.com"; //just for testing will be commented
+	if(req.session.emailId==undefined||req.session.emailId==null)
+	{
+		console.log("No Session");
+		//res.status(400);
+		res.status(401);
+		res.json({"response":"Not Authenticated. Please login first"});
+	}
+
+else{
+	console.log("Inside Get host service");
+	 	
+ 	Users.findOne({"email":req.session.emailId},function(err,user){
+ 		if(err || user == null){
+ 			res
+ 			.status(400)
+ 			.send({"result":"user not found"});
+ 			return;
+ 			
+ 		}
+ 		var momentObj = moment(user.birthdate, 'MM-DD-YYYY');
+ 		var hostBirthDay = momentObj.format('YYYY-MM-DD');
+ 		//1990-07-17
+ 		var birthYear = hostBirthDay.substring(0,4);
+ 		var birthMonth = hostBirthDay.substring(6,7);
+ 		var birthDay = hostBirthDay.substring(8,10);
+ 		console.log(hostBirthDay);
+ 		var UserObject = 
+ 		{
+		 	"firstname": user.firstname,
+		    "lastname": user.lastname,
+		    "email": user.email,
+		    "user_id": user.user_id,
+		    "type": user.type,
+		    "UserType": user.UserType,
+		    "phone" :user.phone,
+		    "address": user.address,
+		    "birthYear":birthYear,
+		    "birthMonth":birthMonth,
+		    "birthDay":birthDay,
+		    "gender": user.gender
+		};
+ 				
+ 		res
+ 		.status(200)
+ 		.send({"user":UserObject});
+ 	});
+	
+	}
+};
 
 var isUserLoggedIn = function(req,res) {
 
@@ -329,6 +424,17 @@ var isUserLoggedIn = function(req,res) {
 
 var logout = function(req,res) {
 	
+
+	//log capture, always remove previous file everytime and add the one in which next log is to be stored
+		winston.remove(winston.transports.File);
+		winston.add(winston.transports.File, { filename: 'public/LogFiles/AirbnbAnalysis.json' });
+		winston.log('info', 'logout button clicked', { page_name : 'logout_page', user_email : req.session.user.emailId, city : req.session.user.address.city, state : req.session.user.address.state, country : req.session.user.address.country});	 	
+
+		winston.remove(winston.transports.File);
+		winston.add(winston.transports.File, { filename: 'public/LogFiles/UserTracking.json' });
+		req.session.user.user_tracker.push("logout_page");
+		winston.log('info', 'user tracker updated', {session_id : req.session.user.session_id, user_email : req.session.user.emailId, "user_tracker" : req.session.user.user_tracker});
+
 	req.session.destroy();
 	res.json({"userLoggedIn":false});
 
@@ -344,3 +450,4 @@ exports.getLoginUserDetails = getLoginUserDetails;
 exports.authenticateLocal = authenticateLocal;
 exports.isUserLoggedIn = isUserLoggedIn;
 exports.logout = logout;
+exports.getHost = getHost;

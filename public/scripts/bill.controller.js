@@ -12,6 +12,10 @@ var BillControllerFn = function ($http, $state, $stateParams) {
 			{
 				console.log("ljabdfjldbsjbajbj"+response.data.bill.trip_amount);
 				vm.bill = response.data.bill;
+				//vm.bill.to_date - vm.bill.from_date
+				var d1 = moment(new Date(vm.bill.to_date));
+				var d2 = moment(new Date(vm.bill.from_date));
+				vm.days = moment.duration(d1.diff(d2)).asDays();
 			}
 		});
 	}

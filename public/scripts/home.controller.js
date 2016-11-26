@@ -45,10 +45,23 @@ function homeControllerFn($state,$http,bookingDataService) {
 	};
 
 	vm.qty = "1"; //default room 1
-	vm.findProperty = function () {
+	
+	vm.getAuctionableProperties = function () {
 		
+		$http.get("/getAuctionableProperties").
+		then(function(response) {
+			if(response.status==200){
+				vm.auctionableProperties = response.data;
+			}
+		})
 
 		
+	}
+
+	vm.getAuctionableProperties();
+
+	vm.goToAuctionableProperty = function(property){
+		$state.go("auctionablePropertyDetails",{property:property});
 	}
 
 
