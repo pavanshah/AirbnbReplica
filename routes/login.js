@@ -367,7 +367,7 @@ var getHost = function(req,res){
 else{
 	console.log("Inside Get host service");
 	 	
- 	Users.findOne({"email":req.session.emailId},function(err,user){
+ 	Users.findOne({"email":req.session.user.emailId},function(err,user){
  		if(err || user == null){
  			res
  			.status(400)
