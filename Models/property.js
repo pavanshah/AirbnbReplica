@@ -8,6 +8,7 @@ var Property = new Schema({
  qty:Number,
  base_price:Number,
  ListingType:String,
+ ListingDate:Date,
  location: {
  				type:[Number],
  				required:true
