@@ -90,14 +90,17 @@ function filter(properties,start_date,end_date) {
 
 var SearchPropertyByDistance = function(req,res){
 
-	winston.remove(winston.transports.File);
-	winston.add(winston.transports.File, { filename: 'public/LogFiles/AirbnbAnalysis.json' });
-	winston.log('info', 'search property button clicked', { page_name : 'property_page', user_email : req.session.user.emailId, city : req.session.user.address.city, state : req.session.user.address.state, country : req.session.user.address.country});
+	if(req.session.user)
+	{
+		winston.remove(winston.transports.File);
+		winston.add(winston.transports.File, { filename: 'public/LogFiles/AirbnbAnalysis.json' });
+		winston.log('info', 'search property button clicked', { page_name : 'property_page', user_email : req.session.user.emailId, city : req.session.user.address.city, state : req.session.user.address.state, country : req.session.user.address.country});
 
-	winston.remove(winston.transports.File);
-	winston.add(winston.transports.File, { filename: 'public/LogFiles/UserTracking.json' });
-	req.session.user.user_tracker.push("property_page");
-	winston.log('info', 'user tracker updated', {session_id : req.session.user.session_id, user_email : req.session.user.emailId, "user_tracker" : req.session.user.user_tracker});
+		winston.remove(winston.transports.File);
+		winston.add(winston.transports.File, { filename: 'public/LogFiles/UserTracking.json' });
+		req.session.user.user_tracker.push("property_page");
+		winston.log('info', 'user tracker updated', {session_id : req.session.user.session_id, user_email : req.session.user.emailId, "user_tracker" : req.session.user.user_tracker});
+	}
 
 	var lat             = req.body.latitude;
     var long            = req.body.longitude;
