@@ -6,9 +6,6 @@ function auctionablePropertyDetailsControllerFn($state,$stateParams,$http,$uibMo
 	vm.property = {};
 	
 	//vm.bookingDates = bookingDataService.getBooking().bookingDates;
-
-	
-
 	function getMaxBid() {
 		$http.post("/getMaxBid",vm.property).
 		then(function(response){
@@ -24,7 +21,6 @@ function auctionablePropertyDetailsControllerFn($state,$stateParams,$http,$uibMo
 		})
 	}
 
-
 	function getPropertyDetails(property) {
 		$http.post("/SearchPropertyById",{property_id:property.property_id}).
 		then(function(response) {
@@ -33,16 +29,9 @@ function auctionablePropertyDetailsControllerFn($state,$stateParams,$http,$uibMo
 
 				vm.property= response.data;
 				vm.availStartDate = new Date(vm.property.property_start_date);
-
-				//vm.availStartDate = vm.availStartDate.getFullYear()+'-' + (vm.availStartDate.getMonth()+1) + '-'+vm.availStartDate.getDate()
-				vm.availEndDate = new Date(vm.property.property_end_date);
-				//vm.availEndDate = vm.availEndDate.getFullYear()+'-' + (vm.availEndDate.getMonth()+1) + '-'+vm.availEndDate.getDate()
-				
-
 				vm.availEndDate = new Date(vm.property.property_end_date);
 				getMaxBid();
 				//vm.maxBid = _.max(, function(stooge){ return stooge.age; });
-
 				console.log("property",vm.property);
 			}
 			else
@@ -76,29 +65,18 @@ function auctionablePropertyDetailsControllerFn($state,$stateParams,$http,$uibMo
 
 		     modalInstance.result.then(function (userData) {
 			     vm.userData = userData;
-
-			     loginService.login(userData).
-
 			     vm.placeBid();
 			     /*loginService.login(userData).
->>>>>>> 80f18b1623c08101dabc79b433af199faa05c12d
 			     then(function(isLoggedIn) {
 			     	if(isLoggedIn){
 			     		loginService.getUserProfile().
 			     		then(function(user) {
 			     			vm.user = user;
 			     		});
-<<<<<<< HEAD
-			     		goToCheckoutPage();
-			     		//bookProperty();
-			     	}
-			     })
-=======
 			     		vm.placeBid();
 			     		//bookProperty();
 			     	}
 			     })*/
-
 
 			     console.log("userData",vm.userData);
 			    }, function () {
@@ -107,7 +85,6 @@ function auctionablePropertyDetailsControllerFn($state,$stateParams,$http,$uibMo
 			  
 	 	
 	}
-
 
 	vm.placeBid = function() {
 		vm.errMessage = "";
@@ -128,7 +105,6 @@ function auctionablePropertyDetailsControllerFn($state,$stateParams,$http,$uibMo
 		});
 	}
 
-
 	vm.authenticateUser = function() {
 		//calculateBill();
 		$http.get("/isUserLoggedIn").
@@ -136,12 +112,8 @@ function auctionablePropertyDetailsControllerFn($state,$stateParams,$http,$uibMo
 			console.log("response",response);
 			if(response.status==200){
 				//vm.bookProperty();
-
-				goToCheckoutPage();
-
 				vm.placeBid();
 				//goToCheckoutPage();
-
 			}
 			else if(response.status==401){
 				
