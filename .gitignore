@@ -40,3 +40,4 @@ jspm_packages
 
 #logs
 .public/LogFiles
+/public/LogFiles
