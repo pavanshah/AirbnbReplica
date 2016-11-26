@@ -41,11 +41,31 @@
 							<svg viewBox="0 0 12 12" data-reactid=".3.0.0.0.1.0.0.0.3.1"><path d="M11.53.47a.75.75 0 0 0-1.061 0l-4.47 4.47L1.529.47A.75.75 0 1 0 .468 1.531l4.47 4.47-4.47 4.47a.75.75 0 1 0 1.061 1.061l4.47-4.47 4.47 4.47a.75.75 0 1 0 1.061-1.061l-4.47-4.47 4.47-4.47a.75.75 0 0 0 0-1.061z" data-reactid=".3.0.0.0.1.0.0.0.3.1.0"></path></svg>
 						</span>
 					</div>
-					<!-- <div class="col-lg-3 col-md-3 col-sm-3 hidden-xs no-padding common-div white-bg no-of-guest">
-						<span class="guest-count focused-on pull-left">1 guest</span>
+					<div class="col-lg-3 col-md-3 col-sm-3 hidden-xs no-padding common-div  no-of-guest">
+						
+                                    <select ng-model="vm.qty">
+                                        <option selected="" value="1">1 Room</option>
+                                        <option value="2" >2 Rooms</option>
+                                        <option value="3" >3 Rooms</option>
+                                        <option value="4" >4 Rooms</option>
+                                        <option value="5" >5 Rooms</option>
+                                        <option value="6" >6 Rooms</option>
+                                        <option value="7" >7 Rooms</option>
+                                        <option value="8" >8 Rooms</option>
+                                        <option value="9" >9 Rooms</option>
+                                        <!-- <option value="10" >10 Guests</option>
+                                        <option value="11" >11 Guests</option>
+                                        <option value="12" >12 Guests</option>
+                                        <option value="13" >13 Guests</option>
+                                        <option value="14" >14 Guests</option>
+                                        <option value="15" >15 Guests</option>
+                                        <option value="16" >16+ Guests</option> -->
+                                    </select>
+                               
+						<!-- <span class="guest-count focused-on pull-left">1 guest</span>
 						<i class="fa fa-caret-up pull-right" aria-hidden="true"></i>
 						<i class="fa fa-caret-down pull-right active" aria-hidden="true"></i>
-						<div class="filter-sec"> --><!-- add class "open" to show div -->
+						<div class="filter-sec"> add class "open" to show div -->
 					<!-- 		<ul class="clearfix">
 								<li>
 									<div class="col-lg-8 col-md-8 col-sm-8 no-padding-left rest-text">
@@ -79,8 +99,8 @@
 								</li>
 							</ul>
 							<span class="pull-right close-link">close</span>
-						</div>	
-					</div> -->
+						</div> -->	
+					</div>
 				</div>
 				<div class="col-lg-2 col-md-2 col-sm-2 col-xs-1 no-padding">
 					<!-- btn for tab and desktop -->

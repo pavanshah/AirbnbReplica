@@ -5,8 +5,7 @@ function signupModalControllerFn($uibModalInstance,loginService) {
 	vm.user = {};
 	vm.user.UserType = "User"
 	vm.signupView = "signupMethod";
-	vm.required = false;
-	vm.emailflag = false;
+	vm.birthdayflag = false;
 	
 	vm.birthDatePopUp = {
     	opened: false
@@ -26,44 +25,31 @@ function signupModalControllerFn($uibModalInstance,loginService) {
 	}
 
 	vm.ok = function () {
-		vm.required = true;
-		vm.emailflag = false;
 
-		var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-	    if(!re.test(vm.user.email) && vm.user.email != null)
-	    	{
-	    		vm.emailflag = true;
-	    		console.log("invalid email");
-	    	}
-		
-		if(vm.user.firstname == null || vm.user.lastname == null || vm.user.email == null || vm.user.password == null || vm.emailflag == true)
-			{
-				//something is invalid
-				return;
-			}
-		else
-			{
-				loginService.signup(vm.user).
-				then(function(response) {
-					if(response.status==200){
+					var date = new Date();
+					var bd = new Date(vm.user.birthdate);
+
+					if(bd>date)
+					{
+						vm.birthdayflag = true;
+					}
+					else
+					{
+						loginService.signup(vm.user).
+						then(function(response) {
+						if(response.status==200){
 						$uibModalInstance.close(vm.user);	
 						vm.serverError = "";	
+						}
+					
+						},function(err) {
+						if(err.status==400){
+						vm.serverError = err.data.result;
+						}
+						})
 					}
 					
-				},function(err) {
-					if(err.status==400){
-						vm.serverError = err.data.result;
-					}
-				})
-				
-			}
   	};
-  	
-  	
-  	vm.setEmailFlag = function()
-  	{
-  		vm.emailflag = false;
-  	}
 
 }
 

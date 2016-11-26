@@ -16,10 +16,41 @@ var TripControllerFn = function ($http,tripsService) {
   };
 	
 
+	vm.rateHost = function(tripId) {
+
+		var temp = vm.trips[tripId];
+/*
+		angular.forEach(temp,function(temp) {
+			if(temp.trip_id == tripId)
+			{
+				temp.reviewDiv = 1;
+			}
+		});*/
+		vm.trips[tripId].reviewDiv = 1;
+
+		//vm.trips.reviewDiv = 1;
+	}
+
 	vm.trips ={};
 	
 	vm.temp = function() {
 		console.log("inside star");
+	}
+
+	vm.submitReview = function(tripId) {
+		console.log(vm.trips[tripId]);
+
+		$http.post('/submitReviewForTrip',vm.trips[tripId]).
+		then(function(response) {
+			if(response.status == 200)
+			{
+				vm.trips[tripId].submitted = 1;
+			}
+			else
+			{
+				vm.trips[tripId].submitted = 0;
+			}
+		});
 	}
 
 	vm.rating = 0;
@@ -34,10 +65,17 @@ var TripControllerFn = function ($http,tripsService) {
                 response.property.propertyPictures = ["public/images/room-list-images/room-1-a.png"];
               }
               response.rating = 0;
+              response.rate = 1;
+              response.review = "";
+              response.reviewDiv = 0;
+              //response.submitted = 2;
               $http.post('/getRatingsForTrip',{"host_id":response.host_id}).
               then(function(rating) {
               	if(rating.status == 200)
               	{
+              		//response.rating = 0;
+              		
+              		
               		console.log("kad fjdaf"+rating.data.result.feedback);
               		if(rating.data.result != null)
               		{

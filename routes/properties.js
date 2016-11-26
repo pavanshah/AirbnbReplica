@@ -12,7 +12,7 @@ var Trip = require('./trip');
 var CreateProperty = function (req,res){
 
 	console.log("inside create property");
-
+	console.log(req.body.property);
 	/*
 	var todayDate = new Date();
 	var year = todayDate.getFullYear();
@@ -28,7 +28,7 @@ var CreateProperty = function (req,res){
 	*/
 	
 	req.body.property.property_id = uniqueIDGenerator.returnUniqueID();
-	
+	req.body.property.host_id = 1234;
 	
 	var newProperty = Property(req.body.property);
 	console.log(newProperty);
@@ -97,7 +97,7 @@ var SearchPropertyByDistance = function(req,res){
     //long = -122;
 
     // Opens a generic Mongoose Query. Depending on the post body we will...
-    var query = Property.find({});
+    var query = Property.find({ qty: { $gte: req.body.qty } });
 
     // ...include filter by Max Distance (converting miles to meters)
     if(distance){
