@@ -74,12 +74,22 @@ app.config(function($stateProvider, $urlRouterProvider) {
 
 	.state('orderSuccess',{
 		url:"/orderSuccess",
-		templateUrl:"public/views/orderSuccess.html"
+		templateUrl:"public/views/orderSuccess.html",
+		params:{
+			trip:null
+		},
+		controller:"orderSuccessController",
+		controllerAs:"vm"
 	})
 
 	.state('userBill',{
 		url:'/userBill',
-		templateUrl:"public/views/finalReciept.html"
+		templateUrl:"public/views/finalReciept.html",
+		params:{
+			trip:null
+		},
+		controller:"BillController",
+		controllerAs:"vm"
 	})
 	.state('userHome',{
 		url:'/userHome',
