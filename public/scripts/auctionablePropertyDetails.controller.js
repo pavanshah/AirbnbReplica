@@ -111,12 +111,21 @@ function auctionablePropertyDetailsControllerFn($state,$stateParams,$http,$uibMo
 
 	vm.placeBid = function() {
 		vm.errMessage = "";
+		if(vm.bid_value <= vm.property.base_price){
+			vm.errMessage = "Bid Price should be greater than the base price $"+vm.property.base_price;
+			return;
+		}
 		if(vm.bid_value <= vm.maxBid){
 			vm.errMessage = "Bid Price should be greater than the Maximum bid";
 			return;
 		}
 
-		$http.post("/placeBid",{property:vm.property,bid_value:vm.bid_value});
+		$http.post("/placeBid",{property:vm.property,bid_value:vm.bid_value}).
+		then(function(response) {
+			if(response.status==200){
+				$state.go("bidConfirmationPage");
+			}
+		});
 	}
 
 

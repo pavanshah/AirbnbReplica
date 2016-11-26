@@ -150,6 +150,11 @@ app.config(function($stateProvider, $urlRouterProvider) {
 		controller:"hostHomePageController",
 		controllerAs:"vm"
 	})
+	.state('bidConfirmationPage',{
+		url:"/bidCofirmationPage",
+		templateUrl:"public/views/bidCofirm.html"
+		
+	})
 	//$location.path('/prelogin');
 	//html5mode(true);
 	
