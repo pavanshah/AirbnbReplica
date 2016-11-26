@@ -7,6 +7,7 @@ var uniqueIDGenerator = require('../routes/uniqueIDGenerator');
 var daterange = require('daterange');
 var _ = require('underscore');
 var Bill = require('./bill');
+var Bid = require('../Models/Bid');
 var Trip = require('./trip');
 var winston = require('winston');
 
@@ -479,9 +480,56 @@ var placeBid= function(req,res) {
 
 	console.log("inside bid property");
 	
+
+	var BidObj = {
+
+
+		bid_id : uniqueIDGenerator.returnUniqueID(),
+		bid_date: new Date(),
+		user: req.session.user,
+		property_id:req.body.property.property_id,
+		property:req.body.property,
+		bid_amount:req.body.bid_value,
+		bid_status:"active"
+
+			}
+	var newBid = Bid(BidObj);
+
+	Bid.find({property_id:BidObj.property_id, bid_status:"active"},function(err,bids){
+
+		/*var nBids = bids.length;
+         var i =0;
+		for(bid in bids){
+*/	
+		
+			if(bids[0]){
+				console.log(bids[0].bid_status);
+				Bid.update({'bid_id':bids[0].bid_id}, {'bid_status':"Lost"},function(err,updatedBids){
+
+
+					newBid.save(function(err,response){
+
+						console.log("Old bid marked false and new Bid created");
+					});
+
+				});
+		}
+			
+			else
+			{
+			  newBid.save(newBid,function(err,response){
+
+					console.log("New Bid added");
+				});
+			}
+
+		
+
+
+	})
 	
 	console.log(req.body);
-	console.log(req.session.user);
+	console.log(req.body.user);
 	var query = {'property_id':req.body.property.property_id};
 	var obj = {"bid_date":new Date(), "user_email":req.session.user.emailId,"bid_value":req.body.bid_value,"status":"active"};
 	Property.update(query,{$push:{bids:obj}}, function(error, property) {
