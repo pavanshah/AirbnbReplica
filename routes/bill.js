@@ -3,6 +3,7 @@ var mongoURL = "mongodb://apps92:shim123@ds155727.mlab.com:55727/airbnbproto";
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var bill = require('../Models/bill');
+var trip = require('../Models/trip');
 var uniqueIDGenerator = require('../routes/uniqueIDGenerator');
 
 var GenerateBill = function (req,callback){
@@ -185,6 +186,37 @@ var DeleteBill = function (req,res){
 	});
 }
 
+var tripObject = {};
+
+var getBillByTripId = function(req,res) {
+	//console.log("get bill by trip id"+req.body.trip_id+"...bill id..."+req.body.bill_id);
+	console.log("sljbfjsdlb "+req.body.trip_id);
+	//console.log("req.data.trip_id"+req.data.trip_id);
+	trip.find({"trip_id":req.body.trip_id},function(err,trip) {
+		if(err)
+		{
+			res.status(401).json({"result":"unable to fetch trip object"});
+		}
+		else
+		{
+			tripObject = trip;
+			bill.find({"billing_id":"trip.bill.billing_id"},function(err,bill) {
+				if(err)
+				{
+					res.status(401).json({"result":"unable to fetch bill from trip id"});
+				}
+				else
+				{
+					bill.trip_start_date = tripObject.trip_start_date;
+					bill.trip_end_date = tripObject.trip_end_date;
+					res.status(200).json({"result":"fetched bill from trip id", "data":bill});
+				}
+			});
+		}
+	});
+
+}
+
 
 
 exports.DeleteBill = DeleteBill;
@@ -195,3 +227,4 @@ exports.SearchHostBillsbyDate = SearchHostBillsbyDate;
 exports.SearchHostBillsByMonth = SearchHostBillsByMonth
 exports.SearchUserBillsbyDate = SearchUserBillsbyDate;
 exports.SearchUserBillsByMonth = SearchUserBillsByMonth;
+exports.getBillByTripId = getBillByTripId;

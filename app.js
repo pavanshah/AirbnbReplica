@@ -124,6 +124,8 @@ app.post('/userLogIn',user.authenticateLocal);
 app.post('/getRatingsForTrip', review.getRatingsForTrip);
 app.post('/submitReviewForTrip', review.submitReviewForTrip);
 
+app.post('/getBillByTripId', bill.getBillByTripId);
+
 app.post('/UpdateProperty',property.UpdateProperty);
 app.post('/bookProperty', property.ConfirmBooking);
 
