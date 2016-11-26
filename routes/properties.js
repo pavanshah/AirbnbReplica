@@ -26,9 +26,11 @@ var CreateProperty = function (req,res){
 	//Will use the below variable to save the propertyID after the login is done and username is available in the session
 	//var property_id = req.session.username+""+year+""+month+""+date+""+hour+""+minute+""+second+""+milliSecond;
 	*/
-	
+	console.log(req.session.user.user_id);
+
+	req.body.property.host = req.session.user;
 	req.body.property.property_id = uniqueIDGenerator.returnUniqueID();
-	req.body.property.host_id = req.session.userid;
+	req.body.property.host_id = req.session.user.user_id;
 	req.body.property.ListingDate = new Date();
 	
 	var newProperty = Property(req.body.property);
