@@ -356,8 +356,7 @@ else{
 
 var getHost = function(req,res){
 	console.log("inside get host");
-	req.session.emailId = "kushal.d.joshi@gmail.com"; //just for testing will be commented
-	if(req.session.emailId==undefined||req.session.emailId==null)
+	if(req.session.user==undefined||req.session.user==null)
 	{
 		console.log("No Session");
 		//res.status(400);
@@ -368,7 +367,7 @@ var getHost = function(req,res){
 else{
 	console.log("Inside Get host service");
 	 	
- 	Users.findOne({"email":req.session.emailId},function(err,user){
+ 	Users.findOne({"email":req.session.user.emailId},function(err,user){
  		if(err || user == null){
  			res
  			.status(400)
