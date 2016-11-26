@@ -26,9 +26,12 @@ var CreateProperty = function (req,res){
 	//Will use the below variable to save the propertyID after the login is done and username is available in the session
 	//var property_id = req.session.username+""+year+""+month+""+date+""+hour+""+minute+""+second+""+milliSecond;
 	*/
-	
+	console.log(req.session.user.user_id);
+
+	req.body.property.host = req.session.user;
 	req.body.property.property_id = uniqueIDGenerator.returnUniqueID();
-	req.body.property.host_id = 1234;
+	req.body.property.host_id = req.session.user.user_id;
+	req.body.property.ListingDate = new Date();
 	
 	var newProperty = Property(req.body.property);
 	console.log(newProperty);
@@ -422,6 +425,31 @@ var calculateBill = function (req,res)
 
 }
 
+var getAuctionableProperties = function (req,res) {
+
+	today = new Date();
+	validListingDate= new Date();
+	validListingDate.setDate(today.getDate() -3);
+
+	console.log(validListingDate);
+
+	Property.find({'ListingType':"auction","ListingDate":{"$gte":validListingDate}},function(err,properties){
+
+		if(!err){
+
+			res.status(200);
+			res.json(properties);
+		}
+		else
+		{
+			console.log(err)
+		}
+
+
+	});
+}
+
+exports.getAuctionableProperties = getAuctionableProperties;
 exports.calculateBill =calculateBill;
 
 

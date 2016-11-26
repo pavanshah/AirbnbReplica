@@ -8,9 +8,13 @@ function AddPropertyControllerFn($state,$stateParams,$http) {
 		address:{},
 		location:[],
 		propertyPictures:[],
-		propertyVideos:[]
+		propertyVideos:[],
+		ListingType:""
 	};
 	vm.location=[];
+	vm.showPricingCatalog=true;
+	vm.showBaseNote=false;
+	//vm.ListingType = "";
 	
 	vm.UploadProperty = function(){
 
@@ -76,6 +80,20 @@ function AddPropertyControllerFn($state,$stateParams,$http) {
 		vm.property.location= [vm.travelLocation.geometry.location.lng(),vm.travelLocation.geometry.location.lat()];
 
 		console.log(vm.property.location[0]);
+	}
+
+	vm.UpdateListingType = function () {
+
+		console.log(vm.property.ListingType);
+
+		if(vm.property.ListingType=="auction")
+		{
+			vm.showPricingCatalog=false;
+			vm.showBaseNote = true;
+		}
+
+
+
 	}
 
 

@@ -29,7 +29,8 @@ function CheckoutControllerFn($state,$stateParams,$http,bookingDataService) {
 		then(function(response) {
 			if(response.status==200){
 				bookingDataService.deleteBooking();
-				$state.go("orderSuccess");
+				console.log("bookpropertyahdbadhkbda"+response.data.trip);
+				$state.go("orderSuccess",{"trip":response.data.trip});
 			}
 			else if(response.status==401){
 				openLoginModal();

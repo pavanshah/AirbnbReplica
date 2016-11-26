@@ -96,6 +96,8 @@ passport.deserializeUser(function(key, done) {
  app.get('/', function(req, res) {
         res.sendfile('public/index.html'); // load the single view file (angular will handle the page changes on the front-end)
     });
+
+ app.get('/getAuctionableProperties',property.getAuctionableProperties);
  app.post('/CreateProperty',property.CreateProperty);
  app.post('/SearchPropertyByDistance',property.SearchPropertyByDistance);
  app.post('/FilterProperties',property.FilterProperties);
@@ -123,6 +125,8 @@ app.post('/starthosting',host.checkStarthosting);
 app.post('/userLogIn',user.authenticateLocal);	
 app.post('/getRatingsForTrip', review.getRatingsForTrip);
 app.post('/submitReviewForTrip', review.submitReviewForTrip);
+
+app.post('/getBillByTripId', bill.getBillByTripId);
 
 app.post('/UpdateProperty',property.UpdateProperty);
 app.post('/bookProperty', property.ConfirmBooking);

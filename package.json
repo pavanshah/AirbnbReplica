@@ -23,7 +23,8 @@
     "passport-local": "*",
     "passport-local-mongoose": "^4.0.0",
     "serve-favicon": "^2.3.0",
-    "url": "^0.10.1"
+    "url": "^0.10.1",
+    "winston" : "*"
   },
   "devDependencies": {
     "bcryptjs": "^2.3.0",

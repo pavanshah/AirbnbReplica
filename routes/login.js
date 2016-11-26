@@ -10,7 +10,13 @@ require('./passport')(passport);
 var moment = require('moment');
 var LocalStrategy = require('passport-local').Strategy;
 
+//initial setup
+var winston = require('winston');
+winston.add(winston.transports.File, { filename: 'public/LogFiles/AirbnbAnalysis.json' });
+winston.remove(winston.transports.Console);
+
 var userSignup = function(req,res){
+
 	console.log("Inside signup user");
 	req.body.user.user_id = uniqueIDGenerator.returnUniqueID();
 
@@ -109,12 +115,37 @@ var authenticateLocal = function (req,res,next){
       console.log(user);
       console.log("storing in session");
 	 //console.log("Testing for user",res);
+	 if(user.avgrating==null||user.avgrating==undefined)
+	 {
+	 	user.avgrating=0;
+	 }
 	     var userObject = {
+	     	"firstname": user.firstname,
+	     	"lastname" : user.lastname,
+	     	"avgrating" : user.avgrating,
 	     	"emailId": user.email,
 	     	"UserType": user.UserType,
-	     	"user_id":user.user_id
+	     	"user_id":user.user_id,
+	     	"address" : user.address,
+	     	"session_id" : uniqueIDGenerator.returnUniqueID(),
+	     	"user_tracker" : []
 	     }
 	 	req.session.user = userObject;
+	 	console.log("session id "+req.session.user.session_id);
+
+	 	//log capture
+	 	//remove previous file everytime and add the one in which next log is to be stored
+	 	winston.remove(winston.transports.File);
+		winston.add(winston.transports.File, { filename: 'public/LogFiles/AirbnbAnalysis.json' });
+	 	winston.log('info', 'login button clicked', { page_name : 'login_page', user_email : req.session.user.emailId, city : req.session.user.address.city, state : req.session.user.address.state, country : req.session.user.address.country});
+
+	 	winston.remove(winston.transports.File);
+		winston.add(winston.transports.File, { filename: 'public/LogFiles/UserTracking.json' });
+		//req.session.user.user_tracker.push(["login_page", new Date]);
+		req.session.user.user_tracker.push("login_page");
+	 	winston.log('info', 'user tracker updated', {session_id : req.session.user.session_id, user_email : req.session.user.emailId, "user_tracker" : req.session.user.user_tracker});
+
+
 	 	//console.log(req.session.emailId);
 		res.json({"userLoggedIn":true});
 		return;
@@ -393,6 +424,17 @@ var isUserLoggedIn = function(req,res) {
 
 var logout = function(req,res) {
 	
+
+	//log capture, always remove previous file everytime and add the one in which next log is to be stored
+		winston.remove(winston.transports.File);
+		winston.add(winston.transports.File, { filename: 'public/LogFiles/AirbnbAnalysis.json' });
+		winston.log('info', 'logout button clicked', { page_name : 'logout_page', user_email : req.session.user.emailId, city : req.session.user.address.city, state : req.session.user.address.state, country : req.session.user.address.country});	 	
+
+		winston.remove(winston.transports.File);
+		winston.add(winston.transports.File, { filename: 'public/LogFiles/UserTracking.json' });
+		req.session.user.user_tracker.push("logout_page");
+		winston.log('info', 'user tracker updated', {session_id : req.session.user.session_id, user_email : req.session.user.emailId, "user_tracker" : req.session.user.user_tracker});
+
 	req.session.destroy();
 	res.json({"userLoggedIn":false});
 
