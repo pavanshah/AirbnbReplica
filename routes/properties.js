@@ -197,7 +197,6 @@ var bookProperty = function(req,callback) {
 
 }
 
-
 var SearchPropertyById = function (req,res){
 
 
@@ -449,6 +448,57 @@ var getAuctionableProperties = function (req,res) {
 	});
 }
 
+var placeBid= function(req,res) {
+
+	console.log("inside bid property");
+	
+	
+	console.log(req.body);
+	console.log(req.session.user);
+	var query = {'property_id':req.body.property.property_id};
+	var obj = {"bid_date":new Date(), "user_email":req.session.user.emailId,"bid_value":req.body.bid_value};
+	Property.update(query,{$push:{bids:obj}}, function(error, property) {
+		if(!error)
+		{
+			//res.status(200);*/
+			res.json({"message":"Bid Placed"});
+			//callback({"status":200,"result":"Property Booked","property":property});
+		}
+		else{
+			res.status(500);
+			res.json({"message":"Bid failed"});
+			console.log(error);
+		}
+		
+	});
+
+}
+
+var getMaxBid = function(req,res) {
+	
+	var property_id = req.body.property_id;
+
+	Property.findOne({"property_id":req.body.property_id},function(err,property){
+		//console.log("err",err);
+		//console.log("property",property);
+		if(!err){
+
+			var maxBid = _.max(property.bids, function(bid){ return bid.bid_value; });
+			console.log("bid_value",maxBid);
+			res.status(200);
+			res.json(maxBid);
+		}
+		else
+		{
+			console.log(err);
+			res.status(400);
+			res.json({"response":"Bad Request"});
+			
+		}
+
+	});
+}
+
 exports.getAuctionableProperties = getAuctionableProperties;
 exports.calculateBill =calculateBill;
 
@@ -460,5 +510,7 @@ exports.FilterProperties = FilterProperties;
 exports.UpdateProperty = UpdateProperty;
 exports.ConfirmBooking = ConfirmBooking;
 exports.bookProperty = bookProperty;
+exports.placeBid = placeBid;
+exports.getMaxBid = getMaxBid;
 
 
