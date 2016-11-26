@@ -5,6 +5,72 @@ var mongoURL = "mongodb://apps92:shim123@ds155727.mlab.com:55727/airbnbproto";
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var Users = require('../Models/user');
+var Bills = require('../Models/bill');
+
+
+var getBillForAdmin = function(req,res){
+	
+	if(req.query.query == "new"){
+		console.log("Inside new");
+	Bills.find({},function(err,bills){
+		console.log(bills);
+		
+
+		res
+		.status(200)
+		.send({"result":bills});
+	})
+	}
+	else{
+		console.log("Inside elseeeeeeee");
+
+		
+		
+			console.log(req.query.querytype);
+			console.log(req.query.date);
+			console.log(req.query.month);
+			
+	if(req.query.month != ""){
+		console.log("Inside month query");
+		Bills.aggregate([{$project: {billing_date: 1, month: {$month: '$billing_date'}}},
+				  {$match: {month: Number(req.query.month)}}],function(err,bills){
+			console.log(bills);
+			
+
+			res
+			.status(200)
+			.send({"result":bills});
+		})
+				  
+				  
+	}		
+	else{
+		console.log("Inside date query");
+		
+		var dateObj = new Date(req.query.date);
+		var month = dateObj.getUTCMonth() + 1; //months from 1-12
+		var day = dateObj.getUTCDate();
+		var year = dateObj.getUTCFullYear();
+		
+		Bills.aggregate([{$project: {billing_date: 1,from_date: 1, 
+		    month: {$month: '$billing_date'},
+		    dayOfMonth: {$dayOfMonth: '$billing_date'},
+		    year: {$year: '$billing_date'}}},
+		    {$match: {month: month,dayOfMonth: day,year: year}}],function(err,bills){
+			console.log(bills);
+			
+
+			res
+			.status(200)
+			.send({"result":bills});
+		})
+	}
+			
+		
+		
+	}
+	
+}
 
 var getHostsForAdmin = function(req,res){
 	console.log(req.query);
@@ -167,3 +233,4 @@ var getMainDashboard = function(req,res){
 exports.getMainDashboard = getMainDashboard;
 exports.getPropertyPerYear = getPropertyPerYear;
 exports.getHostsForAdmin = getHostsForAdmin;
+exports.getBillForAdmin =getBillForAdmin;

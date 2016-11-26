@@ -39,13 +39,6 @@ app.config(function($stateProvider, $urlRouterProvider) {
 		controllerAs:"vm"
 	})
 	
-	.state('adminBillSearch',{
-		url:"/adminBillSearch",
-		templateUrl:"public/views/adminBillSearch.html",
-		controller:"AdminBillSearchController",
-		controllerAs:"vm"
-	})
-	
 	.state('adminLogin',{
 		url:"/adminLogin",
 		templateUrl:"public/views/adminLogin.html",
@@ -134,6 +127,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
 		controller:"hostAnalyticsController",
 		controllerAs:"vm"
 	})
+<<<<<<< HEAD
 
 	.state('auctionablePropertyDetails',{
 		url:"/auctionablePropertyDetails",
@@ -143,12 +137,13 @@ app.config(function($stateProvider, $urlRouterProvider) {
 		params:{
 			property:null
 		}
-	})
+=======
 	.state('HostHomePageController',{
 		url:"/hostHomePage",
 		templateUrl:"public/views/hostHomePage.html",
 		controller:"hostHomePageController",
 		controllerAs:"vm"
+>>>>>>> develop
 	})
 	//$location.path('/prelogin');
 	//html5mode(true);
