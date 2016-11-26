@@ -32,6 +32,12 @@ address : {
  			end_date:Date,
  			user_email:String
  		}],
+ bids:[{
+ 	bid_date:Date,
+ 	user_email:String,
+ 	bid_value:Number
+
+ }],
  property_start_date:Date,
  property_end_date:Date,
 princing_catalog : {
