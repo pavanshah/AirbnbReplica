@@ -24,6 +24,8 @@ var Hosts = require('./Models/host');
 var Users = require('./Models/user');
 var review = require("./routes/review");
 var admin = require("./routes/admin");
+var logAnalysis = require("./routes/logAnalysis");
+
 // all environments
 app.use(expressSession({
   secret: 'cmpe273_airbnb_team9',
@@ -152,6 +154,10 @@ app.get("/getHostsForAdmin",admin.getHostsForAdmin);
 app.get("/logout",user.logout);
 app.post("/updateHost",user.updateHostProfile);
  /*app.post('/UpdateProperty',;*/
+
+
+ //log analysis requests
+ app.post('/clicksPerPage', logAnalysis.clicksPerPage);
 
 mongoose.connect(mongoSessionConnectURL, function(){
   console.log('Connected to mongo at: ' + mongoSessionConnectURL);
