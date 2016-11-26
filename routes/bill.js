@@ -205,8 +205,9 @@ var getBillByTripId = function(req,res) {
 		else
 		{
 			tripObject = trip;
-			console.log("abhjadbf"+tripObject.bill.billing_id);
-			var query = {"billing_id":tripObject.bill.billing_id};
+			console.log("sfbkhsbkhbhkwbfcdc"+trip[0]);
+			console.log("abhjadbf"+trip[0].bill.billing_id);
+			var query = {"billing_id":trip[0].bill.billing_id};
 			var tripObj = bill.findOne(query);
 			tripObj.exec(function(err,billObject) {
 				if(err)
@@ -215,8 +216,8 @@ var getBillByTripId = function(req,res) {
 				}
 				else
 				{
-					billObject.trip_start_date = tripObject.trip_start_date;
-					billObject.trip_end_date = tripObject.trip_end_date;
+					//billObject.trip_start_date = tripObject.trip_start_date;
+					//billObject.trip_end_date = tripObject.trip_end_date;
 					console.log("billlll"+billObject);
 					res.status(200).json({"result":"fetched bill from trip id", "bill":billObject});
 				}
