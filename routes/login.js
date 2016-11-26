@@ -10,7 +10,13 @@ require('./passport')(passport);
 var moment = require('moment');
 var LocalStrategy = require('passport-local').Strategy;
 
+//initial setup
+var winston = require('winston');
+winston.add(winston.transports.File, { filename: 'public/LogFiles/AirbnbAnalysis.json' });
+winston.remove(winston.transports.Console);
+
 var userSignup = function(req,res){
+
 	console.log("Inside signup user");
 	req.body.user.user_id = uniqueIDGenerator.returnUniqueID();
 
@@ -115,6 +121,13 @@ var authenticateLocal = function (req,res,next){
 	     	"user_id":user.user_id
 	     }
 	 	req.session.user = userObject;
+
+	 	//log capture
+	 	//remove previous file everytime and add the one in which next log is to be stored
+	 	winston.remove(winston.transports.File);
+		winston.add(winston.transports.File, { filename: 'public/LogFiles/AirbnbAnalysis.json' });
+	 	winston.log('info', 'login_page', { page_name : 'login_page', user_email : req.session.user.emailId, city : user.address.city, state : user.address.state, country : user.address.country});
+
 	 	//console.log(req.session.emailId);
 		res.json({"userLoggedIn":true});
 		return;
