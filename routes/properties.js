@@ -90,14 +90,17 @@ function filter(properties,start_date,end_date) {
 
 var SearchPropertyByDistance = function(req,res){
 
-	winston.remove(winston.transports.File);
-	winston.add(winston.transports.File, { filename: 'public/LogFiles/AirbnbAnalysis.json' });
-	winston.log('info', 'search property button clicked', { page_name : 'property_page', user_email : req.session.user.emailId, city : req.session.user.address.city, state : req.session.user.address.state, country : req.session.user.address.country});
+	if(req.session.user)
+	{
+		winston.remove(winston.transports.File);
+		winston.add(winston.transports.File, { filename: 'public/LogFiles/AirbnbAnalysis.json' });
+		winston.log('info', 'search property button clicked', { page_name : 'property_page', user_email : req.session.user.emailId, city : req.session.user.address.city, state : req.session.user.address.state, country : req.session.user.address.country});
 
-	winston.remove(winston.transports.File);
-	winston.add(winston.transports.File, { filename: 'public/LogFiles/UserTracking.json' });
-	req.session.user.user_tracker.push("property_page");
-	winston.log('info', 'user tracker updated', {session_id : req.session.user.session_id, user_email : req.session.user.emailId, "user_tracker" : req.session.user.user_tracker});
+		winston.remove(winston.transports.File);
+		winston.add(winston.transports.File, { filename: 'public/LogFiles/UserTracking.json' });
+		req.session.user.user_tracker.push("property_page");
+		winston.log('info', 'user tracker updated', {session_id : req.session.user.session_id, user_email : req.session.user.emailId, "user_tracker" : req.session.user.user_tracker});
+	}
 
 	var lat             = req.body.latitude;
     var long            = req.body.longitude;
@@ -259,6 +262,16 @@ var ConfirmBooking = function (req,res){
 		res.status(401);
 		res.json({"response":"Not Authenticated. Please login first"});
 	}
+
+
+	winston.remove(winston.transports.File);
+	winston.add(winston.transports.File, { filename: 'public/LogFiles/AirbnbAnalysis.json' });
+	winston.log('info', 'pay now clicked', { page_name : 'success_page', user_email : req.session.user.emailId, city : req.session.user.address.city, state : req.session.user.address.state, country : req.session.user.address.country});
+
+	winston.remove(winston.transports.File);
+	winston.add(winston.transports.File, { filename: 'public/LogFiles/UserTracking.json' });
+	req.session.user.user_tracker.push("success_page");
+	winston.log('info', 'user tracker updated', {session_id : req.session.user.session_id, user_email : req.session.user.emailId, "user_tracker" : req.session.user.user_tracker});
 
 	bookProperty(req,function(propertyResponse){
 
@@ -480,7 +493,7 @@ var placeBid= function(req,res) {
 	console.log(req.body);
 	console.log(req.session.user);
 	var query = {'property_id':req.body.property.property_id};
-	var obj = {"bid_date":new Date(), "user_email":req.session.user.emailId,"bid_value":req.body.bid_value};
+	var obj = {"bid_date":new Date(), "user_email":req.session.user.emailId,"bid_value":req.body.bid_value,"status":"active"};
 	Property.update(query,{$push:{bids:obj}}, function(error, property) {
 		if(!error)
 		{
@@ -522,6 +535,14 @@ var getMaxBid = function(req,res) {
 
 	});
 }
+
+
+function checkBidsOnInterval(){
+	
+}
+
+
+var intervalID = setInterval(function(){console.log("Interval reached");}, 5000);
 
 exports.getAuctionableProperties = getAuctionableProperties;
 exports.calculateBill =calculateBill;

@@ -39,5 +39,9 @@ jspm_packages
 .node_repl_history
 
 #logs
+
+.LogFiles
+
 .public/LogFiles
 /public/LogFiles
+

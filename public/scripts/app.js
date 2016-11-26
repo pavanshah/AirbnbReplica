@@ -161,6 +161,17 @@ app.config(function($stateProvider, $urlRouterProvider) {
 		templateUrl:"public/views/bidCofirm.html"
 		
 	})
+	.state('hostCardDetails',{
+		url:"/hostCardDetails",
+		templateUrl:"public/views/HostCardDetails.html"
+		
+	})
+	.state('hostProfilePhotoAndVideo',{
+		url:"/hostProfilePhotoAndVideo",
+		templateUrl:"public/views/hostProfilePhotoAndVideo.html",
+		controller:"hostProfilePhotoAndVideoController",
+		controllerAs:"vm"
+	})
 	//$location.path('/prelogin');
 	//html5mode(true);
 	
@@ -181,4 +192,16 @@ app.run(function($rootScope,$http,$state) {
       	})
       }
     });
+});
+
+
+
+app.directive('backImg', function(){
+    return function(scope, element, attrs){
+        var url = attrs.backImg;
+        element.css({
+            'background-image': 'url(' + url +')',
+            'background-size' : 'cover'
+        });
+    };
 });
