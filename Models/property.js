@@ -35,7 +35,8 @@ address : {
  bids:[{
  	bid_date:Date,
  	user_email:String,
- 	bid_value:Number
+ 	bid_value:Number,
+ 	status:String
 
  }],
  property_start_date:Date,
