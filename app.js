@@ -146,6 +146,7 @@ app.get("/isUserLoggedIn",user.isUserLoggedIn);
 app.get("/getMainDashboard",admin.getMainDashboard);
 app.get("/getPropertyPerYear",admin.getPropertyPerYear);
 app.get("/getHostsForAdmin",admin.getHostsForAdmin);
+app.get("/getBillForAdmin",admin.getBillForAdmin);
 
 app.get("/logout",user.logout);
 app.post("/updateHost",user.updateHostProfile);

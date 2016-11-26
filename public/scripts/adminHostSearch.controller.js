@@ -22,16 +22,6 @@ function AdminHostSearchControllerFn($state,$scope,$http) {
 			$scope.hostQuery.query = "updated";
 		}
 		
-		/*if(typeof $scope.type == "undefined" && typeof $scope.address == "undefined"){
-			console.log("inside if");
-			$scope.hostQuery = {"type":"","address":"","query":"new"};
-		}		
-		else{
-			$scope.hostQuery = {"type":$scope.type,"address":$scope.address.address_components[0].long_name,"query":"updated"};
-			console.log("inside else");
-		}*/
-		
-		//$scope.hostQuery = {"type":$scope.type,"address":$scope.address.address_components[0].long_name,"query":"updated"};
 		
 		$http({
 			method : "GET",
