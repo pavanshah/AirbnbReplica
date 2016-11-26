@@ -118,15 +118,17 @@ var authenticateLocal = function (req,res,next){
 	     var userObject = {
 	     	"emailId": user.email,
 	     	"UserType": user.UserType,
-	     	"user_id":user.user_id
+	     	"user_id":user.user_id,
+	     	"session_id" : uniqueIDGenerator.returnUniqueID()
 	     }
 	 	req.session.user = userObject;
+	 	console.log("session id "+req.session.user.session_id);
 
 	 	//log capture
 	 	//remove previous file everytime and add the one in which next log is to be stored
 	 	winston.remove(winston.transports.File);
 		winston.add(winston.transports.File, { filename: 'public/LogFiles/AirbnbAnalysis.json' });
-	 	winston.log('info', 'login_page', { page_name : 'login_page', user_email : req.session.user.emailId, city : user.address.city, state : user.address.state, country : user.address.country});
+	 	winston.log('info', 'login button clicked', { page_name : 'login_page', user_email : req.session.user.emailId, city : user.address.city, state : user.address.state, country : user.address.country});
 
 	 	//console.log(req.session.emailId);
 		res.json({"userLoggedIn":true});
