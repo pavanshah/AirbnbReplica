@@ -58,6 +58,8 @@ function homeControllerFn($state,$http,bookingDataService) {
 		
 	}
 
+	vm.getAuctionableProperties();
+
 	vm.goToAuctionableProperty = function(property){
 		$state.go("auctionablePropertyDetails",{property:property});
 	}

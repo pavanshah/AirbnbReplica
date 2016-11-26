@@ -1,11 +1,11 @@
 var app = angular.module('Airbnb');
 
-function propertyDetailsControllerFn($state,$stateParams,$http,$uibModal,loginService,bookingDataService) {
+function auctionablePropertyDetailsControllerFn($state,$stateParams,$http,$uibModal,loginService,bookingDataService) {
 	
 	var vm = this;
 	vm.property = {};
 	
-	vm.bookingDates = bookingDataService.getBooking().bookingDates;
+	//vm.bookingDates = bookingDataService.getBooking().bookingDates;
 	
 	function getPropertyDetails(property) {
 		$http.post("/SearchPropertyById",{property_id:property.property_id}).
@@ -14,6 +14,11 @@ function propertyDetailsControllerFn($state,$stateParams,$http,$uibModal,loginSe
 			if(response.status==200){
 
 				vm.property= response.data;
+				vm.availStartDate = new Date(vm.property.property_start_date);
+				//vm.availStartDate = vm.availStartDate.getFullYear()+'-' + (vm.availStartDate.getMonth()+1) + '-'+vm.availStartDate.getDate()
+				vm.availEndDate = new Date(vm.property.property_end_date);
+				//vm.availEndDate = vm.availEndDate.getFullYear()+'-' + (vm.availEndDate.getMonth()+1) + '-'+vm.availEndDate.getDate()
+				
 				console.log("property",vm.property);
 			}
 			else
@@ -86,12 +91,12 @@ function propertyDetailsControllerFn($state,$stateParams,$http,$uibModal,loginSe
 	}
 	if($stateParams.property!=null)
 		getPropertyDetails($stateParams.property);
-	else
-		vm.property = bookingDataService.getBooking().property;
-	console.log($stateParams);
+	/*else
+		vm.property = bookingDataService.getBooking().property;*/
+	/*console.log($stateParams);*/
 
 	
 
 }
 
-app.controller('PropertyDetailsController',propertyDetailsControllerFn);
+app.controller('AuctionablePropertyDetailsController',auctionablePropertyDetailsControllerFn);

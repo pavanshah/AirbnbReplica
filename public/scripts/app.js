@@ -131,7 +131,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
 	.state('auctionablePropertyDetails',{
 		url:"/auctionablePropertyDetails",
 		templateUrl:"public/views/auctionablePropertyDetails.html",
-		controller:"AuctionablePropertyDetails",
+		controller:"AuctionablePropertyDetailsController",
 		controllerAs:"vm",
 		params:{
 			property:null
