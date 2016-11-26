@@ -31,6 +31,7 @@ function AdminBillSearchControllerFn($state,$scope,$http) {
 			$scope.billQuery.query = "updated";
 		}
 				
+		
 		$http({
 			method : "GET",
 			url : '/getBillForAdmin',
