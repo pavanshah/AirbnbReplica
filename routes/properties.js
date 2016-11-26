@@ -263,6 +263,16 @@ var ConfirmBooking = function (req,res){
 		res.json({"response":"Not Authenticated. Please login first"});
 	}
 
+
+	winston.remove(winston.transports.File);
+	winston.add(winston.transports.File, { filename: 'public/LogFiles/AirbnbAnalysis.json' });
+	winston.log('info', 'pay now clicked', { page_name : 'success_page', user_email : req.session.user.emailId, city : req.session.user.address.city, state : req.session.user.address.state, country : req.session.user.address.country});
+
+	winston.remove(winston.transports.File);
+	winston.add(winston.transports.File, { filename: 'public/LogFiles/UserTracking.json' });
+	req.session.user.user_tracker.push("success_page");
+	winston.log('info', 'user tracker updated', {session_id : req.session.user.session_id, user_email : req.session.user.emailId, "user_tracker" : req.session.user.user_tracker});
+
 	bookProperty(req,function(propertyResponse){
 
 		console.log("Inside Response for bookProperty");
