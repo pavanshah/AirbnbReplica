@@ -456,7 +456,7 @@ var placeBid= function(req,res) {
 	console.log(req.body);
 	console.log(req.session.user);
 	var query = {'property_id':req.body.property.property_id};
-	var obj = {"bid_date":new Date(), "user_email":req.session.user.emailId,"bid_value":req.body.bid_value};
+	var obj = {"bid_date":new Date(), "user_email":req.session.user.emailId,"bid_value":req.body.bid_value,"status":"active"};
 	Property.update(query,{$push:{bids:obj}}, function(error, property) {
 		if(!error)
 		{
@@ -498,6 +498,14 @@ var getMaxBid = function(req,res) {
 
 	});
 }
+
+
+function checkBidsOnInterval(){
+	
+}
+
+
+var intervalID = setInterval(function(){console.log("Interval reached");}, 5000);
 
 exports.getAuctionableProperties = getAuctionableProperties;
 exports.calculateBill =calculateBill;
