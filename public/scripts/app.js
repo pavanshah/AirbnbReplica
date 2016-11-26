@@ -1,6 +1,7 @@
 var app = angular.module('Airbnb',['ui.bootstrap','ui.router','google.places','nvd3','ngMaterial','ngAnimate','ngAria','ngRoute','ngSanitize']);
-
+filepicker.setKey("As4LSqupJTjVvBXkoAMnPz");
 app.config(function($stateProvider, $urlRouterProvider) {
+
 
 	$urlRouterProvider.otherwise('/');
 
@@ -73,12 +74,22 @@ app.config(function($stateProvider, $urlRouterProvider) {
 
 	.state('orderSuccess',{
 		url:"/orderSuccess",
-		templateUrl:"public/views/orderSuccess.html"
+		templateUrl:"public/views/orderSuccess.html",
+		params:{
+			trip:null
+		},
+		controller:"orderSuccessController",
+		controllerAs:"vm"
 	})
 
 	.state('userBill',{
 		url:'/userBill',
-		templateUrl:"public/views/finalReciept.html"
+		templateUrl:"public/views/finalReciept.html",
+		params:{
+			trip:null
+		},
+		controller:"BillController",
+		controllerAs:"vm"
 	})
 	.state('userHome',{
 		url:'/userHome',
@@ -105,16 +116,41 @@ app.config(function($stateProvider, $urlRouterProvider) {
 	.state('addProperty',{
 		url:'/addProperty',
 		templateUrl:'public/views/addProperty.html',
-
-	})
-	.state('hostCardDetails',{
-		url:'/hostCardDetails',
-		templateUrl:'public/views/HostCardDetails.html',
-		controller:"hostCardDetails",
+		controller:"AddPropertyController",
 		controllerAs:"vm"
 
+	})
+
+	.state('hostAnalytics',{
+		url:"/hostAnalytics",
+		templateUrl:"public/views/hostAnalytics.html",
+		controller:"hostAnalyticsController",
+		controllerAs:"vm"
+	})
+	.state('HostHomePageController',{
+		url:"/hostHomePage",
+		templateUrl:"public/views/hostHomePage.html",
+		controller:"hostHomePageController",
+		controllerAs:"vm"
 	})
 	//$location.path('/prelogin');
 	//html5mode(true);
 	
+});
+
+app.run(function($rootScope,$http,$state) {
+  $rootScope.$on('$stateChangeStart',
+   function(event, toState  , toParams
+                   , fromState, fromParams) 
+    {
+      if(toState.name=="admin"){
+      	$http.get("/isUserLoggedIn").
+      	then(function(response) {
+      		
+      	},function (err) {
+      		event.preventDefault();
+      		$state.go("home");
+      	})
+      }
+    });
 });
