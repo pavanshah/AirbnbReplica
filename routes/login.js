@@ -119,7 +119,9 @@ var authenticateLocal = function (req,res,next){
 	     	"emailId": user.email,
 	     	"UserType": user.UserType,
 	     	"user_id":user.user_id,
-	     	"session_id" : uniqueIDGenerator.returnUniqueID()
+	     	"address" : user.address,
+	     	"session_id" : uniqueIDGenerator.returnUniqueID(),
+	     	"user_tracker" : []
 	     }
 	 	req.session.user = userObject;
 	 	console.log("session id "+req.session.user.session_id);
@@ -128,7 +130,14 @@ var authenticateLocal = function (req,res,next){
 	 	//remove previous file everytime and add the one in which next log is to be stored
 	 	winston.remove(winston.transports.File);
 		winston.add(winston.transports.File, { filename: 'public/LogFiles/AirbnbAnalysis.json' });
-	 	winston.log('info', 'login button clicked', { page_name : 'login_page', user_email : req.session.user.emailId, city : user.address.city, state : user.address.state, country : user.address.country});
+	 	winston.log('info', 'login button clicked', { page_name : 'login_page', user_email : req.session.user.emailId, city : req.session.user.address.city, state : req.session.user.address.state, country : req.session.user.address.country});
+
+	 	winston.remove(winston.transports.File);
+		winston.add(winston.transports.File, { filename: 'public/LogFiles/UserTracking.json' });
+		//req.session.user.user_tracker.push(["login_page", new Date]);
+		req.session.user.user_tracker.push("login_page");
+	 	winston.log('info', 'user tracker updated', {session_id : req.session.user.session_id, user_email : req.session.user.emailId, "user_tracker" : req.session.user.user_tracker});
+
 
 	 	//console.log(req.session.emailId);
 		res.json({"userLoggedIn":true});
@@ -329,6 +338,17 @@ var isUserLoggedIn = function(req,res) {
 
 var logout = function(req,res) {
 	
+
+	//log capture, always remove previous file everytime and add the one in which next log is to be stored
+		winston.remove(winston.transports.File);
+		winston.add(winston.transports.File, { filename: 'public/LogFiles/AirbnbAnalysis.json' });
+		winston.log('info', 'logout button clicked', { page_name : 'logout_page', user_email : req.session.user.emailId, city : req.session.user.address.city, state : req.session.user.address.state, country : req.session.user.address.country});	 	
+
+		winston.remove(winston.transports.File);
+		winston.add(winston.transports.File, { filename: 'public/LogFiles/UserTracking.json' });
+		req.session.user.user_tracker.push("logout_page");
+		winston.log('info', 'user tracker updated', {session_id : req.session.user.session_id, user_email : req.session.user.emailId, "user_tracker" : req.session.user.user_tracker});
+
 	req.session.destroy();
 	res.json({"userLoggedIn":false});
 
