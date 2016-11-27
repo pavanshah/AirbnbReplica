@@ -5,7 +5,7 @@ var Schema = mongoose.Schema;
 var bill = require('../Models/bill');
 var trip = require('../Models/trip');
 var uniqueIDGenerator = require('../routes/uniqueIDGenerator');
-//var winston = require('winston');
+var winston = require('winston');
 
 var GenerateBill = function (req,callback){
 
@@ -194,7 +194,6 @@ var getBillByTripId = function(req,res) {
 	console.log("sljbfjsdlb "+req.body.trip_id);
 	//console.log("req.data.trip_id"+req.data.trip_id);
 
-	/*
 	winston.remove(winston.transports.File);
 	winston.add(winston.transports.File, { filename: 'public/LogFiles/AirbnbAnalysis.json' });
 	winston.log('info', 'generate bill clicked', { page_name : 'bill_page', user_email : req.session.user.emailId, city : req.session.user.address.city, state : req.session.user.address.state, country : req.session.user.address.country});
@@ -203,7 +202,7 @@ var getBillByTripId = function(req,res) {
 	winston.add(winston.transports.File, { filename: 'public/LogFiles/UserTracking.json' });
 	req.session.user.user_tracker.push("bill_page");
 	winston.log('info', 'user tracker updated', {session_id : req.session.user.session_id, user_email : req.session.user.emailId, "user_tracker" : req.session.user.user_tracker});
-	
+
 	//var tripObj = trip.findOne();
 
 

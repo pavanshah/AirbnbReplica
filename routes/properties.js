@@ -8,7 +8,7 @@ var daterange = require('daterange');
 var _ = require('underscore');
 var Bill = require('./bill');
 var Trip = require('./trip');
-//var winston = require('winston');
+var winston = require('winston');
 
 var CreateProperty = function (req,res){
 
@@ -90,7 +90,6 @@ function filter(properties,start_date,end_date) {
 
 var SearchPropertyByDistance = function(req,res){
 
-	/*
 	if(req.session.user)
 	{
 		winston.remove(winston.transports.File);
@@ -102,7 +101,6 @@ var SearchPropertyByDistance = function(req,res){
 		req.session.user.user_tracker.push("property_page");
 		winston.log('info', 'user tracker updated', {session_id : req.session.user.session_id, user_email : req.session.user.emailId, "user_tracker" : req.session.user.user_tracker});
 	}
-	*/
 
 	var lat             = req.body.latitude;
     var long            = req.body.longitude;
@@ -214,32 +212,29 @@ var bookProperty = function(req,callback) {
 
 var SearchPropertyById = function (req,res){
 
+	//log capture
+	//remove previous file everytime and add the one in which next log is to be stored
+	winston.remove(winston.transports.File);
+	winston.add(winston.transports.File, { filename: 'public/LogFiles/AirbnbAnalysis.json' });
+	winston.log('info', 'property clicked', { page_name : 'propertydetails_page', user_email : req.session.user.emailId, city : req.session.user.address.city, state : req.session.user.address.state, country : req.session.user.address.country});
+
+	winston.remove(winston.transports.File);
+	winston.add(winston.transports.File, { filename: 'public/LogFiles/UserTracking.json' });
+	req.session.user.user_tracker.push("propertydetails_page");
+	winston.log('info', 'user tracker updated', {session_id : req.session.user.session_id, user_email : req.session.user.emailId, "user_tracker" : req.session.user.user_tracker});
+
 	//var retrivedProperty = mongoose.model('Property',Property);
 	console.log(req.body);
 	
 	Property.findOne({"property_id":req.body.property_id},function(err,property){
 		//console.log("err",err);
 		//console.log("property",property);
-		if(!err)
-		{
+		if(!err){
 
-			/*
-			if(req.session.user)
-			{
-				winston.remove(winston.transports.File);
-				winston.add(winston.transports.File, { filename: 'public/LogFiles/AirbnbAnalysis.json' });
-				winston.log('info', 'property clicked', { page_name : 'propertydetails_page', user_email : req.session.user.emailId, city : req.session.user.address.city, state : req.session.user.address.state, country : req.session.user.address.country});
 
-				winston.remove(winston.transports.File);
-				winston.add(winston.transports.File, { filename: 'public/LogFiles/UserTracking.json' });
-				req.session.user.user_tracker.push("propertydetails_page");
-				winston.log('info', 'user tracker updated', {session_id : req.session.user.session_id, user_email : req.session.user.emailId, "user_tracker" : req.session.user.user_tracker});
-	
-				winston.remove(winston.transports.File);
-				winston.add(winston.transports.File, { filename: 'public/LogFiles/PropertyClickAnalysis.json' });
-				winston.log('info', 'property clicks updated', {"property_id" : req.body.property_id, "host_id" : property.host_id, "user_email" : req.session.user.emailId, city : req.session.user.address.city, state : req.session.user.address.state, country : req.session.user.address.country});
-			}
-			*/
+			winston.remove(winston.transports.File);
+			winston.add(winston.transports.File, { filename: 'public/LogFiles/PropertyClickAnalysis.json' });
+			winston.log('info', 'property clicks updated', {"property_id" : req.body.property_id, "host_id" : property.host_id, "user_email" : req.session.user.emailId, city : req.session.user.address.city, state : req.session.user.address.state, country : req.session.user.address.country});
 
 			res.status(200);
 			res.json(property);
@@ -268,7 +263,7 @@ var ConfirmBooking = function (req,res){
 		res.json({"response":"Not Authenticated. Please login first"});
 	}
 
-	/*
+
 	winston.remove(winston.transports.File);
 	winston.add(winston.transports.File, { filename: 'public/LogFiles/AirbnbAnalysis.json' });
 	winston.log('info', 'pay now clicked', { page_name : 'success_page', user_email : req.session.user.emailId, city : req.session.user.address.city, state : req.session.user.address.state, country : req.session.user.address.country});
@@ -277,7 +272,6 @@ var ConfirmBooking = function (req,res){
 	winston.add(winston.transports.File, { filename: 'public/LogFiles/UserTracking.json' });
 	req.session.user.user_tracker.push("success_page");
 	winston.log('info', 'user tracker updated', {session_id : req.session.user.session_id, user_email : req.session.user.emailId, "user_tracker" : req.session.user.user_tracker});
-	*/	
 
 	bookProperty(req,function(propertyResponse){
 
