@@ -4,7 +4,7 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var Users = require('../Models/user');
 var newAvgRating = 1;
-var winston = require('winston');
+//var winston = require('winston');
 
 var SubmitReviewAndRating = function(req, res)
 {
@@ -129,7 +129,7 @@ var submitReviewForTrip = function(req, res) {
 
 	var query = {"user_id":req.body.host_id};
 
-
+	/*
 	winston.remove(winston.transports.File);
 	winston.add(winston.transports.File, { filename: 'public/LogFiles/AirbnbAnalysis.json' });
 	winston.log('info', 'review button clicked', { page_name : 'review_page', user_email : req.session.user.emailId, city : req.session.user.address.city, state : req.session.user.address.state, country : req.session.user.address.country});
@@ -142,7 +142,8 @@ var submitReviewForTrip = function(req, res) {
 	winston.remove(winston.transports.File);
 	winston.add(winston.transports.File, { filename: 'public/LogFiles/PropertyReviewsAnalysis.json' });
 	winston.log('info', 'review submitted', { rating : req.body.rate, property_id : req.body.property.property_id , host_id : req.body.host_id, user_email : req.session.user.emailId, city : req.session.user.address.city, state : req.session.user.address.state, country : req.session.user.address.country});
-
+	*/
+	
 	Users.update(query, {$push : {Reviews : {ratings : req.body.rate, feedback : req.body.review, user_id : req.session.user.emailId}}}, function(err,response) {
 		if(err)
 		{
