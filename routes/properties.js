@@ -9,6 +9,7 @@ var _ = require('underscore');
 var Bill = require('./bill');
 var Bid = require('../Models/bid');
 var Trip = require('./trip');
+var CronJob = require('cron').CronJob;
 //var winston = require('winston');
 
 var CreateProperty = function (req,res){
@@ -574,8 +575,40 @@ var getMaxBid = function(req,res) {
 
 
 function checkBidsOnInterval(){
-	
+	console.log("CronJob to check bidding status started");
+
+	var today = new Date();
+	var validListingDate= new Date();
+	validListingDate.setDate(today.getDate() -2);
+	//console.log(validListingDate);
+	Bid.update(
+	   { "property.ListingDate": {"$lte": validListingDate.toISOString()}, "bid_status":"active" },
+	   { $set:
+	      {
+	        "bid_status":"won"
+	      }
+	   },{multi: true},function(err,res) {
+	   	// body...
+	   	/*console.log("err",err);
+	   	console.log("res",res);*/
+	   	console.log("CronJob to check bidding status ended");
+	   })
 }
+
+
+var job = new CronJob('*/59 * * * * *', function() {
+  /*
+   * Runs every weekday (Monday through Friday)
+   * at 11:30:00 AM. It does not run on Saturday
+   * or Sunday.
+   */
+   checkBidsOnInterval();
+  }, function () {
+    /* This function is executed when the job stops */
+  },
+  true, /* Start the job right now */
+  "America/Los_Angeles" /* Time zone of this job. */
+);
 
 
 //var intervalID = setInterval(function(){console.log("Interval reached");}, 5000);
