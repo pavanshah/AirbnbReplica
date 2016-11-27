@@ -7,6 +7,7 @@ var uniqueIDGenerator = require('../routes/uniqueIDGenerator');
 var daterange = require('daterange');
 var _ = require('underscore');
 var Bill = require('./bill');
+var Bid = require('../Models/bid');
 var Trip = require('./trip');
 var winston = require('winston');
 
@@ -488,7 +489,42 @@ var getAuctionableProperties = function (req,res) {
 var placeBid= function(req,res) {
 
 	console.log("inside bid property");
-	
+	var BidObj = {
+
+
+		bid_id : uniqueIDGenerator.returnUniqueID(),
+		bid_date: new Date(),
+		user: req.session.user,
+		property_id:req.body.property.property_id,
+		property:req.body.property,
+		bid_value:req.body.bid_value,
+		bid_status:"active"
+
+	}
+	var newBid = Bid(BidObj);
+
+	Bid.update(
+	   { "property_id": req.body.property.property_id, "bid_status":"active" },
+	   { $set:
+	      {
+	        "bid_status":"lost"
+	      }
+	   },{multi: true},
+	   function(err,result) {
+	   		if(err){
+	   			res.status(500);
+	   			res.json(err);
+	   		}
+	   		else{
+	   			newBid.save(function(err,response){
+
+					console.log("err",err);
+					console.log("response",response);
+				});
+	   		}
+	   }
+	)
+
 	
 	console.log(req.body);
 	console.log(req.session.user);
