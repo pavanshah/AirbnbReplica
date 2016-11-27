@@ -5,7 +5,13 @@ function AddPropertyControllerFn($state,$stateParams,$http) {
 	
 	var vm = this;
 	vm.property = {
-		address:{},
+		address:{
+			"street":"",
+		"city":"",
+		"state":"",
+		"zipcode":"",
+		"country":"",
+		"formatted":""},
 		location:[],
 		propertyPictures:[],
 		propertyVideos:[],
@@ -76,6 +82,43 @@ function AddPropertyControllerFn($state,$stateParams,$http) {
 	vm.PopulateAddressFields = function(){
 
 		console.log("populating fields");
+		console.log(vm.travelLocation);
+
+		vm.property.address={
+			"street":"",
+		"city":"",
+		"state":"",
+		"zipcode":"",
+		"country":"",
+		"formatted":""};
+
+		for(var i=0;i<vm.travelLocation.address_components.length;i++)
+		{
+			switch(vm.travelLocation.address_components[i].types[0])
+			{
+				case "street_number":
+				vm.property.address.street+=vm.travelLocation.address_components[i].long_name;
+
+				break;
+				case "route":
+				vm.property.address.street+=", "+vm.travelLocation.address_components[i].long_name;
+				break;
+				case "locality":
+				vm.property.address.city+=vm.travelLocation.address_components[i].long_name;
+				break;
+				case "administrative_area_level_1":
+				vm.property.address.state+=vm.travelLocation.address_components[i].long_name;
+				break;
+				case "postal_code":
+				vm.property.address.zipcode+=vm.travelLocation.address_components[i].long_name;
+				break;
+				case "country":
+				vm.property.address.country+=vm.travelLocation.address_components[i].short_name;
+				break;
+
+			}
+		}
+
 		vm.property.address.formatted = vm.travelLocation.formatted_address;
 		vm.property.location= [vm.travelLocation.geometry.location.lng(),vm.travelLocation.geometry.location.lat()];
 
