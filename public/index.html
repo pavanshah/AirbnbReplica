@@ -76,7 +76,7 @@
 			        <li class="" ng-if="!vm.user.email" ng-click="vm.openSignupModal()"><a href=""><span>Sign Up</span></a></li>
 			        <li class="" ng-if="!vm.user.email" ng-click="vm.openLoginModal()"><a href=""><span>Log In</span></a></li>
 			        <li class="" ng-if="vm.user.email"><a href="" class="logout-popup-wrapper position-relative">
-			        	<span ng-bind="vm.user.firstname"></span>
+			        	<img ng-if="vm.user.profilepic!=undefined" ng-src="{{vm.user.profilepic}}" height="30px" width="30px" style="border-radius:20px"><span ng-bind="vm.user.firstname"></span>
 		        		<div class="logout-popup position-absolute">
 			        		<ul class="clearfix">
 			        			<li ng-click="vm.profile()">Edit Profile</li>
