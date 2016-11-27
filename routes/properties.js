@@ -596,12 +596,8 @@ function checkBidsOnInterval(){
 }
 
 
-var job = new CronJob('*/59 * * * * *', function() {
-  /*
-   * Runs every weekday (Monday through Friday)
-   * at 11:30:00 AM. It does not run on Saturday
-   * or Sunday.
-   */
+var job = new CronJob('* */59 * * * *', function() {
+ 
    checkBidsOnInterval();
   }, function () {
     /* This function is executed when the job stops */
