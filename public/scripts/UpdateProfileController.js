@@ -1,6 +1,6 @@
 var app = angular.module("Airbnb");
 
-function UpdateProfileControllerFn($state,$http) {
+function UpdateProfileControllerFn($state,$http,$scope) {
 	var vm = this;
 
 	vm.PopulateUserForm = function(){
@@ -10,7 +10,14 @@ function UpdateProfileControllerFn($state,$http) {
 		console.log(response.data.user);
 		
 		vm.user=response.data.user;
-		console.log(vm.user.firstname);
+		if(vm.user.profilepic==undefined||vm.user.profilepic==null){
+			console.log("as the pic is:"+vm.user.profilepic);
+			console.log("setting default image");
+			vm.user.profilepic="/public/images/generic-profile.png"
+		}
+
+		//vm.user.profilepic="https://cdn.filestackcontent.com/CIKj9BXVQvm2F3AlQaih";
+		//console.log(vm.user.firstname);
 	});
 
 
@@ -20,8 +27,36 @@ function UpdateProfileControllerFn($state,$http) {
 		$http.post('/updateUser',{"user":vm.user}).then(function(response){
 
 			console.log(response.data);
+			vm.PopulateUserForm();
+			vm.showAlert=true;
 
 		})
+	}
+
+$scope.closeAlert = function()
+{
+	vm.showAlert=false;
+}
+
+	vm.updateProfilePic = function(){
+
+		filepicker.pick(
+		  {
+		    mimetype: 'image/*',
+		    container: 'modal',
+		    services: ['COMPUTER', 'FACEBOOK', 'INSTAGRAM', 'GOOGLE_DRIVE', 'DROPBOX']
+		  },
+		  function(Blob){
+		    console.log(JSON.stringify(Blob.url));
+		    vm.user.profilepic=Blob.url;
+		    console.log(vm.user.profilepic);
+
+		    vm.UpdateProfile();
+		  },
+		  function(FPError){
+		    console.log(FPError.toString());
+		  });
+
 	}
 
 	}

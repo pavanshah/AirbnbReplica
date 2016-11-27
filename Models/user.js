@@ -27,7 +27,7 @@ var Users = new Schema({
 		postalcode : Number,
 		country : String
 	},
-	profilepic : {data : Buffer, contentType : String},
+	profilepic :  String,
 	UserType : String,
 	user_status:String,
 	avgrating : Number,

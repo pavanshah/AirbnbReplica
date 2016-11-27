@@ -343,7 +343,8 @@ else{
 		    "UserType": user.UserType,
 		    "phone" :user.phone,
 		    "address": user.address,
-		    "creditcard":user.carddetails,
+		    "carddetails":user.carddetails,
+		    "profilepic":user.profilepic
  		};
  				
  		res
