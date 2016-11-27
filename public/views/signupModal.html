@@ -27,11 +27,11 @@
          <div class="width-100">
          
       <form name="signupform" novalidate>
-               <input type="text" name="firstname" ng-model="vm.user.firstname" placeholder="First name" class="name-field" ng-pattern = "/^[a-zA-Z]*$/" ng-change="vm.initflag()" required>
+               <input type="text" name="firstname" ng-model="vm.user.firstname" placeholder="First name" class="name-field" ng-pattern = "/^[a-zA-Z]{1,20}$/" ng-change="vm.initflag()" required>
                <span class="invalidinput" ng-show="vm.firstnameflag && !signupform.firstname.$error.pattern">Firstname is required</span>
                <span class="invalidinput" ng-show="signupform.firstname.$error.pattern">Text Input Only</span>
                
-               <input type="text" name="lastname" ng-model="vm.user.lastname" placeholder="Last name" class="name-field" ng-pattern = "/^[a-zA-Z]*$/" ng-change="vm.initflag()" required>
+               <input type="text" name="lastname" ng-model="vm.user.lastname" placeholder="Last name" class="name-field" ng-pattern = "/^[a-zA-Z]{1,20}$/" ng-change="vm.initflag()" required>
                <span class="invalidinput" ng-show="vm.lastnameflag && !signupform.lastname.$error.pattern">Lastname is required</span>
                <span class="invalidinput" ng-show="signupform.lastname.$error.pattern">Text Input Only</span>
                
