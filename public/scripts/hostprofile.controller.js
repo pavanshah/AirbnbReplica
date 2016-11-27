@@ -39,27 +39,36 @@ function HostProfileFn($state,$scope,$http) {
 			$scope.birthYear = response.data.user.birthYear;
 			$scope.birthDay = response.data.user.birthDay;
 			$scope.birthMonth = response.data.user.birthMonth;
+			vm.host = response.data.user;
+			console.log(vm.host);
 	});
 	}
 	$scope.getHostDetails();
 	$scope.save = function(){
 		console.log("save button clicked");
-		console.log($scope.firstname);
-		console.log($scope.lastname);
-		console.log($scope.email);
-		console.log($scope.phonenumber);
-		console.log($scope.gender);
-		console.log($scope.address);
-		console.log($scope.birthYear);
-		console.log($scope.birthDay);
-		console.log($scope.birthMonth);
-		$http.post('/updateHost',{"firstname":$scope.firstname,"lastname":$scope.lastname,
+		vm.host.firstname = $scope.firstname;
+		vm.host.lastname = $scope.lastname;
+		vm.host.email =$scope.email;
+		vm.host.phonenumber =$scope.phonenumber;
+		vm.host.gender = $scope.gender;
+		vm.host.address = $scope.address;
+		vm.host.birthYear = $scope.birthYear;
+		vm.host.birthDay = $scope.birthDay;
+		vm.host.birthMonth = $scope.birthMonth;
+		console.log("calling updateProfile");
+		$http.post('/updateHost',{"user":vm.host}).then(function(response){
+
+			console.log(response.data);
+
+		})
+		
+		/*$http.post('/updateHost',{"firstname":$scope.firstname,"lastname":$scope.lastname,
 			"email":$scope.email,"phonenumber":$scope.phonenumber,"gender":$scope.gender,
 			"address":$scope.address,"birthYear":$scope.birthYear,"birthDay":$scope.birthDay,
 			"birthMonth":$scope.birthMonth
 			}).then(function(response){
 				console.log(response.data);
-			});
+			});*/
 	}
 	
 }

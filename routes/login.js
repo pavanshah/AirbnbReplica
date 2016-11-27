@@ -209,20 +209,22 @@ var deleteLogin = function(req,res){
 var updateHostProfile = function(req,res){
 		if(req.body.from != "card"){
 			console.log("Inside user Profile Update");
-	 		var dateString = req.body.birthMonth + "-" + req.body.birthDay + "-" + req.body.birthYear;
+			
+	 		var dateString = req.body.user.birthMonth + "-" + req.body.user.birthDay + "-" + req.body.user.birthYear;
 	 		console.log(dateString);
-	 		console.log(req.body);
+	 		console.log(req.body.user);
 	 		var momentObj = moment(dateString, 'MM-DD-YYYY');
 	 		var hostBirthDay = momentObj.format('YYYY-MM-DD');
 	 		console.log(hostBirthDay);
-	 		req.body.birthdate = hostBirthDay; //to save the host birthday
-	 		req.body.UserType = "host";
-	 		req.body.phone = req.body.phonenumber;
-	 		var query = {'email':req.body.email};
+	 		req.body.user.birthdate = hostBirthDay; //to save the host birthday
+	 		req.body.user.UserType = "host";
+	 		req.body.user.phone = req.body.user.phonenumber;
+	 		var query = {'email':req.session.user.emailId};
 	 		
-	 		Users.findOneAndUpdate(query, req.body, {upsert:false}, function(err, doc){
+	 		Users.update(query, req.body.user, {upsert:true}, function(err, doc){
 	 			
 	 		    if (err) {
+	 		    	console.log(err);
 	 		    	res
 	 				.status(400)
 	 				.send({"result":"Bad request"});
@@ -230,6 +232,7 @@ var updateHostProfile = function(req,res){
 	 		    }
 	 		    else {
 	 		    	console.log(doc);
+	 		    	console.log("host updated");
 	 		res
 	 	 	.status(200)
 	 	 	.send({"result":"user updated"});
