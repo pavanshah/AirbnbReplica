@@ -579,7 +579,7 @@ function checkBidsOnInterval(){
 
 	var today = new Date();
 	var validListingDate= new Date();
-	validListingDate.setDate(today.getDate() -2);
+	validListingDate.setDate(today.getDate() - 4); //4 days expiry time
 	//console.log(validListingDate);
 	Bid.update(
 	   { "property.ListingDate": {"$lte": validListingDate.toISOString()}, "bid_status":"active" },
