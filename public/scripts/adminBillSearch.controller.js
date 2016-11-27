@@ -1,11 +1,16 @@
 var app = angular.module('Airbnb');
 
 
-function AdminBillSearchControllerFn($state,$scope,$http) {	
+function AdminBillSearchControllerFn($state,$scope,$http,$rootScope) {	
 	var vm = this;
 	
 	$scope.billQuery = {"date":"","month":"","query":"new","querytype":$scope.queryType};
 	
+	$scope.showBill = function(id){
+		$rootScope.billid = id;		
+		window.location.assign("/#/adminBillView");
+		
+	}
 
 	$http({
 		method : "GET",

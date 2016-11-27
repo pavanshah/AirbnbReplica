@@ -8,6 +8,18 @@ var Users = require('../Models/user');
 var Bills = require('../Models/bill');
 var mongodb = require('mongodb');
 
+var getBillDetailAdmin = function(req,res){
+	console.log("Inside bill ");
+	
+var o_id = new mongodb.ObjectID(req.query.id);
+	
+	Bills.find({"_id":o_id},function(err,bill){
+		res
+		.status(200)
+		.send({"result":bill});			
+	})
+	
+}
 
 var deleteUser = function(req,res){
 	console.log("Inside delete user");
@@ -87,7 +99,7 @@ var getBillForAdmin = function(req,res){
 			
 	if(req.query.month != ""){
 		console.log("Inside month query");
-		Bills.aggregate([{$project: {billing_date: 1, month: {$month: '$billing_date'}}},
+		Bills.aggregate([{$project: {billing_date: 1,_id:1, month: {$month: '$billing_date'}}},
 				  {$match: {month: Number(req.query.month)}}],function(err,bills){
 			console.log(bills);
 			
@@ -292,3 +304,4 @@ exports.getBillForAdmin =getBillForAdmin;
 exports.getProfileForAdmin = getProfileForAdmin;
 exports.authorizeUser = authorizeUser;
 exports.deleteUser = deleteUser;
+exports.getBillDetailAdmin = getBillDetailAdmin;
