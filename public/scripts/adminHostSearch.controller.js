@@ -1,9 +1,18 @@
 var app = angular.module('Airbnb');
 
 
-function AdminHostSearchControllerFn($state,$scope,$http) {
+function AdminHostSearchControllerFn($state,$scope,$http,$rootScope) {
 	console.log("Inside admin host search");
 	var vm = this;
+	
+	
+	vm.showProfile = function(id){
+		console.log("profile clicked");
+		console.log(id);
+		$rootScope.showProfile = id;
+		window.location.assign("/#/adminProfileView");
+	}
+	
 	$scope.values = [];
 	$scope.space = " ";
 	$scope.hostQuery = {"type":"","address":"","query":"new"};
@@ -12,6 +21,7 @@ function AdminHostSearchControllerFn($state,$scope,$http) {
 	vm.searchDetails = function(){
 		console.log(typeof $scope.type);
 		console.log($scope.address);
+		
 		
 		if(typeof $scope.type != "undefined" && $scope.type != ""){
 			$scope.hostQuery.type = $scope.type;
@@ -52,7 +62,9 @@ function AdminHostSearchControllerFn($state,$scope,$http) {
 		var lat = vm.travelLocation.geometry.location.lat();
 		var long = vm.travelLocation.geometry.location.lng();
 		$state.go("viewListings",{'filters':{'latitude':lat,'longitude':long}});
-	}
+	};
+	
+	
 	
 	
 	
