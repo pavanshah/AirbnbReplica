@@ -6,7 +6,62 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var Users = require('../Models/user');
 var Bills = require('../Models/bill');
+var mongodb = require('mongodb');
 
+
+var deleteUser = function(req,res){
+	console.log("Inside delete user");
+	console.log(req.body);
+	var o_id = new mongodb.ObjectID(req.body.id);
+	
+	Users.remove({"_id":o_id},function(err,user){
+		if(err){
+			res
+			.status(200)
+			.send({"result":"failed"});
+			return;
+		}
+		res
+		.status(200)
+		.send({"result":"success"});
+		
+	})
+	
+	
+}
+var authorizeUser = function(req,res){
+	console.log("Inside auth user");
+	console.log(req.body);
+	var o_id = new mongodb.ObjectID(req.body.id);
+	
+	Users.update({"_id":o_id}, { user_status: 'active' },  function(err,user){
+		if(err){
+			res
+			.status(200)
+			.send({"result":"failed"});
+			return;
+		}
+		res
+		.status(200)
+		.send({"result":"success"});
+	})
+	
+};
+
+var getProfileForAdmin = function(req,res){
+	console.log(req.query.id);
+
+	var o_id = new mongodb.ObjectID(req.query.id);
+	
+	Users.find({"_id":o_id},function(err,user){
+
+		res
+		.status(200)
+		.send({"result":user});
+		
+	})
+	
+}
 
 var getBillForAdmin = function(req,res){
 	
@@ -234,3 +289,6 @@ exports.getMainDashboard = getMainDashboard;
 exports.getPropertyPerYear = getPropertyPerYear;
 exports.getHostsForAdmin = getHostsForAdmin;
 exports.getBillForAdmin =getBillForAdmin;
+exports.getProfileForAdmin = getProfileForAdmin;
+exports.authorizeUser = authorizeUser;
+exports.deleteUser = deleteUser;

@@ -4,7 +4,7 @@ function auctionablePropertyDetailsControllerFn($state,$stateParams,$http,$uibMo
 	
 	var vm = this;
 	vm.property = {};
-	
+	vm.bid_value = "";
 	//vm.bookingDates = bookingDataService.getBooking().bookingDates;
 	function getMaxBid() {
 		$http.post("/getMaxBid",vm.property).
