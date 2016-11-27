@@ -611,6 +611,20 @@ var job = new CronJob('*/59 * * * * *', function() {
 );
 
 
+var getUserBids = function(req,res) {
+	/*console.log(req.session.user.email);
+	console.log(req.session.user);*/
+	Bid.find({"user.emailId":req.session.user.emailId},function(err,result) {
+		if(err){
+			res.status(500);
+			res.json(err);
+		}
+		else{
+			res.json(result);
+		}
+	})
+}
+
 //var intervalID = setInterval(function(){console.log("Interval reached");}, 5000);
 
 exports.getAuctionableProperties = getAuctionableProperties;
@@ -626,5 +640,6 @@ exports.ConfirmBooking = ConfirmBooking;
 exports.bookProperty = bookProperty;
 exports.placeBid = placeBid;
 exports.getMaxBid = getMaxBid;
+exports.getUserBids = getUserBids;
 
 

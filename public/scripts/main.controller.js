@@ -17,12 +17,14 @@ function mainControllerFn($uibModal,loginService,$state,$log) {
  		if(vm.user.UserType=="Admin"){
  			$state.go("admin");
  		}
- 		if(vm.user.UserType=="Host"){
+ 		else if(vm.user.UserType=="Host"){
  			$state.go("becomehost");
  		}
- 		if(vm.user.UserType=="User"){
+ 		else if(vm.user.UserType=="User"){
  			$state.go("home");
  		}
+ 		else
+ 			$state.go("home");	
  	}
 
  	vm.logout = function() {
@@ -40,6 +42,10 @@ function mainControllerFn($uibModal,loginService,$state,$log) {
  	vm.profile = function()
  	{
  		$state.go("userProfile");
+ 	}
+
+ 	vm.bids = function() {
+ 		$state.go("viewUserBids");	
  	}
 
  	vm.openLoginModal = function() {
