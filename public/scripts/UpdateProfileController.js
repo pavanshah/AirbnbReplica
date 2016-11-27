@@ -2,6 +2,37 @@ var app = angular.module("Airbnb");
 
 function UpdateProfileControllerFn($state,$http,$scope) {
 	var vm = this;
+	vm.invalidzipflag1 = false;
+	vm.invalidzipflag2 = false;
+	var zipRegex1 = /^[0-9]{5}$/;
+	var zipRegex2 = /^[0-9]{9}$/;
+
+	vm.checkzip1 = function(){
+
+		if(zipRegex1.test(vm.user.address.zipcode) || zipRegex2.test(vm.user.address.zipcode))
+		{
+			console.log("valid");
+			vm.invalidzipflag1 = false;
+		}
+		else
+		{
+			vm.invalidzipflag1 = true;
+		}
+	}
+
+	vm.checkzip2 = function(){
+
+		if(zipRegex1.test(vm.user.carddetails.postalcode) || zipRegex2.test(vm.user.carddetails.postalcode))
+		{
+			console.log("valid");
+			vm.invalidzipflag2 = false;
+		}
+		else
+		{
+			vm.invalidzipflag2 = true;
+		}
+
+	}
 
 	vm.PopulateUserForm = function(){
 

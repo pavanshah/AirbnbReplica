@@ -68,7 +68,7 @@
         </label>
         <div class="col-sm-9">
           
-      <input id="user_First_name" name = "firstname" size="30" type="text" value="" ng-model="vm.user.firstname" ng-pattern="/^[a-zA-Z]*$/">
+      <input id="user_First_name" name = "firstname" size="30" type="text" value="" ng-model="vm.user.firstname" ng-pattern="/^[a-zA-Z]{1,20}$/">
       <span class="invalidinput" ng-show="profileForm.firstname.$error.pattern">Text Input Only</span>
 
         </div>
@@ -80,7 +80,7 @@
         </label>
         <div class="col-sm-9">
           
-      <input id="user_last_name" size="30" type="text" name = "lastname" value="" ng-model="vm.user.lastname" ng-pattern="/^[a-zA-Z]*$/">
+      <input id="user_last_name" size="30" type="text" name = "lastname" value="" ng-model="vm.user.lastname" ng-pattern="/^[a-zA-Z]{1,20}$/">
       <span class="invalidinput" ng-show="profileForm.lastname.$error.pattern">Text Input Only</span>
 
           <div class="text-muted space-top-1">This is only shared once you have a confirmed booking with another Airbnb user.</div>
@@ -128,15 +128,15 @@
       ng-pattern="/^[a-zA-Z\_\- ]*$/">
       <span class="invalidinput" ng-show="profileForm.user_address_city.$error.pattern">Text Input Only</br></span>
       State
-      <input id="state" name="user_address_state" size="30" type="text" ng-model="vm.user.address.state" ng-pattern="/^[a-zA-Z]*$/">
+      <input id="state" name="user_address_state" size="30" type="text" ng-model="vm.user.address.state" ng-pattern="/^[a-zA-Z\_\- ]*$/">
       <span class="invalidinput" ng-show="profileForm.user_address_state.$error.pattern">Text Input Only</br></span>
       ZipCode
-      <input id="Zipcode" name="user_address_zipcode" size="30" type="text" ng-model="vm.user.address.zipcode" ng-pattern = "/^[0-9]{5}$/">
+      <input id="Zipcode" name="user_address_zipcode" size="30" type="text" ng-model="vm.user.address.zipcode" ng-change = "vm.checkzip1()">
 
-      <span class="invalidinput" ng-show="profileForm.user_address_zipcode.$error.pattern">Not a valid zip code</br></span>
+      <span class="invalidinput" ng-show="vm.invalidzipflag1">Not a valid zip code</br></span>
 
       Country
-      <input id="Country" name="user_address_country" size="30" type="text" ng-model="vm.user.address.country" ng-pattern="/^[a-zA-Z]*$/">
+      <input id="Country" name="user_address_country" size="30" type="text" ng-model="vm.user.address.country" ng-pattern="/^[a-zA-Z\_\- ]*$/">
       <span class="invalidinput" ng-show="profileForm.user_address_country.$error.pattern">Text Input Only</br></span>
 
 
@@ -153,7 +153,7 @@
           FirstName
         </label>
         <div class="col-sm-9">
-          <input id="user_Credit_card_Firstname" name="cc_firstname"  size="30" type="text" ng-model="vm.user.carddetails.firstname" ng-pattern="/^[a-zA-Z]*$/">
+          <input id="user_Credit_card_Firstname" name="cc_firstname"  size="30" type="text" ng-model="vm.user.carddetails.firstname" ng-pattern="/^[a-zA-Z]{1,20}$/">
           <span class="invalidinput" ng-show="creditCardForm.cc_firstname.$error.pattern">Text Input Only</br></span>
         </div>
     </div>
@@ -165,7 +165,7 @@
           LastName
         </label>
         <div class="col-sm-9">
-          <input id="user_Credit_card_Lastname" name="cc_lastname"  size="30" type="text" ng-model="vm.user.carddetails.lastname" ng-pattern="/^[a-zA-Z]*$/">
+          <input id="user_Credit_card_Lastname" name="cc_lastname"  size="30" type="text" ng-model="vm.user.carddetails.lastname" ng-pattern="/^[a-zA-Z]{1,20}$/">
 
         <span class="invalidinput" ng-show="creditCardForm.cc_lastname.$error.pattern">Text Input Only</br></span>
 
@@ -209,9 +209,9 @@
         </label>
         <div class="col-sm-9">
          
-          <input id="user_Credit_card_zipcode" name="user_Credit_card_zipcode"  size="20" type="text" ng-model="vm.user.carddetails.postalcode" ng-pattern = "/^[0-9]{5}$/">
+          <input id="user_Credit_card_zipcode" name="user_Credit_card_zipcode"  size="20" type="text" ng-model="vm.user.carddetails.postalcode" ng-change = "vm.checkzip2()">
 
-      <span class="invalidinput" ng-show="creditCardForm.user_Credit_card_zipcode.$error.pattern">Not a valid zip code</br></span>
+      <span class="invalidinput" ng-show="vm.invalidzipflag2">Not a valid zip code</br></span>
           
         </div>
 
@@ -222,7 +222,7 @@
         </label>
         <div class="col-sm-9">
          
-          <input id="user_Credit_card_country" name="user_Credit_card_country"  size="30" type="text" ng-model="vm.user.carddetails.country" ng-pattern="/^[a-zA-Z]*$/">
+          <input id="user_Credit_card_country" name="user_Credit_card_country"  size="30" type="text" ng-model="vm.user.carddetails.country" ng-pattern="/^[a-zA-Z\_\- ]*$/">
       <span class="invalidinput" ng-show="creditCardForm.user_Credit_card_country.$error.pattern">Text Input Only</br></span>
           
         </div>
@@ -232,7 +232,7 @@
         <br>
         <br>
         <br>
-        <button type="button" class="btn btn-primary" ng-click="vm.UpdateProfile()" ng-disabled="creditCardForm.$invalid || profileForm.$invalid"> Update Profile </button>
+        <button type="button" class="btn btn-primary" ng-click="vm.UpdateProfile()" ng-disabled="creditCardForm.$invalid || profileForm.$invalid || vm.invalidzipflag1 || vm.invalidzipflag2"> Update Profile </button>
 
 </form>
 
