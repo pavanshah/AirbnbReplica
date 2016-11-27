@@ -5,7 +5,6 @@ var Schema = mongoose.Schema;
 var Trips = require('../Models/trip');
 var Property = require('../Models/property');
 var uniqueIDGenerator = require('../routes/uniqueIDGenerator');
-//var winston = require('winston');
 
 var globalTripObject ;
 var globalProperty;
@@ -14,17 +13,6 @@ var getTrips = function (req,res) {
 	var userId = req.session.user.emailId;
 	console.log(req.session.user);
 	query = {"user_emailId":userId};
-
-	/*
-	winston.remove(winston.transports.File);
-	winston.add(winston.transports.File, { filename: 'public/LogFiles/AirbnbAnalysis.json' });
-	winston.log('info', 'Trip info clicked', { page_name : 'tripinfo_page', user_email : req.session.user.emailId, city : req.session.user.address.city, state : req.session.user.address.state, country : req.session.user.address.country});
-
-	winston.remove(winston.transports.File);
-	winston.add(winston.transports.File, { filename: 'public/LogFiles/UserTracking.json' });
-	req.session.user.user_tracker.push("tripinfo_page");
-	winston.log('info', 'user tracker updated', {session_id : req.session.user.session_id, user_email : req.session.user.emailId, "user_tracker" : req.session.user.user_tracker});
-	*/
 
 	Trips.find(query,function(err, trips){
 		if(!err){
