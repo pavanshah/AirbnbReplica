@@ -542,7 +542,7 @@ function checkBidsOnInterval(){
 }
 
 
-var intervalID = setInterval(function(){console.log("Interval reached");}, 5000);
+//var intervalID = setInterval(function(){console.log("Interval reached");}, 5000);
 
 exports.getAuctionableProperties = getAuctionableProperties;
 exports.calculateBill =calculateBill;
