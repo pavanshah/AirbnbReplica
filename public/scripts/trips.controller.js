@@ -16,6 +16,31 @@ var TripControllerFn = function ($http,tripsService) {
   };
 	
 
+  	vm.uploadPic = function(tripId){
+  		console.log("in photo upload");
+
+		filepicker.pick(
+		  {
+		    mimetype: 'image/*',
+		    container: 'modal',
+		    services: ['COMPUTER', 'FACEBOOK', 'INSTAGRAM', 'GOOGLE_DRIVE', 'DROPBOX']
+		  },
+		  function(Blob){
+		    console.log(JSON.stringify(Blob.url));
+		    //vm.user.profilepic=Blob.url;
+		    vm.trips[tripId].photo = Blob.url;
+		    console.log(vm.trips[tripId].photo);
+		    //vm.trips[tripId].uploadButton = true;
+
+		    //vm.UpdateProfile();
+		  },
+		  function(FPError){
+		    console.log(FPError.toString());
+		  });
+
+	}
+
+
 	vm.rateHost = function(tripId) {
 
 		var temp = vm.trips[tripId];
@@ -107,7 +132,16 @@ var TripControllerFn = function ($http,tripsService) {
 					console.log("Review exists"+response.Reviews);
 	              		response.rating = 1;
 	              		response.rate = response.Reviews[0].ratings;// rating.data.result.ratings;
-	              		response.review = response.Reviews[0].feedback;// rating.data.result.feedback;	
+	              		response.review = response.Reviews[0].feedback;// rating.data.result.feedback;
+	              		response.photo = response.Reviews[0].photo;
+	              		if(response.photo == null)
+	              		{
+	              			response.photoFlag = 0;
+	              		}	
+	              		else
+	              		{
+	              			response.photoFlag = 1;
+	              		}
 	              		console.log(response.rating+":::"+response.rate+":::"+response.review);
 				}
 

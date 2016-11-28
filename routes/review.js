@@ -168,7 +168,7 @@ var submitReviewForTrip = function(req, res) {
 	//winston.add(winston.transports.File, { filename: 'public/LogFiles/PropertyReviewsAnalysis.json' });
 	//winston.log('info', 'review submitted', { rating : req.body.rate, property_id : req.body.property.property_id , host_id : req.body.host_id, user_email : req.session.user.emailId, city : req.session.user.address.city, state : req.session.user.address.state, country : req.session.user.address.country});
 
-	Trips.update(query, {$push : {Reviews : {ratings : req.body.rate, feedback : req.body.review}}}, function(err,response) {
+	Trips.update(query, {$push : {Reviews : {ratings : req.body.rate, feedback : req.body.review, photo : req.body.photo}}}, function(err,response) {
 		if(err)
 		{
 			res.status(401).json({"result":"no user found"});
