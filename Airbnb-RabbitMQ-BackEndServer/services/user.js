@@ -30,6 +30,43 @@ function authenticate(msg,callback){
 	});
 }
 
+function SignUp(msg,callback){
+
+  console.log("User Registration in RabbitMQ");
+
+  console.log(msg);
+
+  Users.find({"email":msg.user.email},function(err,user){
+    console.log("found");
+    console.log(user);
+    
+    if(user.length > 0){
+      callback(null,{"status":400,"result":"user already present"});
+     
+    }
+
+    newUser = Users(msg.user);
+    newUser.save(function(err,result){
+        if(!err){
+          console.log(result);
+          callback(null,{"status":200,"result":"User Created"});
+          
+        }
+        else{
+          console.log("inside error");
+          console.log(err);
+          callback(err,null);
+        }
+          
+      });
+
+
+
+});
+
+};
+
+exports.SignUp = SignUp;
 exports.authenticate = authenticate;
 
 

@@ -8,6 +8,8 @@ var uniqueIDGenerator = require('../routes/uniqueIDGenerator');
 var passport = require('passport');
 require('./passport')(passport);
 var moment = require('moment');
+var mq_client = require('../rpc/client');
+
 var LocalStrategy = require('passport-local').Strategy;
 
 //initial setup
@@ -36,7 +38,41 @@ var userSignup = function(req,res){
 	} else{
 		req.body.user.password = hash;	
 	}
-	Users.find({"email":req.body.user.email},function(err,user){
+	
+
+		var user = new Users(req.body.user);
+
+		var msg_payload = {
+			"func":"SignUp",
+			"user":user
+		}
+		//console.log("calling signup rabbit");
+
+		mq_client.make_request('user_queue',msg_payload,function(err,response){
+			if(!err){
+					console.log(response);
+					if(response.status==200)
+					{
+					res.status(200);
+					res.json({"result":"user created"});
+					return;
+					}
+
+					else
+					{
+						res.status(400);
+						res.json({"result":"Bad Resquest"});
+					}
+				}
+				else{
+					console.log("inside error");
+					console.log(err);
+					return;
+				}			
+		});	
+		
+/*
+		Users.find({"email":req.body.user.email},function(err,user){
 		console.log("found");
 		console.log(user);
 		
@@ -46,7 +82,6 @@ var userSignup = function(req,res){
 			return;
 		}
 
-		var user = new Users(req.body.user);
 		user.save(function(err,result){
 				if(!err){
 					console.log(result);
@@ -60,10 +95,10 @@ var userSignup = function(req,res){
 					return;
 				}
 					
-			});
+			});*/
 		
 
-	})
+	
 	
 	
 };
