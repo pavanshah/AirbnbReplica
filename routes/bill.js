@@ -5,6 +5,7 @@ var Schema = mongoose.Schema;
 var bill = require('../Models/bill');
 var trip = require('../Models/trip');
 var uniqueIDGenerator = require('../routes/uniqueIDGenerator');
+var mq_client = require('../rpc/client');
 //var winston = require('winston');
 
 var GenerateBill = function (req,callback){
@@ -15,8 +16,38 @@ var GenerateBill = function (req,callback){
 	console.log("ID generated");
 	
 	var newBill = bill(req.body.bill);
-	console.log(newBill);
-	newBill.save(function(err,result){
+	//console.log(newBill);
+
+	msg_payload={
+		"func":"GenerateBill",
+		"billObj":newBill
+	}
+
+	mq_client.make_request("bill_queue",msg_payload,function(err,response){
+
+		if(err){
+			console.log("RabbitMQ bill Error");
+		}
+		else{
+			console.log("RabbitMQ bill response");
+			console.log(response);
+		}
+
+		if(response.status==200)
+		{
+			callback({"status":200,"result":"Bill Generated","bill":response.bill});
+		}
+		else
+		{
+			console.log(err);
+			callback({"status":400,"result":"Failed to Generate bill","bill":null});
+		}
+
+
+
+	})
+
+	/*newBill.save(function(err,result){
 
 		if(!err){
 			console.log(result);
@@ -27,7 +58,7 @@ var GenerateBill = function (req,callback){
 			{console.log(err);
 			callback({"status":400,"result":"Failed to Generate bill"});
 		}
-	});
+	});*/
 	
 }
 

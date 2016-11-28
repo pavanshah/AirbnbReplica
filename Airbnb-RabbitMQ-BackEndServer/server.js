@@ -2,10 +2,11 @@
 var mongoose = require('mongoose');
 var amqp = require('amqp')
 , util = require('util');
-property = require('./services/properties');
+var property = require('./services/properties');
 var user = require('./services/user');
 
 var login = require('./services/login');
+var bill = require('./services/bill');
 
 //require('./services/mongo')();
 
@@ -74,6 +75,7 @@ cnn.on('ready', function(){
 			util.log("DeliveryInfo: "+JSON.stringify(deliveryInfo));
 			
 
+
 			switch(message.func){
 
 				case "Authenticate":
@@ -125,7 +127,7 @@ cnn.on('ready', function(){
 				break;
 				case "getHost":
 					user.getHostProfile(message,function(err,res){
-						
+
 					cnn.publish(m.replyTo, res, {
 								contentType:'application/json',
 								contentEncoding:'utf-8',
@@ -134,7 +136,129 @@ cnn.on('ready', function(){
 					});
 				break;
 
+
 		};
 	});
- 	})
+ 	});
+
+	console.log("listening on Property Queue");
+	cnn.queue('property_queue',function(q)
+
+	{
+		q.subscribe(function(message, headers, deliveryInfo, m){
+			util.log(util.format( deliveryInfo.routingKey, message));
+			util.log("Message: "+JSON.stringify(message));
+			util.log("DeliveryInfo: "+JSON.stringify(deliveryInfo));
+			
+
+			switch(message.func){
+
+				case "createProperty":
+
+					property.createProperty(message,function(err,res){
+
+						console.log("printing response");
+						console.log(res);
+							//return index sent
+							cnn.publish(m.replyTo, res, {
+								contentType:'application/json',
+								contentEncoding:'utf-8',
+								correlationId:m.correlationId
+							});
+					});
+				break;
+
+				case "SearchPropertyByDistance":
+					property.SearchPropertyByDistance(message,function(err,res){
+
+						console.log("printing response");
+						console.log(res);
+							//return index sent
+							cnn.publish(m.replyTo, res, {
+								contentType:'application/json',
+								contentEncoding:'utf-8',
+								correlationId:m.correlationId
+							});
+					});
+				break;
+				case "UpdateProperty":
+					property.UpdateProperty(message,function(err,res){
+
+						console.log("printing response");
+						console.log(res);
+						//return index sent
+							cnn.publish(m.replyTo, res, {
+								contentType:'application/json',
+								contentEncoding:'utf-8',
+								correlationId:m.correlationId
+							});
+
+					});
+				break;
+
+				case "SearchPropertyById":
+					property.SearchPropertyById(message,function(err,res){
+						console.log("printing response");
+						console.log(res);
+						//return index sent
+							cnn.publish(m.replyTo, res, {
+								contentType:'application/json',
+								contentEncoding:'utf-8',
+								correlationId:m.correlationId
+							});
+
+					});
+				break;
+
+				case "BookProperty":
+					property.BookProperty (message,function(err,res){
+
+						console.log("printing response");
+						console.log(res);
+						//return index sent
+							cnn.publish(m.replyTo, res, {
+								contentType:'application/json',
+								contentEncoding:'utf-8',
+								correlationId:m.correlationId
+							});
+
+					});
+				break;
+			}
+		})
+	});
+
+	console.log("listening on Billing Queue");
+	cnn.queue('bill_queue',function(q)
+
+	{
+
+		q.subscribe(function(message, headers, deliveryInfo, m){
+			util.log(util.format( deliveryInfo.routingKey, message));
+			util.log("Message: "+JSON.stringify(message));
+			util.log("DeliveryInfo: "+JSON.stringify(deliveryInfo));
+			
+
+			switch(message.func){
+
+				case "GenerateBill":
+				bill.GenerateBill(message,function(err,res){
+
+					console.log("printing Bill response");
+						console.log(res);
+						//return index sent
+							cnn.publish(m.replyTo, res, {
+								contentType:'application/json',
+								contentEncoding:'utf-8',
+								correlationId:m.correlationId
+							});
+				})
+				break;
+
+			}
+	});
+
+  });
 });
+
+

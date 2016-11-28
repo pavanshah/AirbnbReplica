@@ -229,7 +229,7 @@ var userLogIn = function(req,res){
 	
 };
 */
-var deleteLogin = function(req,res){
+var deleteLogin = function(req,res){ 
 	Users.update({"email":req.body.user.email}, {$set : {user_status : "inactive" }}, function(err, removed){	
 		console.log(removed);
 		if(err || removed == null){
