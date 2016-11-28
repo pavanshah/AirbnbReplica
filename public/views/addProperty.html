@@ -47,10 +47,12 @@
 
 					  	 <label for="start_date">Start Date</label>
 					  	 <input id="start_date" type="Date" ng-model="vm.property.property_start_date" required>
+					  	 <span class="invalidinput" ng-show="vm.requiredStartDateFlag">Required Field</span>
 					  	 <span class="invalidinput" ng-show="vm.invalidStartDateFlag">Invalid Start Date</span>
 
 					  	 <label for="end_date">End Date</label>
 					  	 <input id="end_date" type="Date" ng-model="vm.property.property_end_date" required>
+					  	 <span class="invalidinput" ng-show="vm.requiredEndDateFlag">Required Field</span>
 					  	 <span class="invalidinput" ng-show="vm.invalidEndDateFlag">Invalid End Date</span>
 
 					  	 <label for="propertyCategory"> Property Category </label>
@@ -79,7 +81,8 @@
 				         Street address
 				        <input class ="form-control" id="street_number"
 				               ng-model="vm.property.address.street" required>
-				        
+				      	<span class="invalidinput" ng-show="vm.requiredStreetFlag">Required Field<br></span>
+				      	<span class="invalidinput" ng-show="vm.invalidStreetFlag">Text or Numeric Input Only<br></span>
 				      
 				        City
 				        <!--Note: Selection of address components in this example is typical.
@@ -87,15 +90,27 @@
 				             https://developers.google.com/maps/documentation/javascript/examples/places-autocomplete-addressform-->
 				        <input class ="form-control" id="locality"
 				              ng-model="vm.property.address.city" required>
+				        <span class="invalidinput" ng-show="vm.requiredCityFlag">Required Field<br></span>
+				        <span class="invalidinput" ng-show="vm.invalidCityFlag">Text Input Only<br></span>
+
 				        State
 				       <input class ="form-control"
 				              id="administrative_area_level_1" ng-model="vm.property.address.state" required>
+				        <span class="invalidinput" ng-show="vm.requiredStateFlag">Required Field<br></span>
+				        <span class="invalidinput" ng-show="vm.invalidStateFlag">Text Input Only<br></span>
+
 				       Zip code
-				        <input class ="form-control" id="postal_code"
+				        <input type = "text" class ="form-control" id="postal_code"
 				              ng-model="vm.property.address.zipcode">
+				        <span class="invalidinput" ng-show="vm.requiredZipFlag">Required Field<br></span>
+				        <span class="invalidinput" ng-show="vm.invalidZipFlag">Invalid Zip code<br></span>
+
 				     Country
 				        <input class ="form-control"
-				              id="country" ng-model="vm.property.address.country" required> 
+				              id="country" ng-model="vm.property.address.country" required>
+				        <span class="invalidinput" ng-show="vm.requiredCountryFlag">Required Field<br></span>
+				        <span class="invalidinput" ng-show="vm.invalidCountryFlag">Text Input Only<br></span>
+
 				    	<div class="Quantity" ng-show="showPricingCatalog">
 				    	<label for="propertyQuantity"> Quantity</label>
 				    	<input type="text" class="form-control" id="propertyQuantity" ng-model="vm.property.qty" required>
@@ -105,6 +120,7 @@
 				    	<span ng-show="vm.showBaseNote"> This will be the starting price for Bids. It is for combined duration.</span>
 				    	<input type="number" class="form-control" ng-model="vm.property.base_price" required>
 				    	<span class="invalidinput" ng-show="vm.requiredBaseFlag">Required Field</span>
+				    	<span class="invalidinput" ng-show="vm.invalidBaseFlag">Base price must be greated than zero</span>
 
 				    	<div class="pricing catalog" ng-show="vm.showPricingCatalog">
 
@@ -115,20 +131,24 @@
 				    	<label for="Weekend_Surge_Rate"> Weekend Surge Rate</label>
 				    	<input type="number" class="form-control" id="Weekend_Surge_Rate" ng-model="vm.weekend_surge" required>
 				    	<span class="invalidinput" ng-show="vm.requiredWSurgeFlag">Required Field</span>
+				    	<span class="invalidinput" ng-show="vm.invalidWSurgeFlag">Must be between 1 to 3</span>
 
 				    	<label for="Holiday_Surge_Rate"> Holiday Surge Rate (November and December)</label>
 				    	<input type="number" class="form-control" id="Holiday_Surge_Rate" ng-model="vm.holiday_surge" required>
 				    	<span class="invalidinput" ng-show="vm.requiredHSurgeFlag">Required Field</span>
+				    	<span class="invalidinput" ng-show="vm.invalidHSurgeFlag">Must be between 1 to 3</span>
 
 				    	<h4> Discounts </h4>
 				    	<label for="Weekly_Discount_Rate"> Weekly Booking Discount </label>
 				    	<input type="number" class="form-control" id="Weekly_Discount_Rate" ng-model="vm.weekly_discount" required>
 				    	<span class="invalidinput" ng-show="vm.requiredWeeklyDisc">Required Field</span>
+				    	<span class="invalidinput" ng-show="vm.invalidWDiscountFlag">Must be less than 1.0</span>
 				    	
 
 				    	<label for="Monthly_Discount_Rate"> Monthly Discount Rate </label>
 				    	<input type="number" class="form-control" id="Monthly_Discount_Rate" ng-model="vm.monthly_discount" required>
 				    	<span class="invalidinput" ng-show="vm.requiredMonthlyDisc">Required Field</span>
+				    	<span class="invalidinput" ng-show="vm.invalidMDiscountFlag">Must be less than 1.0</span>
 
 				    	</div>
 
