@@ -1,7 +1,7 @@
 var app = angular.module("Airbnb");
 
 
-var TripControllerFn = function ($http,tripsService) {
+var TripControllerFn = function ($http,$state,tripsService) {
 	
 	var vm = this;
 
@@ -55,6 +55,14 @@ var TripControllerFn = function ($http,tripsService) {
 
 		//vm.trips.reviewDiv = 1;
 	}
+
+	//vm.trip = $stateParams.trip;
+	console.log(vm.trip);
+	vm.tripBill = function(tripId){
+		console.log("inside order click");
+		$state.go("userBill",{"trip":vm.trips[tripId]});
+	}
+
 
 	vm.trips ={};
 	
@@ -174,5 +182,8 @@ var TripControllerFn = function ($http,tripsService) {
 	}
 	getTrips();
 };
+
+
+
 
 app.controller("TripsController",TripControllerFn);
