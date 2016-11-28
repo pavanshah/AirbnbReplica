@@ -101,7 +101,39 @@ cnn.on('ready', function(){
 								correlationId:m.correlationId
 							});
 					});
-				break;			
+				break;	
+
+				case "UpdateUser":
+					user.updateProfile(message,function(err,res){
+
+						cnn.publish(m.replyTo, res, {
+								contentType:'application/json',
+								contentEncoding:'utf-8',
+								correlationId:m.correlationId
+							});
+					});
+					break;
+				case "getUserProfile":
+					user.getUserProfile(message,function(err,res){
+
+						cnn.publish(m.replyTo, res, {
+								contentType:'application/json',
+								contentEncoding:'utf-8',
+								correlationId:m.correlationId
+							});
+					});
+				break;
+				case "getHost":
+					user.getHostProfile(message,function(err,res){
+						
+					cnn.publish(m.replyTo, res, {
+								contentType:'application/json',
+								contentEncoding:'utf-8',
+								correlationId:m.correlationId
+							});
+					});
+				break;
+
 		};
 	});
  	})
