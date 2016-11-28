@@ -10,6 +10,7 @@ var Bill = require('./bill');
 var Bid = require('../Models/bid');
 var Trip = require('./trip');
 var CronJob = require('cron').CronJob;
+var mq_client = require('../rpc/client');
 //var winston = require('winston');
 
 var CreateProperty = function (req,res){
@@ -35,7 +36,31 @@ var CreateProperty = function (req,res){
 	req.body.property.property_id = uniqueIDGenerator.returnUniqueID();
 	req.body.property.host_id = req.session.user.user_id;
 	req.body.property.ListingDate = new Date();
+
+	msg_payload = {
+		"func" : "createProperty",
+		"property": req.body.property
+	}
 	
+	mq_client.make_request("property_queue",msg_payload,function(err,response){
+
+		if(err){
+			console.log(err);
+		}
+		console.log(response);
+
+		if(response.status==200){
+			res.status(200);
+			res.json({"result":"Property created"});
+		}
+		else
+			res.status(400);
+			res.json({"result":"Bad Request"});
+
+
+	});
+/*
+
 	var newProperty = Property(req.body.property);
 	console.log(newProperty);
 	newProperty.save(function(err,result){
@@ -48,7 +73,7 @@ var CreateProperty = function (req,res){
 		}
 		else
 			console.log(err);
-	});
+	});*/
 
 
 }
@@ -104,6 +129,7 @@ var SearchPropertyByDistance = function(req,res){
 	//	winston.log('info', 'user tracker updated', {session_id : req.session.user.session_id, user_email : req.session.user.emailId, "user_tracker" : req.session.user.user_tracker});
 	//}
 
+
 	var lat             = req.body.latitude;
     var long            = req.body.longitude;
     //var distance        = req.body.distance;
@@ -114,6 +140,37 @@ var SearchPropertyByDistance = function(req,res){
     //lat = 42;
     //long = -122;
 
+    var msg_payload = {
+		"func":"SearchPropertyByDistance",
+		"lat":lat,
+		"long":long,
+		"userProvidedRange":userProvidedRange,
+		"distance":distance,
+		"qty":req.body.qty,
+		"start_date":req.body.start_date,
+		"end_date":req.body.end_date,
+	};
+
+	mq_client.make_request('property_queue',msg_payload,function(err,response){
+
+		if(err)
+		{	
+			console.log(err);
+		}
+		else
+		{
+			if(response.status==200)
+			{
+				res.json(response.refinedProperties);
+			}
+			else
+				console.log(response);
+		}
+
+
+
+	});
+	/*
     // Opens a generic Mongoose Query. Depending on the post body we will...
     var query = Property.find({ qty: { $gte: req.body.qty } });
 
@@ -139,6 +196,7 @@ var SearchPropertyByDistance = function(req,res){
         }
        
     });
+    */
 
 
 }
@@ -167,17 +225,40 @@ var UpdateProperty = function(req,res){
 	console.log("inside update property");
 	var query = {'property_id':req.body.property.property_id};
 	var obj = req.body.property;
-	Property.update(query,{$set:obj}, function(error, property) {
-		if(!error)
+	console.log(query);
+
+	var msg_payload = {
+		'func':"UpdateProperty",
+		'property':obj,
+		'query':query
+	}
+
+	mq_client.make_request('property_queue',msg_payload,function(err,response){
+
+		if(err)
 		{
-			res.status(200);
-			res.json({"result":"Property updated"});
+			console.log(err);
 		}
-		else{
-			console.log(error);
+		else
+		{
+			if(response.status==200)
+			{
+				res.status(200);
+				res.json({"result":"Property updated"});
+			}
+			else
+			{
+				res.status(400);
+				res.json({"result":"Bad Request"});
+			}
 		}
-		
-	});
+
+
+
+	})
+
+
+	
 }
 
 var bookProperty = function(req,callback) {
@@ -194,21 +275,44 @@ var bookProperty = function(req,callback) {
 	}
 	else*/
 	
-	console.log(req.body);
-	console.log(req.session.user);
+	//console.log(req.body);
+	//console.log(req.session.user);
 	var query = {'property_id':req.body.property.property_id};
 	var obj = {"start_date":req.body.bookingDates.start_date, "end_date":req.body.bookingDates.end_date, "user_email":req.session.user.emailId};
-	Property.update(query,{$push:{bookings:obj}}, function(error, property) {
-		if(!error)
+
+	var msg_payload = {
+
+		"func":"BookProperty",
+		"query":query,
+		"obj":obj
+	};
+
+	mq_client.make_request('property_queue',msg_payload,function(err,response){
+
+		if(err)
 		{
-			//res.status(200);*/
-			callback({"status":200,"result":"Property Booked","property":property});
+			console.log(err);
 		}
-		else{
-			console.log(error);
+		if(response)
+		{
+			callback({"status":200,"result":"Property Booked","property":req.body.property});
 		}
-		
+
+
 	});
+
+
+	// Property.update(query,{$push:{bookings:obj}}, function(error, property) {
+	// 	if(!error)
+	// 	{
+	// 		//res.status(200);*/
+	// 		callback({"status":200,"result":"Property Booked","property":property});
+	// 	}
+	// 	else{
+	// 		console.log(error);
+	// 	}
+		
+	// });
 
 }
 
@@ -227,8 +331,35 @@ var SearchPropertyById = function (req,res){
 
 	//var retrivedProperty = mongoose.model('Property',Property);
 	console.log(req.body);
+	var msg_payload = {
+		"func": "SearchPropertyById",
+		"property_id":req.body.property_id
+	}
+
+	mq_client.make_request("property_queue",msg_payload,function(err,response){
+
+		if(err)
+		{
+			console.log(err);
+		}
+		else
+		{
+			if(response.status==200)
+			{
+				res.status(200);
+				res.json(response.property);
+			}
+			else
+			{
+				res.status(400);
+				res.json({"response":"Bad Request"});
+			}
+		}
+
+
+	})
 	
-	Property.findOne({"property_id":req.body.property_id},function(err,property){
+	/*Property.findOne({"property_id":req.body.property_id},function(err,property){
 		//console.log("err",err);
 		//console.log("property",property);
 		if(!err){
@@ -249,7 +380,7 @@ var SearchPropertyById = function (req,res){
 			
 		}
 
-	});
+	});*/
 
 }
 
@@ -278,7 +409,7 @@ var ConfirmBooking = function (req,res){
 	bookProperty(req,function(propertyResponse){
 
 		console.log("Inside Response for bookProperty");
-		console.log(propertyResponse);
+		//console.log(propertyResponse);
 
 		if(propertyResponse.status!=200)
 		{
@@ -287,6 +418,7 @@ var ConfirmBooking = function (req,res){
 		}
 		else
 		{
+			console.log("Reached bill from property");
 			 
 			var billObj =  {
 							    "bill":{
