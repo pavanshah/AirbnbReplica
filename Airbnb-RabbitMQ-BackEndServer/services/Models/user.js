@@ -35,7 +35,6 @@ var Users = new Schema({
 });
 
 Users.methods.isActive = function(user) {
-	console.log("checking if active:"+(user.user_status == "active"));
 	return user.user_status == "active";
 };
 module.exports = mongoose.model("Users",Users);
