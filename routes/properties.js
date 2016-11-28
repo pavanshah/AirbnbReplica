@@ -295,7 +295,7 @@ var ConfirmBooking = function (req,res){
 							    "from_date" : req.body.bookingDates.start_date,
 							    "to_date" : req.body.bookingDates.end_date,
 							    "property" : req.body.property,
-							    "user" : {"userid":"281521057","email":"pavanshah77@gmail.com"},
+							    "user" : {"userid":req.session.user.user_id,"email":req.session.user.emailId},
 							    "trip_amount" : req.body.trip_amount
 							    
 							    }
