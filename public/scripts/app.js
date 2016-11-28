@@ -113,6 +113,9 @@ app.config(function($stateProvider, $urlRouterProvider) {
 	.state('userHome',{
 		url:'/userHome',
 		templateUrl:"public/views/userHome.html",
+		params:{
+			trip:null
+		},
 		controller:"TripsController",
 		controllerAs:"vm"
 	})
