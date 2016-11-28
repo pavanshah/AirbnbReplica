@@ -100,9 +100,11 @@ var authenticateLocal = function (req,res,next){
 
 	passport.authenticate('user',function(err,user,info){
 	if(err) {
+		//console.log("login file got error from passport");
       return next(err);
     }
     if(!user) {
+    	//console.log("login file didn't get user from passport");
     	res.status(400);
 		res.json(info);
 		return;
@@ -110,10 +112,12 @@ var authenticateLocal = function (req,res,next){
     }
     req.logIn(user, {session:false}, function(err) {
       if(err) {
+      //	console.log("req login of login got error from passport");
         return next(err);
       }
-      console.log(user);
-      console.log("storing in session");
+     // console.log("printing user in login.js");
+      //console.log(user);
+      //console.log("storing in session");
 	 //console.log("Testing for user",res);
 	 if(user.avgrating==null||user.avgrating==undefined)
 	 {

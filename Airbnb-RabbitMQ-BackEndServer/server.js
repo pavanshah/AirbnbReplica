@@ -1,6 +1,9 @@
-//super simple rpc server example
+	//super simple rpc server example
+var mongoose = require('mongoose');
 var amqp = require('amqp')
 , util = require('util');
+property = require('./services/properties');
+var user = require('./services/user');
 
 var login = require('./services/login');
 
@@ -35,7 +38,7 @@ app.use(expressSession({
 // app.use(app.router);
 // app.use(passport.initialize());
 
-mongo.connect(mongoSessionConnectURL, function(){
+mongoose.connect(mongoSessionConnectURL, function(){
 	console.log('Connected to mongo at: ' + mongoSessionConnectURL);
 });
 
@@ -58,4 +61,48 @@ cnn.on('ready', function(){
 			});
 		});
 	});
+
+
+
+	console.log("listening on User Queue");
+	cnn.queue('user_queue',function(q)
+
+	{
+		q.subscribe(function(message, headers, deliveryInfo, m){
+			util.log(util.format( deliveryInfo.routingKey, message));
+			util.log("Message: "+JSON.stringify(message));
+			util.log("DeliveryInfo: "+JSON.stringify(deliveryInfo));
+			
+
+			switch(message.func){
+
+				case "Authenticate":
+
+					user.authenticate(message,function(err,res){
+
+						console.log("printing response");
+						console.log(res);
+							//return index sent
+							cnn.publish(m.replyTo, res, {
+								contentType:'application/json',
+								contentEncoding:'utf-8',
+								correlationId:m.correlationId
+							});
+					});
+				break;
+
+				case "SignUp":
+					user.SignUp(message,function(err,res){
+
+						//return index sent
+							cnn.publish(m.replyTo, res, {
+								contentType:'application/json',
+								contentEncoding:'utf-8',
+								correlationId:m.correlationId
+							});
+					});
+				break;			
+		};
+	});
+ 	})
 });
