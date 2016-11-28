@@ -8,6 +8,8 @@ var uniqueIDGenerator = require('../routes/uniqueIDGenerator');
 var passport = require('passport');
 require('./passport')(passport);
 var moment = require('moment');
+var mq_client = require('../rpc/client');
+
 var LocalStrategy = require('passport-local').Strategy;
 
 //initial setup
@@ -36,7 +38,41 @@ var userSignup = function(req,res){
 	} else{
 		req.body.user.password = hash;	
 	}
-	Users.find({"email":req.body.user.email},function(err,user){
+	
+
+		var user = new Users(req.body.user);
+
+		var msg_payload = {
+			"func":"SignUp",
+			"user":user
+		}
+		//console.log("calling signup rabbit");
+
+		mq_client.make_request('user_queue',msg_payload,function(err,response){
+			if(!err){
+					console.log(response);
+					if(response.status==200)
+					{
+					res.status(200);
+					res.json({"result":"user created"});
+					return;
+					}
+
+					else
+					{
+						res.status(400);
+						res.json({"result":"Bad Resquest"});
+					}
+				}
+				else{
+					console.log("inside error");
+					console.log(err);
+					return;
+				}			
+		});	
+		
+/*
+		Users.find({"email":req.body.user.email},function(err,user){
 		console.log("found");
 		console.log(user);
 		
@@ -46,7 +82,6 @@ var userSignup = function(req,res){
 			return;
 		}
 
-		var user = new Users(req.body.user);
 		user.save(function(err,result){
 				if(!err){
 					console.log(result);
@@ -60,10 +95,10 @@ var userSignup = function(req,res){
 					return;
 				}
 					
-			});
+			});*/
 		
 
-	})
+	
 	
 	
 };
@@ -212,6 +247,10 @@ var deleteLogin = function(req,res){
 //updateHostProfile function updates host profile details
 var updateHostProfile = function(req,res){
 		if(req.body.from != "card"){
+
+
+
+
 			console.log("Inside user Profile Update");
 			
 	 		var dateString = req.body.user.birthMonth + "-" + req.body.user.birthDay + "-" + req.body.user.birthYear;
@@ -224,8 +263,43 @@ var updateHostProfile = function(req,res){
 	 		req.body.user.UserType = "host";
 	 		req.body.user.phone = req.body.user.phonenumber;
 	 		var query = {'email':req.session.user.emailId};
+
+
+	 		msg_payload = {
+	 			"func":"updateHostDetails",
+	 			"query":query,
+	 			"user": req.body.user
+	 		}
+
+	 		mq_client.make_request("user_queue",msg_payload,function(err,respose){
+
+	 			if(err)
+	 			{
+	 				console.log(err);
+	 			}
+	 			else
+	 			{
+
+	 				if(response.status==200)
+	 				{
+	 					res
+				 	 	.status(200)
+				 	 	.send({"result":"user updated"});
+
+	 				}
+	 				else
+	 				{
+	 					console.log(response);
+		 		    	res
+		 				.status(400)
+		 				.send({"result":"Bad request"});
+
+	 				}
+	 			}
+
+	 		});
 	 		
-	 		Users.update(query, req.body.user, {upsert:true}, function(err, doc){
+	 		/*Users.update(query, req.body.user, {upsert:true}, function(err, doc){
 	 			
 	 		    if (err) {
 	 		    	console.log(err);
@@ -242,7 +316,7 @@ var updateHostProfile = function(req,res){
 	 	 	.send({"result":"user updated"});
 	 			
 	 		};
-	 		})	
+	 		})	*/
 		} else
 		{
 		console.log(req.body);	
@@ -255,7 +329,38 @@ var updateHostProfile = function(req,res){
 		req.body.carddetails = carddetails;
 		
 		console.log(req.body.carddetails);
- 		Users.findOneAndUpdate(query, req.body, {upsert:false}, function(err, doc){
+
+		msg_payload = {
+			"func": "updateHostCardDetails",
+			"query": query,
+			"body":body
+
+		}
+
+		mq_client.make_request("user_queue",msg_payload,function(err,response){
+
+			if(err)
+			{
+				console.log(err);
+			}
+			else
+			{
+				if(response.status==200)
+				{
+					res
+ 		    	 	.status(200)
+ 		    	    .send({"result":"card details saved"});
+				}
+				else
+				{
+						res
+	 				.status(400)
+	 				.send({"result":"Bad request"});	
+				}
+			}
+
+		});
+ 		/*Users.findOneAndUpdate(query, req.body, {upsert:false}, function(err, doc){
  			if (err) {
  		    	res
  				.status(400)
@@ -268,7 +373,7 @@ var updateHostProfile = function(req,res){
  		    	 .status(200)
  		    	   .send({"result":"card details saved"});
  		    	};
- 		})
+ 		})*/
 		}
  		
  		
@@ -279,9 +384,30 @@ var updateProfile = function(req,res){
 	console.log("Inside user Profile Update");
 	var query = {'email':req.body.user.email};
 
+
+	msg_payload = {
+		"func": "UpdateUser",
+		"user":req.body.user,
+		"query":query
+	}
 	//console.log(req.body.user);
+
+	mq_client.make_request("user_queue",msg_payload,function(err,response){
+
+
+		if(err)
+		{
+			console.log(err);
+		}
+		else
+			console.log(response);
+			res.status(200).send({"result":"User Updated"});
+
+
+
+	});
 	
-	Users.findOneAndUpdate(query, req.body.user, {upsert:false}, function(err, doc){
+	/*Users.findOneAndUpdate(query, req.body.user, {upsert:false}, function(err, doc){
 		
 	    if (err) {
 	    	res
@@ -296,10 +422,10 @@ var updateProfile = function(req,res){
  	.send({"result":"User Updated"});
 		
 	};
-	})	
+	})	*/
 };
 
-var getLoginUserDetails = function(req,res){
+/*var getLoginUserDetails = function(req,res){
 	console.log("Inside Get user");
 	
  	
@@ -316,7 +442,7 @@ var getLoginUserDetails = function(req,res){
  		.send({"result":user});
  	});
 	
-};
+};*/
 
 var getUserProfile = function(req,res){
 
@@ -331,7 +457,28 @@ var getUserProfile = function(req,res){
 else{
 	console.log("Inside Get LoggedIn user service");
 	 	
- 	Users.findOne({"email":req.session.user.emailId},function(err,user){
+	msg_payload={
+		"func":"getUserProfile",
+		"email":req.session.user.emailId
+	}
+
+	mq_client.make_request("user_queue",msg_payload,function(err,response){
+
+		if(err){
+			console.log(err);
+		}
+		else
+		{
+			console.log(response);
+			res
+ 		.status(200)
+ 		.send({"user":response.user});
+		}
+
+
+	});
+
+ 	/*Users.findOne({"email":req.session.user.emailId},function(err,user){
  		if(err || user == null){
  			res
  			.status(400)
@@ -358,7 +505,7 @@ else{
  		.status(200)
  		.send({"user":UserObject});
  	});
-	
+	*/
 	}
 };
 
@@ -374,8 +521,21 @@ var getHost = function(req,res){
 
 else{
 	console.log("Inside Get host service");
+
+	msg_payload = {
+		"func":"getHost",
+		"email":req.session.user.emailId
+	};
+
+	mq_client.make_request("user_queue",msg_payload,function(err,response){
+
+		console.log(response);
+
+
+
+	})
 	 	
- 	Users.findOne({"email":req.session.user.emailId},function(err,user){
+ 	/*Users.findOne({"email":req.session.user.emailId},function(err,user){
  		if(err || user == null){
  			res
  			.status(400)
@@ -383,6 +543,8 @@ else{
  			return;
  			
  		}
+
+
  		var momentObj = moment(user.birthdate, 'MM-DD-YYYY');
  		var hostBirthDay = momentObj.format('YYYY-MM-DD');
  		//1990-07-17
@@ -409,7 +571,7 @@ else{
  		res
  		.status(200)
  		.send({"user":UserObject});
- 	});
+ 	});*/
 	
 	}
 };
@@ -457,14 +619,14 @@ var logout = function(req,res) {
 
 }
 
-exports.updateHostProfile = updateHostProfile;
-exports.getUserProfile = getUserProfile;
-exports.userSignup = userSignup;
+exports.updateHostProfile = updateHostProfile;//done Rabbit
+exports.getUserProfile = getUserProfile; //done Rabbit
+exports.userSignup = userSignup; //done Rabbit
 //exports.userLogIn = userLogIn;
 exports.deleteUser = deleteLogin;
-exports.updateUser = updateProfile;
-exports.getLoginUserDetails = getLoginUserDetails;
-exports.authenticateLocal = authenticateLocal;
+exports.updateUser = updateProfile; //done Rabbit
+//exports.getLoginUserDetails = getLoginUserDetails;
+exports.authenticateLocal = authenticateLocal;// done Rabbit
 exports.isUserLoggedIn = isUserLoggedIn;
 exports.logout = logout;
-exports.getHost = getHost;
+exports.getHost = getHost; //done Rabbit

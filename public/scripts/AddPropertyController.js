@@ -22,20 +22,123 @@ function AddPropertyControllerFn($state,$stateParams,$http) {
 	vm.showBaseNote=false;
 	//vm.ListingType = "";
 	
-	vm.UploadProperty = function(){
+	vm.UploadProperty = function()
+	{
+		vm.invalidTitleFlag = false;
+		vm.invalidDescriptionFlag = false;
+		vm.requiredTitleFlag = false;
+		vm.requiredDescriptionFlag = false;
+		vm.invalidStartDateFlag = false;
+		vm.requiredCatagoryFlag = false;
+		vm.invalidEndDateFlag = false;
+		vm.requiredTypeFlag = false;
+		vm.requiredAddressFlag = false;
+		vm.requiredBaseFlag = false;
+		vm.requiredBaseFlag = false;
+		vm.requiredWSurgeFlag = false;
+		vm.requiredHSurgeFlag = false;
+		vm.requiredWeeklyDisc = false;
+		vm.requiredMonthlyDisc = false;
+		vm.invalidBasePrice = false;
+		var titleRegex = /^[a-zA-Z\_\- ]*$/;
+		var descriptionRegex = /^[a-zA-Z0-9\_\- ]*$/;
+		var numberRegex = /^[0-9]*$/;
+		var start_date = new Date(vm.property.property_start_date);
+		var end_date = new Date(vm.property.property_end_date);
+		var date = new Date();
 
-		if(angular.isUndefined(vm.travelLocation) || vm.travelLocation== null){
-			return;
+
+		if(!numberRegex.test(vm.property.base_price) || vm.holiday_surge == null || vm.weekend_surge == null || vm.property.base_price == null || vm.travelLocation == null || vm.property.ListingType == "" || vm.property.category == null || end_date<start_date || !titleRegex.test(vm.property.propertyTitle) || !descriptionRegex.test(vm.property.description) || vm.property.propertyTitle == null || vm.property.description == null || date>start_date)
+		{
+			if(!numberRegex.test(vm.property.base_price))
+			{
+				vm.invalidBasePrice = true;
+			}
+
+			if(vm.weekly_discount == null)
+			{
+				vm.requiredWeeklyDisc = true;
+			}
+
+			if(vm.monthly_discount == null)
+			{
+				vm.requiredMonthlyDisc = true;
+			}
+
+			if(vm.holiday_surge == null)
+			{
+				vm.requiredHSurgeFlag = true;
+			}
+
+			if(vm.weekend_surge == null)
+			{
+				vm.requiredWSurgeFlag = true;
+			}
+
+			if(vm.property.base_price == null)
+			{
+				vm.requiredBaseFlag = true;
+			}
+
+			if(vm.travelLocation == null)
+			{
+				vm.requiredAddressFlag = true;
+			}
+
+			if(vm.property.ListingType == "")
+			{
+				vm.requiredTypeFlag = true;
+			}
+
+			if(vm.property.category == null)
+			{
+				vm.requiredCatagoryFlag = true;
+			}
+
+			if(!titleRegex.test(vm.property.propertyTitle))
+			{
+				vm.invalidTitleFlag = true;
+			}
+
+			if(vm.property.propertyTitle == null)
+			{
+				vm.requiredTitleFlag = true;
+			}
+
+			if(!descriptionRegex.test(vm.property.description))
+			{
+				vm.invalidDescriptionFlag = true;
+			}
+
+			if(vm.property.description == null)
+			{
+				vm.requiredDescriptionFlag = true;
+			}
+
+			if(date>start_date)
+			{
+				vm.invalidStartDateFlag = true;
+			}
+
+			if(end_date<start_date)
+			{
+				vm.invalidEndDateFlag = true;
+			}
 		}
-		//vm.property = property;
-		console.log(vm.property);
+		else
+		{
 
-		$http.post('/CreateProperty',{"property":vm.property}).then(function(response){
+				console.log("inside");
+				if(angular.isUndefined(vm.travelLocation) || vm.travelLocation== null){
+				return;
+				}
+				//vm.property = property;
+				console.log(vm.property);
 
-
-			console.log(response);
-
-		})
+				$http.post('/CreateProperty',{"property":vm.property}).then(function(response){
+				console.log(response);
+			})
+		}
 	}
 	vm.uploadPhotos = function() {
 
