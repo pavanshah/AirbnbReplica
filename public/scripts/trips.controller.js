@@ -59,7 +59,8 @@ var TripControllerFn = function ($http,tripsService) {
 		then(function (response) {
 			console.log(response);
 
-			if(response.length!=0){
+
+/*			if(response.length!=0){
               angular.forEach(response,function(response) {
               if(!response.property.propertyPictures || response.property.propertyPictures.length==0){
                 response.property.propertyPictures = ["public/images/room-list-images/room-1-a.png"];
@@ -88,7 +89,50 @@ var TripControllerFn = function ($http,tripsService) {
               	}
               });
 
+            })}*/
+
+			if(response.length!=0){
+	            angular.forEach(response,function(response) {
+	            if(!response.property.propertyPictures || response.property.propertyPictures.length==0){
+	              response.property.propertyPictures = ["public/images/room-list-images/room-1-a.png"];
+	            }
+	            response.rating = 0;
+	            response.rate = 1;
+	            response.review = "";
+	            response.reviewDiv = 0;
+
+
+				if(response.Reviews.length != 0)
+				{
+					console.log("Review exists"+response.Reviews);
+	              		response.rating = 1;
+	              		response.rate = response.Reviews[0].ratings;// rating.data.result.ratings;
+	              		response.review = response.Reviews[0].feedback;// rating.data.result.feedback;	
+	              		console.log(response.rating+":::"+response.rate+":::"+response.review);
+				}
+
+              //response.submitted = 2;
+/*              $http.post('/getRatingsForTrip',{"host_id":response.host_id}).
+              then(function(rating) {
+              	if(rating.status == 200)
+              	{
+              		//response.rating = 0;
+              		
+              		
+              		console.log("kad fjdaf"+rating.data.result.feedback);
+              		if(rating.data.result != null)
+              		{
+	              		response.rating = 1;
+	              		response.rate = rating.data.result.ratings;
+	              		response.review = rating.data.result.feedback;
+
+	              		console.log("adfbhadbfa"+response.review);
+              		}
+              	}
+              });*/
+
             })}
+
 
 			vm.trips = response;
 		});

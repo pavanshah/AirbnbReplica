@@ -14,7 +14,7 @@ function tripsServiceFn($http) {
 				{
 					console.log("ressss"+response);
 					trips = response.data;
-					console.log("tripssss"+trips);
+					console.log("tripssss"+trips[0]);
 				}
 				return trips;
 			});

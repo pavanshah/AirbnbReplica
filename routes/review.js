@@ -3,7 +3,9 @@ var mongoURL = "mongodb://apps92:shim123@ds155727.mlab.com:55727/airbnbproto";
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var Users = require('../Models/user');
+var Trips = require('../Models/trip');
 var newAvgRating = 1;
+
 //var winston = require('winston');
 
 var SubmitReviewAndRating = function(req, res)
@@ -86,34 +88,57 @@ var GetReviews = function(req, res)
 }
 
 
-var getRatingsForTrip = function(req,res) {
-	console.log("bhakdbhjdvshfwhfvwhvfhzv"+req.body.host_id+""+req.session.user.emailId);
-	Users.findOne({$and: [{"user_id":req.body.host_id},{"Reviews":{$elemMatch:{"user_id":req.session.user.emailId}}}]}, function(err, user){
+/*var getTripRatings = function(req,res) {
+	
+
+}*/
+
+var getRatingsForTrip = function(data,callback) {
+	console.log("bhakdbhjdvshfwhfvwhvfhzv"+data.body.host_id+""+data.body.emailId);
+	Users.findOne({$and: [{"user_id":data.body.host_id},{"Reviews":{$elemMatch:{"user_id":data.body.emailId}}}]}, function(err, user){
 		if(err)
 		{
-			res.status(401).json({"result":"Not able to fetch user ratings"});
+			//res.status(401).json({"result":"Not able to fetch user ratings"});
+			console.log("in review error");
+			callback({"result":null});
 		}
 		else
 		{
+			console.log("in review error else:"+user);
 			var a=[];
+			var flag=1;
 			if(user != null)
 			{
 			a=user.Reviews;
 			a.forEach(function(element){
-				if(element.user_id == req.session.user.emailId)
+				if(element.user_id == data.body.emailId)
 				{
 					console.log("ratingksasakaksahs"+element);
-					res
+					/*res
 					.status(200)
-					.json({"result":element});
+					.json({"result":element});*/
+					flag = 0;
+					callback({"result":element});
+					
 				}
 			});
+			if(flag == 1)
+			{
+				console.log("inside no review found");
+				callback({"result":null});
+			}
 			if(user.Reviews.length == 0)
 			{
-				res.
+/*				res.
 				status(200).
-				json({"result":null});
+				json({"result":null});*/
+				callback({"result":null});
 			}
+		}
+		else
+		{
+			console.log("inside error else user null");
+			callback({"result":null});
 		}
 
 			/*console.log("ratingksasakaksahs"+user);
@@ -127,7 +152,7 @@ var getRatingsForTrip = function(req,res) {
 var submitReviewForTrip = function(req, res) {
 	console.log("review submit"+req.body);
 
-	var query = {"user_id":req.body.host_id};
+	var query = {"trip_id":req.body.trip_id};
 
 
 	//winston.remove(winston.transports.File);
@@ -143,7 +168,7 @@ var submitReviewForTrip = function(req, res) {
 	//winston.add(winston.transports.File, { filename: 'public/LogFiles/PropertyReviewsAnalysis.json' });
 	//winston.log('info', 'review submitted', { rating : req.body.rate, property_id : req.body.property.property_id , host_id : req.body.host_id, user_email : req.session.user.emailId, city : req.session.user.address.city, state : req.session.user.address.state, country : req.session.user.address.country});
 
-	Users.update(query, {$push : {Reviews : {ratings : req.body.rate, feedback : req.body.review, user_id : req.session.user.emailId}}}, function(err,response) {
+	Trips.update(query, {$push : {Reviews : {ratings : req.body.rate, feedback : req.body.review}}}, function(err,response) {
 		if(err)
 		{
 			res.status(401).json({"result":"no user found"});
