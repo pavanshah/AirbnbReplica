@@ -1,3 +1,15 @@
+<!--  script src="https://api.filestackapi.com/filestack.js"></script>
+<script type="text/javascript">
+ filepicker.setKey("Agm49GXXQQKecLwsP74odz");
+
+
+ function uploadFile(){
+
+ 		response = event.fpfile.url;
+ 		console.log(response);  
+}
+</script-->  	
+  	
   	<br>
     <br>
     <br>   
@@ -19,7 +31,7 @@
       <a  aria-selected="false" class="sidenav-item">Rating</a>
     </li>
     <li>
-      <a  aria-selected="false" class="sidenav-item">Reviews</a>
+      <a href="#/hostReviews" aria-selected="false" class="sidenav-item">Reviews</a>
     </li>
     <li>
       <a  aria-selected="false" class="sidenav-item">Trips History</a>
@@ -34,41 +46,26 @@
   <div class="row">
    
     <div class="col-md-9">
-      
-      <div id="dashboard-content">
+    <div id="dashboard-content">
    
-     
+  
 <div class="panel space-6">
   <div class="panel-header">
     Profile Photo
   </div>
   <div class="panel-body photos-section">
     <div class="row">
-      <div class="col-lg-4 text-center">
-        <div class="profile_pic_container picture-main space-sm-2 space-md-2">
-          
-          <div class="media-photo media-round">
-            <img alt="Kushal Dileep" height="225" src="https://a2.muscache.com/defaults/user_pic-225x225.png?v=2" title="Kushal Dileep" width="225">
-          </div>
-          
-        </div>
-      </div>
+    <img width="200" height="150" ng-src="{{vm.host.profilepic}}">
       <div class="col-lg-8">
-        <ul class="list-layout picture-tiles clearfix ui-sortable"></ul>
-
-        <p>
+		<p>
           Clear frontal face photos are an important way for hosts and guests to learn about each other. It’s not much fun to host a landscape! Please upload a photo that clearly shows your face.
         </p>
-
-        <div class="row row-condensed">
-            
-          <div class="col-md-6">
-            <span class="btn btn-block btn-large file-input-container">
-                Upload a file from your computer
-                  
-            </span>
-          </div>
-        </div>
+	   <div class="row row-condensed">
+	   
+       <div class="col-md-6">
+        <button type="button" class="btn btn-primary" style="margin-left:5%" ng-click="vm.updateProfilePic()"> Update Picture </button>
+      </div>
+      </div>
       </div>
     </div>
   </div>
@@ -81,13 +78,13 @@
     <div id="video-container" class="row">
       <div class="col-lg-7 space-md-4">
         <div id="parent-video-container" class="panel panel-dark video col-middle text-center placeholder">
-          <div class="placeholder-content">
+          <div class="placeholder-content" ng-if="video">
             <h4>
               You haven’t recorded a video profile yet.
             </h4>
             <i class="icon icon-video icon-size-3"></i>
           </div>
-          <video id="video_profile" class="video-js vjs-default-skin vjs-big-play-centered" controls="" preload="auto" width="200" height="200">
+          <video width="350" height="350" ng-src="{{vm.host.video}}">
           </video>
         </div>
       </div>
@@ -100,10 +97,7 @@
           </li><li>Look into the camera to create that personal connection.
           </li><li>You’ll get a chance to preview your video before it uploads.
         </li></ul>
-        <span class="btn btn-block btn-large file-input-container">
-                Upload a Video from your computer
-                  
-            </span>
+       <button type="button" class="btn btn-primary" style="margin-left:5%" ng-click="vm.updateHostVideo()"> Update Video </button>
       </div>
    
     </div>

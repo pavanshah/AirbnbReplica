@@ -143,7 +143,7 @@ app.post('/HostLogIn',host.authenticateHost);
  //app.post('/UpdateHost',host.UpdateHost); // commentting this since it will be done in user
  //app.get('/GetHost',host.GetHost);
  app.get('/getHostDetails',user.getHost);
-
+app.post('updateHost',user.updateHostProfile);
 app.post('/createTrip', trip.createTrip);//temporary
 
 app.get("/isUserLoggedIn",user.isUserLoggedIn);
