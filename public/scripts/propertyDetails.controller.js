@@ -6,7 +6,7 @@ function propertyDetailsControllerFn($state,$stateParams,$http,$uibModal,loginSe
 	vm.property = {};
 	
 	vm.bookingDates = bookingDataService.getBooking().bookingDates;
-	
+	vm.booking = bookingDataService.getBooking();
 	function getPropertyDetails(property) {
 		$http.post("/SearchPropertyById",{property_id:property.property_id}).
 		then(function(response) {
