@@ -55,7 +55,7 @@ function AddPropertyControllerFn($state,$stateParams,$http) {
 		var zipRegex1 = /^[0-9]{5}$/;
 		var zipRegex2 = /^[0-9]{9}$/;
 		var titleRegex = /^[a-zA-Z\_\- ]*$/;
-		var descriptionRegex = /^[a-zA-Z0-9\_\- ]*$/;
+		var descriptionRegex = /^[a-zA-Z0-9,\_\- ]*$/;
 		var numberRegex = /^[0-9]*$/;
 		var ZipFlag = false;
 		vm.invalidBaseFlag = false;
