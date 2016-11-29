@@ -10,6 +10,10 @@ var mongodb = require('mongodb');
 var redis = require('redis');
 var client = redis.createClient();
 
+function getRedisStatus(){
+	return 1;
+}
+
 var getBillDetailAdmin = function(req,res){
 	console.log("Inside bill ");
 	
@@ -18,7 +22,7 @@ var getBillDetailAdmin = function(req,res){
 		console.log("Redis query returned with value:");
 		console.log(reply);
 		
-	    if (reply === 1) {
+		if (reply === 1 && getRedisStatus) {
 	        console.log('redis cache exists');
 	        client.hgetall('billdetail'+req.query.id, function(err, object) {
 	        	console.log("Returned object is ");
@@ -117,7 +121,7 @@ var getProfileForAdmin = function(req,res){
 		console.log("Redis query returned with value:");
 		console.log(reply);
 		
-	    if (reply === 1) {
+		if (reply === 1 && getRedisStatus) {
 	        console.log('redis cache exists');
 	        client.hgetall('profile'+req.query.id, function(err, object) {
 	        	console.log("Returned object is ");
@@ -157,7 +161,7 @@ var getBillForAdmin = function(req,res){
 			console.log("Redis query returned with value:");
 			console.log(reply);
 			
-		    if (reply === 1) {
+			if (reply === 1 && getRedisStatus) {
 		        console.log('redis cache exists');
 		        client.hgetall('billnew', function(err, object) {
 		        	console.log("Returned object is ");
@@ -256,7 +260,7 @@ var getHostsForAdmin = function(req,res){
 			console.log("Redis query returned with value:");
 			console.log(reply);
 			
-		    if (reply === 1) {
+			if (reply === 1 && getRedisStatus) {
 		        console.log('redis cache exists');
 		        client.hgetall('hostnew', function(err, object) {
 		        	console.log("Returned object is ");
@@ -311,7 +315,7 @@ var getHostsForAdmin = function(req,res){
 			console.log("Redis query returned with value:");
 			console.log(reply);
 			
-		    if (reply === 1) {
+			if (reply === 1 && getRedisStatus) {
 		        console.log('redis cache exists');
 		        client.hgetall('hostquery'+JSON.stringify(searchObject), function(err, object) {
 		        	console.log("Returned object is ");
@@ -360,7 +364,7 @@ var getPropertyPerYear = function(req,res){
 		console.log("Redis query returned with value:");
 		console.log(reply);
 		
-	    if (reply === 1) {
+		if (reply === 1 && getRedisStatus) {
 	        console.log('redis cache exists');
 	        client.hgetall('property'+req.query.year, function(err, object) {
 	        	console.log("Returned object is ");
@@ -444,7 +448,7 @@ var getMainDashboard = function(req,res){
 		console.log("Redis query returned with value:");
 		console.log(reply);
 		
-	    if (reply === 1) {
+	    if (reply === 1 && getRedisStatus) {
 	        console.log('redis cache exists');
 	        client.hgetall('mainDash', function(err, object) {
 	        	console.log("Returned object is ");
