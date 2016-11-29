@@ -165,5 +165,117 @@ var propertyClick = function(req, res)
 }
 
 
+var userTracking = function(req, res)
+{
+    var finalArray = [];
+
+    winston.add(winston.transports.File, { filename: 'public/LogFiles/UserTracking.json' });
+    winston.remove(winston.transports.Console);
+
+    var oldDate = new Date();
+    oldDate.setDate(oldDate.getDate() - 10);
+
+        var options = {
+            from: oldDate,
+            until: new Date,
+            limit: 100,
+            start: 0,
+            order: 'asc',
+            fields: ["session_id", "user_email", "user_tracker", "timestamp"]
+        };
+
+        winston.query(options, function (err, results) {
+            if (err) {
+            throw err;
+            }
+
+
+           for(var i = 0 ; i < results.file.length ; i++)
+           {
+                //console.log("here "+results.file[i].session_id+","+results.file[i].user_email+results.file[i].user_tracker);
+
+                if(i == results.file.length-1)
+                {
+                    finalArray.push([results.file[i].session_id, results.file[i].user_email, results.file[i].user_tracker, results.file[i].timestamp]);
+                    res.json({"usertracker ": finalArray});
+                    break;
+                }
+
+                if(results.file[i].session_id == results.file[i+1].session_id)
+                {
+                    continue;
+                }
+                else
+                {
+                    finalArray.push([results.file[i].session_id, results.file[i].user_email, results.file[i].user_tracker, results.file[i].timestamp]);
+                }
+           }
+
+        });
+
+        winston.add(winston.transports.Console);
+}
+
+var propertyReviews = function(req, res)
+{
+    /*
+    var host = req.body.analyze.host_id;
+
+    winston.add(winston.transports.File, { filename: 'public/LogFiles/PropertyReviewsAnalysis.json' });
+    winston.remove(winston.transports.Console);
+
+
+    var oldDate = new Date();
+    oldDate.setDate(oldDate.getDate() - 10);
+
+        var options = {
+            from: oldDate,
+            until: new Date,
+            limit: 100,
+            start: 0,
+            order: 'desc',
+            fields: ["property_id", "host_id", "rating", "timestamp"]
+        };
+
+        winston.query(options, function (err, results) {
+            if (err) {
+            throw err;
+            }
+
+            var propArr = [];
+
+            console.log(results);
+
+
+            for(var i = 0 ; i < results.file.length ; i++)
+            {
+                if(results.file[i].host_id == host)
+                {
+                    propArr.push([{ 'property_id' : parseInt(results.file[i].property_id), rating : results.file[i].rating, timestamp : results.file[i].timestamp}])
+                }
+            }
+
+            console.log(propArr[0].property_id);
+
+            for (var i=0; i < propArr.length-1; i++) {
+                console.log("here "+propArr[i].property_id);
+                if (propArr[i].property_id > propArr[i+1].property_id) {
+                var temp = propArr[i].property_id;
+                propArr[i].property_id = propArr[i+1].property_id;
+                propArr[i+1].property_id = temp;
+                }
+            }
+
+            console.log("sorted "+propArr);
+
+            res.json(propArr);    
+            
+        });
+        */
+        winston.add(winston.transports.Console);
+}
+
+exports.userTracking = userTracking;
 exports.clicksPerPage = clicksPerPage;
 exports.propertyClick = propertyClick;
+exports.propertyReviews = propertyReviews;
