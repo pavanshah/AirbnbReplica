@@ -388,7 +388,7 @@ var SearchPropertyById = function (req,res){
 
 
 
-var sqlForBilling = function(req, callback) {
+var sqlForBilling = function(req) {
 	
 	console.log("inside sqlForBilling"+req.body.property.host_id);
 		
@@ -417,7 +417,7 @@ var sqlForBilling = function(req, callback) {
 					.send({"result":"failed"});
 					return;*/
 
-					callback({"result":"failed", "status":401});
+					//callback({"result":"failed", "status":401});
 				}
 				
 				//var sqlBarChart = "select property_name as label,sum(total_cost) value from billinglogs where date = "+req.query.year +" group by property_name limit 10";
@@ -430,10 +430,8 @@ var sqlForBilling = function(req, callback) {
 					.status(200)
 					.send({"result":barResultOutput});
 					return;*/
-					if(!err)
-					callback({"status":200});
-					else
-						callback({"status":401});
+					
+						//callback({"status":401});
 		        });
 				
 			})
@@ -509,6 +507,7 @@ var ConfirmBooking = function (req,res){
 				json({"result":"error in sqlconnection"});
 			});
 			*/
+			sqlForBilling(req);
 			
 			Bill.GenerateBill(req, function(billResponse){
 
