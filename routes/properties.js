@@ -11,6 +11,8 @@ var Bid = require('../Models/bid');
 var Trip = require('./trip');
 var CronJob = require('cron').CronJob;
 var mq_client = require('../rpc/client');
+var mysqlPool = require('./mysql').pool;
+var user = require('../Models/user');
 //var winston = require('winston');
 
 var CreateProperty = function (req,res){
@@ -384,6 +386,67 @@ var SearchPropertyById = function (req,res){
 
 }
 
+
+
+var sqlForBilling = function(req, callback) {
+	
+	console.log("inside sqlForBilling"+req.body.property.host_id);
+		
+				var year = new Date().getFullYear();
+				var month = new Date().getMonth();
+				month++;
+				var host_firstname;
+				if(req.body.property.host == null)
+				{
+					host_firstname = "John";
+				}
+				else
+				{
+					host_firstname = req.body.property.host.firstname;
+				}
+				var mysql_query =  "insert into billinglogs (customer_name,customer_id,host_name,host_id,property_name,total_cost,city,date,month) values("+req.body.userFirstName+",'',"+host_firstname+","+req.body.property.host_id+","+req.body.property.propertyTitle+","+req.body.bill.trip_amount+","+req.body.property.address.city+","+year+","+month+");";
+
+
+				mysqlPool.getConnection(function(err, connection) {
+				if(err){
+					console.log("failed to connec in error");
+					console.log(err);
+
+	/*				res
+					.status(200)
+					.send({"result":"failed"});
+					return;*/
+
+					callback({"result":"failed", "status":401});
+				}
+				
+				//var sqlBarChart = "select property_name as label,sum(total_cost) value from billinglogs where date = "+req.query.year +" group by property_name limit 10";
+		        connection.query(mysql_query,function(err,results){
+		        	
+		        	//var barResultsJson = JSON.stringify(barResults);
+		            //var barResultOutput = JSON.parse(barResultsJson);
+		            connection.release();
+	/*	            res
+					.status(200)
+					.send({"result":barResultOutput});
+					return;*/
+					if(!err)
+					callback({"status":200});
+					else
+						callback({"status":401});
+		        });
+				
+			})
+			
+		
+
+
+
+}
+
+
+
+
 var ConfirmBooking = function (req,res){
 
 	console.log("ConfirmBooking called");
@@ -436,6 +499,16 @@ var ConfirmBooking = function (req,res){
 			
 
 			req.body.bill = billObj.bill;
+			req.body.userFirstName = req.session.user.firstname;
+			
+//to be uncommented while fixing the sqldb
+
+/*			sqlForBilling(req,function (argument) {
+				if(argument.status != 200)
+					res.status(400).
+				json({"result":"error in sqlconnection"});
+			});
+			*/
 			
 			Bill.GenerateBill(req, function(billResponse){
 
