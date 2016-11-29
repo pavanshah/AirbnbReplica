@@ -175,6 +175,7 @@ app.get("/getUserBids",property.getUserBids);
 
  //log analysis requests
  app.post('/clicksPerPage', logAnalysis.clicksPerPage);
+ app.post('/propertyClick', logAnalysis.propertyClick);
 
 mongoose.connect(mongoSessionConnectURL, function(){
   console.log('Connected to mongo at: ' + mongoSessionConnectURL);
