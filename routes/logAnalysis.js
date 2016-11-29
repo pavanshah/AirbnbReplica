@@ -1,4 +1,5 @@
 var winston = require('winston');
+var Property = require('../Models/property');
 
 var clicksPerPage = function(req, res)
 {
@@ -25,8 +26,6 @@ var clicksPerPage = function(req, res)
     if (err) {
       throw err;
     }
-
-    console.log(results);
  
     for(var i = 0 ; i < results.file.length ; i++)
     {
@@ -83,11 +82,88 @@ var clicksPerPage = function(req, res)
                     "editprofile_page" : editprofile_page_count, "bill_page" : bill_page_count
                     };
 
-    console.log(resultObj);
-
-    res.json({"result ":resultObj});
+    res.json({"clicksPerPage ":resultObj});
   });
+
+    winston.add(winston.transports.Console);
+}
+
+
+
+var propertyClick = function(req, res)
+{
+    var host = req.body.analyze.host_id;
+
+    winston.add(winston.transports.File, { filename: 'public/LogFiles/PropertyClickAnalysis.json' });
+    winston.remove(winston.transports.Console);
+
+    var oldDate = new Date();
+    oldDate.setDate(oldDate.getDate() - 10);
+
+    var options = {
+    from: oldDate,
+    until: new Date,
+    limit: 100,
+    start: 0,
+    order: 'desc',
+    //fields: ["property_id"]
+  };
+
+    winston.query(options, function (err, results) {
+    if (err) {
+      throw err;
+    }
+
+    var properties = [];
+
+    for(var i = 0 ; i < results.file.length ; i++)
+    {
+        if(host == results.file[i].host_id)
+        {
+            properties.push(results.file[i].property_id);
+        }
+    }
+
+    console.log(properties);
+
+    var query = Property.find({});
+    query.where('host_id', req.body.analyze.host_id);
+    var array = [];
+
+    query.exec(function(err, user){
+        if(user)
+        {
+                
+            for(var i = 0; i< user.length ; i++)
+            {
+                var countProp = 0;
+                console.log(user[i].property_id);
+
+                for(var j = 0 ; j< properties.length ; j++)
+                {
+                    if(properties[j] == user[i].property_id)
+                    {
+                        countProp++;
+                    }
+                }
+
+                array.push([user[i].property_id, countProp]);
+            }
+
+            console.log("final array "+array);
+
+            res.json({"clicksPerProperty ":array});
+
+        }
+        else
+        {
+            console.log(err);
+        }
+    });
+
+   });
 }
 
 
 exports.clicksPerPage = clicksPerPage;
+exports.propertyClick = propertyClick;
