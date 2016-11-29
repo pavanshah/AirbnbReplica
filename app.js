@@ -121,7 +121,7 @@ app.post('/userSignUp',user.userSignup);
 //app.post('/userLogIn',user.userLogIn);
 app.post('/deleteUser',user.deleteUser);
 app.post('/updateUser',user.updateUser);
-app.get('/getLoginUserDetails',user.getLoginUserDetails);
+//app.get('/getLoginUserDetails',user.getLoginUserDetails);
 app.get('/getUserProfile',user.getUserProfile);
 app.post('/starthosting',host.checkStarthosting);
 app.post('/userLogIn',user.authenticateLocal);	
@@ -163,6 +163,7 @@ app.get("/logout",user.logout);
 app.post("/updateHost",user.updateHostProfile);
 app.post("/placeBid",property.placeBid);
 app.post("/getMaxBid",property.getMaxBid);
+app.get("/getUserBids",property.getUserBids);
  /*app.post('/UpdateProperty',;*/
 
 

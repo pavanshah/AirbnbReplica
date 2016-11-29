@@ -1,4 +1,4 @@
-var app = angular.module('Airbnb',['ui.bootstrap','ui.router','google.places','nvd3','ngMaterial','ngAnimate','ngAria','ngRoute','ngSanitize']);
+var app = angular.module('Airbnb',['ui.bootstrap','ui.router','google.places','nvd3','ngMaterial','ngAnimate','ngAria','ngRoute','ngSanitize','rzModule']);
 filepicker.setKey("As4LSqupJTjVvBXkoAMnPz");
 app.config(function($stateProvider, $urlRouterProvider) {
 
@@ -113,6 +113,9 @@ app.config(function($stateProvider, $urlRouterProvider) {
 	.state('userHome',{
 		url:'/userHome',
 		templateUrl:"public/views/userHome.html",
+		params:{
+			trip:null
+		},
 		controller:"TripsController",
 		controllerAs:"vm"
 	})
@@ -176,6 +179,12 @@ app.config(function($stateProvider, $urlRouterProvider) {
 		url:"/hostProfilePhotoAndVideo",
 		templateUrl:"public/views/hostProfilePhotoAndVideo.html",
 		controller:"hostProfilePhotoAndVideoController",
+		controllerAs:"vm"
+	})
+	.state('viewUserBids',{
+		url:"/viewUserBids",
+		templateUrl:"public/views/viewUserBids.html",
+		controller:"ViewUserBidsController",
 		controllerAs:"vm"
 	})
 	//$location.path('/prelogin');

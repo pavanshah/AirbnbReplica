@@ -19,7 +19,7 @@
 	<link rel="stylesheet" type="text/css" href="public/css/star-rating.css">
 	<link rel="stylesheet" type="text/css" href="public/css/webkit-background-size.css">
 	<link type="text/css" rel="stylesheet" href="public/css/addPropertyGoogle.css">
-
+<link rel="stylesheet" type="text/css" href="/bower_components/angularjs-slider/dist/rzslider.css"/>
 
   <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/1.0.0/angular-material.min.css">
 
@@ -32,6 +32,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/angular_material/1.0.0/angular-material.min.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-route.js"></script>  
 
+<script type="text/javascript" src="/bower_components/angularjs-slider/dist/rzslider.js"></script> 
 
     <script src="public/scripts/lib/filestack.js"></script>
 
@@ -76,12 +77,12 @@
 			        <li class="" ng-if="!vm.user.email" ng-click="vm.openSignupModal()"><a href=""><span>Sign Up</span></a></li>
 			        <li class="" ng-if="!vm.user.email" ng-click="vm.openLoginModal()"><a href=""><span>Log In</span></a></li>
 			        <li class="" ng-if="vm.user.email"><a href="" class="logout-popup-wrapper position-relative">
-			        	<span ng-bind="vm.user.firstname"></span>
+			        	<img ng-if="vm.user.profilepic!=undefined" ng-src="{{vm.user.profilepic}}" height="30px" width="30px" style="border-radius:20px"><span ng-bind="vm.user.firstname"></span>
 		        		<div class="logout-popup position-absolute">
 			        		<ul class="clearfix">
 			        			<li ng-click="vm.profile()">Edit Profile</li>
 			        			<li ng-click="vm.trips()">Your Trips</li>
-			        			<li>Refer A Friend</li>
+			        			<li ng-click="vm.bids()">Your Bids</li>
 			        			<li>Account Settings</li>
 			        			<li>Business Travel</li>
 			        			<li ng-click="vm.logout()">Logout</li>
@@ -148,6 +149,7 @@
 <script type="text/javascript" src="public/scripts/AddPropertyController.js"></script>
 <script type="text/javascript" src="public/scripts/bill.controller.js"></script>
 <script type="text/javascript" src="public/scripts/orderSuccess.controller.js"></script>
+<script type="text/javascript" src="public/scripts/viewUserBids.controller.js"></script>
 
 <meta charset="utf-8">  <!-- it's important for d3.js -->
 <script src="bower_components/d3/d3.js"></script>
