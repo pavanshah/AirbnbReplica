@@ -19,6 +19,11 @@ var Trip = new Schema({
 		trip_amount : Number
 	},	
 	trip_start_date : Date,
-	trip_end_date : Date			 
+	trip_end_date : Date,
+	Reviews : [{
+		ratings : Number, 
+		feedback : String,
+		photo : String
+	}]		 
 });
 module.exports = mongoose.model("Trip",Trip);

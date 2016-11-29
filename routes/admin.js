@@ -7,17 +7,68 @@ var Schema = mongoose.Schema;
 var Users = require('../Models/user');
 var Bills = require('../Models/bill');
 var mongodb = require('mongodb');
+var redis = require('redis');
+var client = redis.createClient();
+
+function getRedisStatus(){
+	return 1;
+}
 
 var getBillDetailAdmin = function(req,res){
 	console.log("Inside bill ");
 	
-var o_id = new mongodb.ObjectID(req.query.id);
+	
+	client.exists('billdetail'+req.query.id, function(err, reply) {
+		console.log("Redis query returned with value:");
+		console.log(reply);
+		
+		if (reply === 1 && getRedisStatus) {
+	        console.log('redis cache exists');
+	        client.hgetall('billdetail'+req.query.id, function(err, object) {
+	        	console.log("Returned object is ");
+	        	console.log(typeof object);
+	            console.log(object);
+	            
+	            res
+    			.status(200)
+    			.send({"result":JSON.parse(object.result)});
+	        });
+	        
+	    } else {		    	
+	    	//var o_id = new mongodb.ObjectID(req.query.id);
+	    	
+	    	/*Users.find({"_id":o_id},function(err,user){
+	    		
+	    		client.hmset('profile'+req.query.id, {"result":JSON.stringify(user)});
+    	        client.expire('profile'+req.query.id, 300);
+	    		
+    	        res
+	    		.status(200)
+	    		.send({"result":user});
+	    		
+	    	})*/
+	    	
+	    	var o_id = new mongodb.ObjectID(req.query.id);
+	
+			Bills.find({"_id":o_id},function(err,bill){
+				client.hmset('billdetail'+req.query.id, {"result":JSON.stringify(bill)});
+    	        client.expire('billdetail'+req.query.id, 300);
+				res
+				.status(200)
+				.send({"result":bill});			
+			})
+	    	
+	    }
+	    });
+
+	
+/*var o_id = new mongodb.ObjectID(req.query.id);
 	
 	Bills.find({"_id":o_id},function(err,bill){
 		res
 		.status(200)
 		.send({"result":bill});			
-	})
+	})*/
 	
 }
 
@@ -63,15 +114,41 @@ var authorizeUser = function(req,res){
 var getProfileForAdmin = function(req,res){
 	console.log(req.query.id);
 
-	var o_id = new mongodb.ObjectID(req.query.id);
-	
-	Users.find({"_id":o_id},function(err,user){
 
-		res
-		.status(200)
-		.send({"result":user});
+	
+	
+	client.exists('profile'+req.query.id, function(err, reply) {
+		console.log("Redis query returned with value:");
+		console.log(reply);
 		
-	})
+		if (reply === 1 && getRedisStatus) {
+	        console.log('redis cache exists');
+	        client.hgetall('profile'+req.query.id, function(err, object) {
+	        	console.log("Returned object is ");
+	        	console.log(typeof object);
+	            console.log(object);
+	            
+	            res
+    			.status(200)
+    			.send({"result":JSON.parse(object.result)});
+	        });
+	        
+	    } else {		    	
+	    	var o_id = new mongodb.ObjectID(req.query.id);
+	    	
+	    	Users.find({"_id":o_id},function(err,user){
+	    		
+	    		client.hmset('profile'+req.query.id, {"result":JSON.stringify(user)});
+    	        client.expire('profile'+req.query.id, 300);
+	    		
+    	        res
+	    		.status(200)
+	    		.send({"result":user});
+	    		
+	    	})
+	    	
+	    }
+	    });
 	
 }
 
@@ -79,14 +156,47 @@ var getBillForAdmin = function(req,res){
 	
 	if(req.query.query == "new"){
 		console.log("Inside new");
-	Bills.find({},function(err,bills){
+		
+		client.exists('billnew', function(err, reply) {
+			console.log("Redis query returned with value:");
+			console.log(reply);
+			
+			if (reply === 1 && getRedisStatus) {
+		        console.log('redis cache exists');
+		        client.hgetall('billnew', function(err, object) {
+		        	console.log("Returned object is ");
+		        	console.log(typeof object);
+		            console.log(object);
+		            
+		            res
+	    			.status(200)
+	    			.send({"result":JSON.parse(object.result)});
+		        });
+		        
+		    } else {		    	
+				
+				Bills.find({},function(err,bills){
+					console.log(bills);
+					client.hmset('billnew', {"result":JSON.stringify(bills)});
+        	        client.expire('billnew', 300);
+			
+					res
+					.status(200)
+					.send({"result":bills});
+				})
+		    }
+		    });
+		
+	/*Bills.find({},function(err,bills){
 		console.log(bills);
 		
 
 		res
 		.status(200)
 		.send({"result":bills});
-	})
+	})*/
+	
+	
 	}
 	else{
 		console.log("Inside elseeeeeeee");
@@ -145,14 +255,43 @@ var getHostsForAdmin = function(req,res){
 	if(req.query.query == "new"){
 		console.log("Inside new");
 		
-		Users.find({},function(err,user){
+		
+		client.exists('hostnew', function(err, reply) {
+			console.log("Redis query returned with value:");
+			console.log(reply);
+			
+			if (reply === 1 && getRedisStatus) {
+		        console.log('redis cache exists');
+		        client.hgetall('hostnew', function(err, object) {
+		        	console.log("Returned object is ");
+		        	console.log(typeof object);
+		            console.log(object);
+		            
+		            res
+	    			.status(200)
+	    			.send({"result":JSON.parse(object.result)});
+		        });
+		        
+		    } else {
+		    	Users.find({},function(err,user){
+					console.log(user);
+					
+					client.hmset('hostnew', {"result":JSON.stringify(user)});
+        	        client.expire('hostnew', 300);
+					res
+					.status(200)
+					.send({"result":user});
+				})
+		    }
+		    });
+	/*	Users.find({},function(err,user){
 			console.log(user);
 			
 	
 			res
 			.status(200)
 			.send({"result":user});
-		})
+		})*/
 	}
 	else{
 		var searchObject = {};
@@ -170,13 +309,47 @@ var getHostsForAdmin = function(req,res){
 		//if(req.query.type != "" && req.query.address != ""){
 		
 		console.log(searchObject);
-		Users.find(searchObject,function(err,user){
+		
+		//redis changes starts
+		client.exists('hostquery'+JSON.stringify(searchObject), function(err, reply) {
+			console.log("Redis query returned with value:");
+			console.log(reply);
+			
+			if (reply === 1 && getRedisStatus) {
+		        console.log('redis cache exists');
+		        client.hgetall('hostquery'+JSON.stringify(searchObject), function(err, object) {
+		        	console.log("Returned object is ");
+		        	console.log(typeof object);
+		            console.log(object);
+		            
+		            res
+	    			.status(200)
+	    			.send({"result":JSON.parse(object.result)});
+		        });
+		        
+		    } else {
+		    	Users.find(searchObject,function(err,user){
+					console.log(user);
+					
+					client.hmset('hostquery'+JSON.stringify(searchObject), {"result":JSON.stringify(user)});
+        	        client.expire('hostquery'+JSON.stringify(searchObject), 300);
+					res
+					.status(200)
+					.send({"result":user});
+				})
+		    }
+		    });
+		//redis changes ends
+		
+		
+		
+	/*	Users.find(searchObject,function(err,user){
 			console.log(user);
 	
 			res
 			.status(200)
 			.send({"result":user});
-		})
+		})*/
 		
 		//}
 	}
@@ -187,7 +360,54 @@ var getPropertyPerYear = function(req,res){
 	console.log("inside get property per year");
 	console.log(req.query);
 	
-	mysqlPool.getConnection(function(err, connection) {
+	client.exists('property'+req.query.year, function(err, reply) {
+		console.log("Redis query returned with value:");
+		console.log(reply);
+		
+		if (reply === 1 && getRedisStatus) {
+	        console.log('redis cache exists');
+	        client.hgetall('property'+req.query.year, function(err, object) {
+	        	console.log("Returned object is ");
+	        	console.log(typeof object);
+	            console.log(object);
+	            
+	            res
+    			.status(200)
+    			.send({"result":JSON.parse(object.result)});
+	        });
+	        
+	    } else {
+	    	mysqlPool.getConnection(function(err, connection) {
+	    		if(err){
+	    			console.log("failed to connec in error");
+	    			console.log(err);
+
+	    			res
+	    			.status(200)
+	    			.send({"result":"failed"});
+	    			return;
+	    		}
+	    		
+	    		var sqlBarChart = "select property_name as label,sum(total_cost) value from billinglogs where date = "+req.query.year +" group by property_name limit 10";
+	            connection.query(sqlBarChart,function(err,barResults){
+	            	
+	            	var barResultsJson = JSON.stringify(barResults);
+	                var barResultOutput = JSON.parse(barResultsJson);
+	                connection.release();
+	                
+	                client.hmset('property'+req.query.year, {"result":JSON.stringify(barResultOutput)});
+        	        client.expire('property'+req.query.year, 300);
+	                res
+	    			.status(200)
+	    			.send({"result":barResultOutput});
+	    			return;
+	            });
+	    		
+	    	})
+	    }
+	    });
+	
+/*	mysqlPool.getConnection(function(err, connection) {
 		if(err){
 			console.log("failed to connec in error");
 			console.log(err);
@@ -210,7 +430,7 @@ var getPropertyPerYear = function(req,res){
 			return;
         });
 		
-	})
+	})*/
 	
 }
 var getMainDashboard = function(req,res){
@@ -223,7 +443,109 @@ var getMainDashboard = function(req,res){
 		return;
 	}
 	
-	mysqlPool.getConnection(function(err, connection) {
+	console.log("Gonna check for redis cache");
+	client.exists('mainDash', function(err, reply) {
+		console.log("Redis query returned with value:");
+		console.log(reply);
+		
+	    if (reply === 1 && getRedisStatus) {
+	        console.log('redis cache exists');
+	        client.hgetall('mainDash', function(err, object) {
+	        	console.log("Returned object is ");
+	        	console.log(typeof object);
+	            console.log(object);
+	            
+	            res
+    			.status(200)
+    			.send({"result":JSON.parse(object.result),"barchart":JSON.parse(object.barchart),"linechart":JSON.parse(object.linechart)});
+	        });
+	        
+	    } else {
+	        console.log('redis doesn\'t exist');
+	        
+	        mysqlPool.getConnection(function(err, connection) {
+	    		sql = "select host_name,sum(total_cost) cost from billinglogs group by host_name order by cost desc limit 10";
+	    		if(err){
+	    			console.log("failed to connec in error");
+	    			console.log(err);
+	    			
+	    		}
+	    		else{
+	    		console.log("connection succesful");
+	    		//console.log(connection);
+	    		connection.query(sql,function(err,results){
+	    			//console.log(results);
+	    			var result = JSON.stringify(results);
+	                var resultData = JSON.parse(result);		  
+	                //console.log(resultData);
+	    			//connection.release();
+	                
+	                
+	                var sqlBarChart = "select property_name as label,sum(total_cost) value from billinglogs where date = '2016' group by property_name limit 10";
+	                connection.query(sqlBarChart,function(err,barResults){
+	                	
+	                	var barResultsJson = JSON.stringify(barResults);
+	                    var barResultOutput = JSON.parse(barResultsJson);
+	                    
+	                    
+	                    var sqllineChart = "select city,date,sum(total_cost) value from billinglogs group by city,date";
+	                    connection.query(sqllineChart,function(err,lineResults){
+	                    
+	                    	var lineResultsJson = JSON.stringify(lineResults);
+	                        var lineResultOutput = JSON.parse(lineResultsJson);
+	                    
+	                        console.log("Inside................. line")
+	                    	//console.log(resultData);
+	                        //console.log(barResultOutput);
+	                        console.log(lineResultOutput);
+	                        var lineOutput = [];
+	                        for(var i=0;i<lineResultOutput.length;i++){
+	                        	//console.log(lineResultOutput[i].city);
+	                        	var found = 0;
+	                        		for(var j=0;j<lineOutput.length;j++){
+	                        			if(lineOutput[j].key == lineResultOutput[i].city){
+	                        				lineOutput[j].values.push([Number(lineResultOutput[i].date),lineResultOutput[i].value]);
+	                        				found = 1;
+	                        				break;
+	                        			}
+	                        		}                 
+	                        		
+	                        		if(found == 0){
+	                        			lineOutput.push({key:lineResultOutput[i].city,values:[[2014,0],[Number(lineResultOutput[i].date),lineResultOutput[i].value]]});
+	                        		}
+	                        }
+	                        
+	                        for(var k=0;k<lineOutput.length;k++){
+	                        	console.log(lineOutput[k].key);
+	                        	console.log(lineOutput[k].values);
+	                        }
+	                        
+	                        //console.log(lineOutput);
+	                        client.hmset('mainDash', {"result":JSON.stringify(resultData),"barchart":JSON.stringify(barResultOutput),"linechart":JSON.stringify(lineOutput)});
+	            	        client.expire('mainDash', 300);
+	                        
+	                        res
+	            			.status(200)
+	            			.send({"result":resultData,"barchart":barResultOutput,"linechart":lineOutput});
+	                    });
+	                    
+	                	
+	                })
+	    			
+	    		});
+	    			
+	    		
+	    	}
+	    	})
+
+	        
+	       //answer = {"result":{"resultData":"resultval"},"barchart":{"barkey":"barval"},"linechart":{"linekey":"lineval"}}
+	        //client.hmset('main1', answer);
+	        //client.expire('main1', 100);
+	    }
+	});
+	
+	/*mysqlPool.getConnection(function(err, connection) {
 		sql = "select host_name,sum(total_cost) cost from billinglogs group by host_name order by cost desc limit 10";
 		if(err){
 			console.log("failed to connec in error");
@@ -294,7 +616,7 @@ var getMainDashboard = function(req,res){
 		
 	}
 	})
-
+*/
 }
 
 exports.getMainDashboard = getMainDashboard;

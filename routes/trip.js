@@ -5,9 +5,10 @@ var Schema = mongoose.Schema;
 var Trips = require('../Models/trip');
 var Property = require('../Models/property');
 var uniqueIDGenerator = require('../routes/uniqueIDGenerator');
-
+var reviewFn = require('./review');
 var globalTripObject ;
 var globalProperty;
+var globalTripObjectForReview;
 
 var getTrips = function (req,res) {
 	var userId = req.session.user.emailId;
@@ -17,14 +18,98 @@ var getTrips = function (req,res) {
 	Trips.find(query,function(err, trips){
 		if(!err){
 
-			res.status(200);
-			res.json(trips);
+
+			globalTripObjectForReview = trips;
+/*			var i =0;
+			var length = trips.length;
+			console.log("length"+length);
+
+
+
+
+
+			var temp = function(argument) {
+				if(argument < length)
+				{
+					if(!globalTripObjectForReview[argument].property.propertyPictures || globalTripObjectForReview[argument].property.propertyPictures.length==0){
+                	globalTripObjectForReview[argument].property.propertyPictures = ["public/images/room-list-images/room-1-a.png"];
+              	}
+              	console.log("ljabfhaefefwefd");
+				var data = {"body":{"host_id":globalTripObjectForReview[argument].host_id, "emailId":req.session.user.emailId }};
+				reviewFn.getRatingsForTrip(data,function(review) {
+					if(review.result != null)
+					{
+						console.log("ljabfhadlahkdbakhbvdvdvasjdgasvdj");
+						globalTripObjectForReview[argument].rating = 1;
+	              		globalTripObjectForReview[argument].rate = review.result.ratings;
+	              		globalTripObjectForReview[argument].review = review.result.feedback;
+	              		globalTripObjectForReview[argument].reviewDiv = 0;
+
+					}
+					else
+					{					           
+						console.log("hkadbfhcsfcgvljabfhad");
+
+						globalTripObjectForReview[argument].rating = 0;
+	              		globalTripObjectForReview[argument].rate = 1;
+	              		globalTripObjectForReview[argument].review = "";
+	              		globalTripObjectForReview[argument].reviewDiv = 0;
+					}
+				});
+				temp(argument++);
+				}
+
+			}
+
+
+			temp(0);*/
+
+
+
+			
+/*			globalTripObjectForReview.forEach(function(globalTripObjectForReview) {
+				console.log("ljabfhad");
+				if(!globalTripObjectForReview.property.propertyPictures || globalTripObjectForReview.property.propertyPictures.length==0){
+                	globalTripObjectForReview.property.propertyPictures = ["public/images/room-list-images/room-1-a.png"];
+              	}
+              	console.log("ljabfhaefefwefd");
+				var data = {"body":{"host_id":globalTripObjectForReview.host_id, "emailId":req.session.user.emailId }};
+				reviewFn.getRatingsForTrip(data,function(review) {
+					if(review.result != null)
+					{
+						console.log("ljabfhadlahkdbakhbvdvdvasjdgasvdj");
+						globalTripObjectForReview.rating = 1;
+	              		globalTripObjectForReview.rate = review.result.ratings;
+	              		globalTripObjectForReview.review = review.result.feedback;
+	              		globalTripObjectForReview.reviewDiv = 0;
+
+					}
+					else
+					{					           
+						console.log("hkadbfhcsfcgvljabfhad");
+
+						globalTripObjectForReview.rating = 0;
+	              		globalTripObjectForReview.rate = 1;
+	              		globalTripObjectForReview.review = "";
+	              		globalTripObjectForReview.reviewDiv = 0;
+					}
+				});
+			});*/
+
+/*			var data = {"body":{"host_id":trips., "emailId":req.session.user.emailId }};
+			reviewFn.getRatingsForTrip();*/
+
+
+			console.log("trip finction:"+globalTripObjectForReview.rating);
+			console.log("jugaad"+globalTripObjectForReview);
+			res.status(200).
+			json(trips);
 		}
 		else
 		{
 			console.log("Error in fetching user trips:"+err);
-			res.status(400);
-			res.json({"response":"Some error occurred"});
+			res.status(400).
+			json({"response":"Some error occurred"});
 			
 		}
 	});
