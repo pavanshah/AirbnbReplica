@@ -1,6 +1,6 @@
 var app = angular.module("Airbnb");
 
-function UpdateProfileControllerFn($state,$http,$scope) {
+function UpdateProfileControllerFn($state,$http,$scope,$rootScope) {
 	var vm = this;
 	vm.invalidzipflag1 = false;
 	vm.invalidzipflag2 = false;
@@ -57,6 +57,9 @@ function UpdateProfileControllerFn($state,$http,$scope) {
 		console.log("calling updateProfile");
 		$http.post('/updateUser',{"user":vm.user}).then(function(response){
 
+			if(response.status==200){
+				$rootScope.$emit('profileUpdated');
+			}
 			console.log(response.data);
 			vm.PopulateUserForm();
 			vm.showAlert=true;

@@ -1,7 +1,7 @@
 var app = angular.module('Airbnb');
 
 
-function mainControllerFn($uibModal,loginService,$state,$log) {
+function mainControllerFn($rootScope,$uibModal,loginService,$state,$log) {
  	var vm =this;
  	vm.user = {};
 
@@ -10,6 +10,16 @@ function mainControllerFn($uibModal,loginService,$state,$log) {
  		vm.user = userData;
  	},function(err) {
  		vm.user = {};
+ 	});
+
+ 	$rootScope.$on('profileUpdated', function(event, data) {
+ 		  loginService.getUserProfile().
+		 	then(function(userData) {
+		 		vm.user = userData;
+		 	},function(err) {
+		 		vm.user = {};
+		 	});
+
  	});
 
  	vm.homeNavigation = function () {
