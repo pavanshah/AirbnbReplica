@@ -9,6 +9,7 @@ var reviewFn = require('./review');
 var globalTripObject ;
 var globalProperty;
 var globalTripObjectForReview;
+var mq_client = require('../rpc/client');
 
 var getTrips = function (req,res) {
 	var userId = req.session.user.emailId;
@@ -156,9 +157,125 @@ var createTrip = function (tripObject,callback) {
 	query = {"property_id":tripObject.property.property_id};
 	var trip_id = uniqueIDGenerator.returnUniqueID();
 
-	var fetchProperty = Property.findOne(query);
-	fetchProperty.exec(function(err,propertyData){
+
+
+
+
+
+	var msg_payload = {
+		"func": "SearchPropertyById",
+		"property_id":tripObject.property.property_id
+	}
+
+	mq_client.make_request("property_queue",msg_payload,function(err,response){
+
+/*		if(err)
+		{
+			console.log(err);
+		}
+		else
+		{
+			if(response.status==200)
+			{
+				res.status(200);
+				res.json(response.property);
+			}
+			else
+			{
+				res.status(400);
+				res.json({"response":"Bad Request"});
+			}
+		}*/
+
+
 		if(err)
+		{
+			callback({"status":400,"result":"Failed to fetch property in Create Trip"});
+		}
+		else if(response.status == 200)
+		{
+			//console.log("propertyyyyyyyyyyyy final"+propertyData);
+			globalProperty = response.property;
+			console.log("ljabfbhea"+globalProperty);
+			//console.log("dafsrcwrrchwrvxwjfxutwefxutfvxfzxjvcfejf"+globalProperty);
+			//console.log("temp000o::::::::::::"+propertyData.property_id);
+			var trip_data = {
+				"trip_id" : trip_id,
+				"property" : {
+					"property_id" : globalProperty.property_id,
+					"propertyTitle" : globalProperty.propertyTitle,
+					"description" : globalProperty.description,
+					"propertyPictures" : globalProperty.propertyPictures,
+					"qty" : globalProperty.qty,
+					"category" : globalProperty.category
+				},
+				"host_id" : globalProperty.host_id,
+				"user_id" : globalTripObject.user_id,
+				"user_emailId" : globalTripObject.user_emailId,
+				"bill" : {
+					"billing_id" : globalTripObject.bill.billing_id,
+					"trip_amount" : globalTripObject.bill.trip_amount, 
+				},
+				"trip_start_date" : globalTripObject.trip_start_date,
+				"trip_end_date" : globalTripObject.trip_end_date 
+			};
+
+
+
+
+			var msg_payload = {
+				"func": "createTrip",
+				"trip_data":trip_data
+			}
+
+			mq_client.make_request("trip_queue",msg_payload,function(err,response) {
+				if(err)
+				{
+					callback({"status":400,"result":"Failed to fetch property in Create Trip"});
+				}
+				else
+				{
+					callback({"status":200,"result":"Trip Created","trip_details":response.trip_details});
+				}
+			});
+
+
+
+
+
+
+
+/*			var finalTripObject = Trips(trip_data);
+			console.log(finalTripObject);
+			finalTripObject.save(function(err, result){
+				if(err)
+				{
+					callback({"status":400,"result":"Failed to fetch property in Create Trip"});
+				}
+				else
+				{
+					callback({"status":200,"result":"Trip Created","trip_details":result});
+				}
+			});*/
+		}
+
+		else
+		{
+			callback({"status":400,"result":"Failed to fetch property in Create Trip"});
+		}
+
+
+	});
+
+
+
+
+
+
+
+	//var fetchProperty = Property.findOne(query);
+	//fetchProperty.exec(function(err,propertyData){
+		/*if(err)
 		{
 			callback({"status":400,"result":"Failed to fetch property in Create Trip"});
 		}
@@ -202,8 +319,8 @@ var createTrip = function (tripObject,callback) {
 					callback({"status":200,"result":"Trip Created","trip_details":result});
 				}
 			});
-		}
-	});
+		}*/
+	//});
 
 	/*
 	Property.find(query, function(err,propertyData){
