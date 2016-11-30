@@ -55,7 +55,7 @@ function AdminControllerFn($state,$scope,$http) {
                 x: function(d){return d.host_name;},
                 y: function(d){return d.cost;},
                 showLabels: true,
-                duration: 500,
+                duration: 100,
                 labelThreshold: 0.01,
                 labelSunbeamLayout: true,
                 legend: {
@@ -227,7 +227,7 @@ function AdminControllerFn($state,$scope,$http) {
 		        valueFormat: function(d){
 		            return d3.format(',.4f')(d);
 		        },
-		        transitionDuration: 1000,
+		        transitionDuration: 100,
 		        xAxis: {
 		            axisLabel: 'X Axis'
 		        },
@@ -398,7 +398,7 @@ function AdminControllerFn($state,$scope,$http) {
                 average: function(d) { return d.mean; },
 
                 color: d3.scale.category10().range(),
-                duration: 300,
+                duration: 100,
                 useInteractiveGuideline: true,
                 clipVoronoi: true,
                 showControls: false,
@@ -497,7 +497,7 @@ function AdminControllerFn($state,$scope,$http) {
 	                showLabels: true,
 
 	                
-	                duration: 500,
+	                duration: 100,
 	                legend: {
 	                    margin: {
 	                        top: 5,
@@ -533,7 +533,7 @@ function AdminControllerFn($state,$scope,$http) {
 	                showLabels: true,
 
 	                
-	                duration: 500,
+	                duration: 100,
 	                legend: {
 	                    margin: {
 	                        top: 5,
