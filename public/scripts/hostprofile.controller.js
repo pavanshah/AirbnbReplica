@@ -27,7 +27,7 @@ function HostProfileFn($state,$scope,$http) {
 	  }
 	  */
 	$scope.getHostDetails = function(){
-
+console.log("geting host details");
 		$http.get('/getHostDetails').then(function(response){
 			console.log(response.data);
 			$scope.firstname = response.data.user.firstname;
@@ -43,7 +43,7 @@ function HostProfileFn($state,$scope,$http) {
 			console.log(vm.host);
 	});
 	}
-	$scope.getHostDetails();
+	
 	$scope.save = function(){
 		console.log("save button clicked");
 		vm.host.firstname = $scope.firstname;
@@ -70,7 +70,7 @@ function HostProfileFn($state,$scope,$http) {
 				console.log(response.data);
 			});*/
 	}
-	
+	$scope.getHostDetails();
 }
 	
 	

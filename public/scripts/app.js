@@ -178,7 +178,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
 	.state('hostProfilePhotoAndVideo',{
 		url:"/hostProfilePhotoAndVideo",
 		templateUrl:"public/views/hostProfilePhotoAndVideo.html",
-		controller:"hostProfilePhotoAndVideoController",
+		controller:"hostProfilePhotoAndVideo",
 		controllerAs:"vm"
 	})
 	.state('viewUserBids',{
@@ -187,8 +187,9 @@ app.config(function($stateProvider, $urlRouterProvider) {
 		controller:"ViewUserBidsController",
 		controllerAs:"vm"
 	})
+	 
 	//$location.path('/prelogin');
-	//html5mode(true);
+	//html5mode(true);n
 	
 });
 

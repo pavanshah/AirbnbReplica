@@ -379,6 +379,39 @@ var updateHostProfile = function(req,res){
  		
 };
 
+var updateHostProfile = function(req,res){
+	console.log("Inside host Profile Update");
+	console.log(req.body); 
+	var query = {'email':req.session.user.emailId};
+
+	//console.log(req.body.user);
+	
+	Users.findOneAndUpdate(query, req.body.user, {upsert:true}, function(err, doc){
+		
+	    if (err) {
+	    	res
+			.status(400)
+			.send({"result":"Bad request"});
+			return;
+	    }
+	    else {
+	    	console.log(doc);
+	res
+ 	.status(200)
+ 	.send({"result":"host Updated"});
+		
+	};
+	})	
+};
+
+
+
+
+
+
+
+
+
 
 var updateProfile = function(req,res){
 	console.log("Inside user Profile Update");
@@ -509,6 +542,12 @@ else{
 	}
 };
 
+
+
+
+
+
+
 var getHost = function(req,res){
 	console.log("inside get host");
 	if(req.session.user==undefined||req.session.user==null)
@@ -529,7 +568,17 @@ else{
 
 	mq_client.make_request("user_queue",msg_payload,function(err,response){
 
-		console.log(response);
+		console.log(response);//the response was not sent back hence get was not working for the user profile
+		if(err){
+			console.log(err);
+		}
+		else
+		{
+			console.log(response);
+			res
+ 		.status(200)
+ 		.send({"user":response.user});
+		}
 
 
 
@@ -565,7 +614,8 @@ else{
 		    "birthYear":birthYear,
 		    "birthMonth":birthMonth,
 		    "birthDay":birthDay,
-		    "gender": user.gender
+		    "gender": user.gender,
+		    "profilepic" :user.profilepic
 		};
  				
  		res
