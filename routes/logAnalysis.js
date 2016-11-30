@@ -218,7 +218,6 @@ var userTracking = function(req, res)
 
 var propertyReviews = function(req, res)
 {
-    /*
     var host = req.body.analyze.host_id;
 
     winston.add(winston.transports.File, { filename: 'public/LogFiles/PropertyReviewsAnalysis.json' });
@@ -244,17 +243,64 @@ var propertyReviews = function(req, res)
 
             var propArr = [];
 
-            console.log(results);
-
-
             for(var i = 0 ; i < results.file.length ; i++)
             {
                 if(results.file[i].host_id == host)
                 {
-                    propArr.push([{ 'property_id' : parseInt(results.file[i].property_id), rating : results.file[i].rating, timestamp : results.file[i].timestamp}])
+                    propArr.push(results.file[i]);
+                   // propArr.push([{ 'property_id' : parseInt(results.file[i].property_id), rating : results.file[i].rating, timestamp : results.file[i].timestamp}])
                 }
             }
 
+           // console.log(propArr);
+
+            var query = Property.find({});
+            query.where('host_id', req.body.analyze.host_id);
+            var userArr = [];
+            var finalJSON = [];
+            var reviewArray = [];
+
+            query.exec(function(err, user){
+                if(user)
+                {
+                    for(var i = 0; i< user.length ; i++)
+                    {
+                        userArr.push(parseInt(user[i].property_id));
+                    }
+
+                   // console.log("userArr "+userArr);
+                   // console.log("propArr "+propArr);
+
+                    for(var i = 0 ; i < userArr.length ; i++)
+                    {
+                        //console.log("user "+userArr[i]);
+                        for(var j = 0 ; j < propArr.length ; j++)
+                        {
+                            //console.log("prop "+propArr[j].property_id);
+                            if(userArr[i] == propArr[j].property_id)
+                            {
+                                reviewArray.push(propArr[j].rating, propArr[j].timestamp);
+                          //      console.log("reviewArray "+reviewArray);
+                            }
+
+                        }
+
+                        //console.log("end of "+userArr[i]+ " reviews array "+reviewArray);
+                        finalJSON.push([{'property_id' : userArr[i], "reviews" : reviewArray}]);
+                        reviewArray = [];
+                       // console.log("after pushing "+finalJSON);
+                    }
+
+                    res.json(finalJSON);
+
+                }
+                else
+                {
+                     console.log(err);
+                }
+        });
+
+            /*
             console.log(propArr[0].property_id);
 
             for (var i=0; i < propArr.length-1; i++) {
@@ -265,13 +311,10 @@ var propertyReviews = function(req, res)
                 propArr[i+1].property_id = temp;
                 }
             }
-
-            console.log("sorted "+propArr);
-
-            res.json(propArr);    
+            */   
             
         });
-        */
+    
         winston.add(winston.transports.Console);
 }
 
