@@ -73,7 +73,7 @@
                     </tbody>
                   </table>
                   
-                  <a class="btn btn-primary"  ng-if="status == 'inactive'">Authorize</a>
+                  <a class="btn btn-primary"  ng-if="status == 'inactive'" ng-click="authorize()">Authorize</a>
                   <a class="btn btn-primary" ng-click="deleteUser()" >Delete</a>
                   
                   <div class="alert alert-success" ng-if="showSuccess" style="margin-top:20px;">

@@ -11,7 +11,7 @@ var redis = require('redis');
 var client = redis.createClient();
 
 function getRedisStatus(){
-	return 0;
+	return 1;
 }
 
 var getBillDetailAdmin = function(req,res){
@@ -22,7 +22,7 @@ var getBillDetailAdmin = function(req,res){
 		console.log("Redis query returned with value:");
 		console.log(reply);
 		
-		if (reply === 1 && getRedisStatus) {
+		if (reply === 1 && getRedisStatus()) {
 	        console.log('redis cache exists');
 	        client.hgetall('billdetail'+req.query.id, function(err, object) {
 	        	console.log("Returned object is ");
@@ -121,7 +121,7 @@ var getProfileForAdmin = function(req,res){
 		console.log("Redis query returned with value:");
 		console.log(reply);
 		
-		if (reply === 1 && getRedisStatus) {
+		if (reply === 1 && getRedisStatus()) {
 	        console.log('redis cache exists');
 	        client.hgetall('profile'+req.query.id, function(err, object) {
 	        	console.log("Returned object is ");
@@ -161,7 +161,7 @@ var getBillForAdmin = function(req,res){
 			console.log("Redis query returned with value:");
 			console.log(reply);
 			
-			if (reply === 1 && getRedisStatus) {
+			if (reply === 1 && getRedisStatus()) {
 		        console.log('redis cache exists');
 		        client.hgetall('billnew', function(err, object) {
 		        	console.log("Returned object is ");
@@ -260,7 +260,7 @@ var getHostsForAdmin = function(req,res){
 			console.log("Redis query returned with value:");
 			console.log(reply);
 			
-			if (reply === 1 && getRedisStatus) {
+			if (reply === 1 && getRedisStatus()) {
 		        console.log('redis cache exists');
 		        client.hgetall('hostnew', function(err, object) {
 		        	console.log("Returned object is ");
@@ -297,10 +297,13 @@ var getHostsForAdmin = function(req,res){
 		var searchObject = {};
 		
 		if(req.query.type != "" && req.query.address != ""){
-			searchObject = {"UserType":req.query.type,"address.city":req.query.address.toLowerCase()};
+			//searchObject = {"UserType":req.query.type,"address.city":req.query.address.toLowerCase()};
+			searchObject = {"UserType":req.query.type,"address.city":{ $regex : new RegExp(req.query.address, "i") }};
 		}
 		else if(req.query.address != ""){
-			searchObject = {"address.city":req.query.address.toLowerCase()}; 
+			//searchObject = {"address.city":req.query.address.toLowerCase()};
+			searchObject = {"address.city":{ $regex : new RegExp(req.query.address, "i") }};
+			
 		}
 		else if(req.query.type != ""){
 			searchObject = {"UserType":req.query.type}; 
@@ -315,7 +318,7 @@ var getHostsForAdmin = function(req,res){
 			console.log("Redis query returned with value:");
 			console.log(reply);
 			
-			if (reply === 1 && getRedisStatus) {
+			if (reply === 1 && getRedisStatus()) {
 		        console.log('redis cache exists');
 		        client.hgetall('hostquery'+JSON.stringify(searchObject), function(err, object) {
 		        	console.log("Returned object is ");
@@ -364,7 +367,7 @@ var getPropertyPerYear = function(req,res){
 		console.log("Redis query returned with value:");
 		console.log(reply);
 		
-		if (reply === 1 && getRedisStatus) {
+		if (reply === 1 && getRedisStatus()) {
 	        console.log('redis cache exists');
 	        client.hgetall('property'+req.query.year, function(err, object) {
 	        	console.log("Returned object is ");
@@ -448,12 +451,14 @@ var getMainDashboard = function(req,res){
 		console.log("Redis query returned with value:");
 		console.log(reply);
 		
-	    if (reply === 1 && getRedisStatus) {
-	        console.log('redis cache exists');
+	    if (reply === 1 && getRedisStatus()) {
+	        console.log('redis cache exists main');
 	        client.hgetall('mainDash', function(err, object) {
 	        	console.log("Returned object is ");
 	        	console.log(typeof object);
 	            console.log(object);
+	            console.log("------------");
+	            console.log({"result":JSON.parse(object.result),"barchart":JSON.parse(object.barchart),"linechart":JSON.parse(object.linechart),"userstatus":JSON.parse(object.userstatus),"userstype":JSON.parse(object.userstype)});
 	            
 	            res
     			.status(200)
@@ -461,7 +466,7 @@ var getMainDashboard = function(req,res){
 	        });
 	        
 	    } else {
-	        console.log('redis doesn\'t exist');
+	        console.log('redis doesn\'t exist main');
 	        
 	        
 	        
@@ -572,11 +577,13 @@ var getMainDashboard = function(req,res){
 	 		                                    			usertypeval.push({'key':"Hosts",'y':usertype[i].count});
 	 		                                    		}
 	 		                                    	}
-	 		                                    	console.log("+++++++++++++++++++++");
-	 		                                    	console.log(usertypeval);
+	 		                                    	
+	 		                                    	//console.log(usertypeval);
 	 	                                    	  client.hmset('mainDash', {"result":JSON.stringify(resultData),"barchart":JSON.stringify(barResultOutput),"linechart":JSON.stringify(lineOutput),"userstatus":JSON.stringify(userstatus),"userstype":JSON.stringify(usertypeval)});
 	 		               	            	        client.expire('mainDash', 300);
 	 		               	                        
+	 		               	            	        console.log("+++++++++++++++++++++++++++++");
+	 		               	            	        console.log({"result":resultData,"barchart":barResultOutput,"linechart":lineOutput,"userstatus":userstatus,"userstype":usertypeval});
 	 		               	                        res
 	 		               	            			.status(200)
 	 		               	            			.send({"result":resultData,"barchart":barResultOutput,"linechart":lineOutput,"userstatus":userstatus,"userstype":usertypeval});
