@@ -11,7 +11,7 @@ var redis = require('redis');
 var client = redis.createClient();
 
 function getRedisStatus(){
-	return 1;
+	return 0;
 }
 
 var getBillDetailAdmin = function(req,res){
@@ -457,11 +457,13 @@ var getMainDashboard = function(req,res){
 	            
 	            res
     			.status(200)
-    			.send({"result":JSON.parse(object.result),"barchart":JSON.parse(object.barchart),"linechart":JSON.parse(object.linechart)});
+    			.send({"result":JSON.parse(object.result),"barchart":JSON.parse(object.barchart),"linechart":JSON.parse(object.linechart),"userstatus":JSON.parse(object.userstatus),"userstype":JSON.parse(object.userstype)});
 	        });
 	        
 	    } else {
 	        console.log('redis doesn\'t exist');
+	        
+	        
 	        
 	        mysqlPool.getConnection(function(err, connection) {
 	    		sql = "select host_name,sum(total_cost) cost from billinglogs group by host_name order by cost desc limit 10";
@@ -515,18 +517,88 @@ var getMainDashboard = function(req,res){
 	                        		}
 	                        }
 	                        
-	                        for(var k=0;k<lineOutput.length;k++){
+	                        /*for(var k=0;k<lineOutput.length;k++){
 	                        	console.log(lineOutput[k].key);
 	                        	console.log(lineOutput[k].values);
-	                        }
+	                        }*/
+	                        
+	                        Users.aggregate([{$group: {_id: '$user_status',count: {$sum: 1}}}], function (err, status) {
+	                                       if (err) {
+	                                    	   console.log("User host................failed.........");
+	                                    	   return;
+	                                       } else {
+	                                           //success case
+	                                    	   
+	                                    	console.log("User host................");
+	                                    	console.log(status);
+	                                    	   
+	                                    	var userstatus = [];
+	                                    	
+	                                    	for(var i=0;i<status.length;i++){
+	                                    		if(status[i]._id == "inactive"){
+	                                    			userstatus.push({'key':"Pending",'y':status[i].count});
+	                                    		}
+	                                    		else if(status[i]._id == "active"){
+	                                    			userstatus.push({'key':"Approved",'y':status[i].count});
+	                                    		}
+	                                    	}
+	                                    	
+	                                    	console.log(userstatus);
+	                                    	Users.aggregate([{$group: {_id: '$UserType',count: {$sum: 1}}}], function (err, usertype) {
+	 	                                       if (err) {
+	 	                                    	   console.log("User type................failed.........");
+	 	                                    	   return;
+	 	                                       } else {
+	 	                                    	  console.log("User type................");
+	 	                                    	   console.log(usertype);
+	 	                                    
+	 	                                    	 /* [
+	 	                      	                {
+	 	                      	                    key: "Users",
+	 	                      	                    y: 100
+	 	                      	                },
+	 	                      	                {
+	 	                      	                    key: "Hosts",
+	 	                      	                    y: 26
+	 	                      	                }
+	 	                      	                ]*/
+	 	                                    	  var usertypeval = [];
+	 		                                    	
+	 		                                    	for(var i=0;i<usertype.length;i++){
+	 		                                    		if(usertype[i]._id == "User"){
+	 		                                    			usertypeval.push({'key':"Users",'y':usertype[i].count});
+	 		                                    		}
+	 		                                    		else if(usertype[i]._id == "Host"){
+	 		                                    			usertypeval.push({'key':"Hosts",'y':usertype[i].count});
+	 		                                    		}
+	 		                                    	}
+	 		                                    	console.log("+++++++++++++++++++++");
+	 		                                    	console.log(usertypeval);
+	 	                                    	  client.hmset('mainDash', {"result":JSON.stringify(resultData),"barchart":JSON.stringify(barResultOutput),"linechart":JSON.stringify(lineOutput),"userstatus":JSON.stringify(userstatus),"userstype":JSON.stringify(usertypeval)});
+	 		               	            	        client.expire('mainDash', 300);
+	 		               	                        
+	 		               	                        res
+	 		               	            			.status(200)
+	 		               	            			.send({"result":resultData,"barchart":barResultOutput,"linechart":lineOutput,"userstatus":userstatus,"userstype":usertypeval});
+	 	                                    	   
+	 	                                       }});
+	 	                        
+	                                    	
+	                                    	
+	                                    	
+	                                    	   
+	                                       }
+	                                   });
 	                        
 	                        //console.log(lineOutput);
-	                        client.hmset('mainDash', {"result":JSON.stringify(resultData),"barchart":JSON.stringify(barResultOutput),"linechart":JSON.stringify(lineOutput)});
+	                        //new changes
+	                        /*client.hmset('mainDash', {"result":JSON.stringify(resultData),"barchart":JSON.stringify(barResultOutput),"linechart":JSON.stringify(lineOutput)});
 	            	        client.expire('mainDash', 300);
 	                        
 	                        res
 	            			.status(200)
-	            			.send({"result":resultData,"barchart":barResultOutput,"linechart":lineOutput});
+	            			.send({"result":resultData,"barchart":barResultOutput,"linechart":lineOutput});*/
+	                      //new changes
 	                    });
 	                    
 	                	

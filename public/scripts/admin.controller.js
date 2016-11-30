@@ -41,6 +41,8 @@ function AdminControllerFn($state,$scope,$http) {
 			$scope.topHostsdata = details.result;
 			$scope.barData[0].values = details.barchart;
 			$scope.lineData  = details.linechart;
+			vm.donut2Data = details.userstatus;
+			vm.donut1Data = details.userstype
 		});
 		
 	});
