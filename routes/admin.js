@@ -5,6 +5,7 @@ var mongoURL = "mongodb://apps92:shim123@ds155727.mlab.com:55727/airbnbproto";
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var Users = require('../Models/user');
+var Trips = require('../Models/trip');
 var Bills = require('../Models/bill');
 var mongodb = require('mongodb');
 var redis = require('redis');
@@ -31,7 +32,7 @@ var getBillDetailAdmin = function(req,res){
 	            
 	            res
     			.status(200)
-    			.send({"result":JSON.parse(object.result)});
+    			.send({"result":JSON.parse(object.result),"start":object.start,"end":object.end});
 	        });
 	        
 	    } else {		    	
@@ -51,11 +52,37 @@ var getBillDetailAdmin = function(req,res){
 	    	var o_id = new mongodb.ObjectID(req.query.id);
 	
 			Bills.find({"_id":o_id},function(err,bill){
-				client.hmset('billdetail'+req.query.id, {"result":JSON.stringify(bill)});
+				console.log("test........");
+				console.log(bill[0].billing_id);
+				
+				Trips.find({"bill.billing_id":bill[0].billing_id},function(err,trip){
+					console.log("Got tripppppppppp");
+					console.log(trip);
+
+					var dateObjStart = new Date(trip[0].trip_start_date);
+					var dateObjEnd = new Date(trip[0].trip_end_date);
+					var monthStart = dateObjStart.getUTCMonth() + 1; //months from 1-12
+					var dayStart = dateObjStart.getUTCDate();
+					var yearStart = dateObjStart.getUTCFullYear();
+					var monthEnd = dateObjEnd.getUTCMonth() + 1; //months from 1-12
+					var dayEnd = dateObjEnd.getUTCDate();
+					var yearEnd = dateObjEnd.getUTCFullYear();
+					
+					client.hmset('billdetail'+req.query.id, {"result":JSON.stringify(bill),"start":monthStart+'/'+dayStart+'/'+yearStart,"end":monthEnd+'/'+dayEnd+'/'+yearEnd});
+	    	        client.expire('billdetail'+req.query.id, 300);
+					res
+					.status(200)
+					.send({"result":bill,"start":monthStart+'/'+dayStart+'/'+yearStart,"end":monthEnd+'/'+dayEnd+'/'+yearEnd});
+					
+				});
+					
+				
+				
+				/*client.hmset('billdetail'+req.query.id, {"result":JSON.stringify(bill)});
     	        client.expire('billdetail'+req.query.id, 300);
 				res
 				.status(200)
-				.send({"result":bill});			
+				.send({"result":bill});*/			
 			})
 	    	
 	    }

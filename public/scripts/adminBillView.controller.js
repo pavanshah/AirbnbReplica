@@ -11,7 +11,13 @@ function AdminBillViewControllerFn($state,$scope,$http,$rootScope) {
 		url : '/getBillDetailAdmin',
 		params : $scope.getBillDetail 
 	}).success(function(details) {
+		console.log("test output1");
+		$scope.start = details.start;
+		$scope.end = details.end;
 		console.log(details.result);
+		console.log(details.start);
+		console.log(details.end);
+		console.log("test output");
 		$scope.billdate = details.result[0].billing_date;
 		$scope.billid = details.result[0].billing_id;
 		$scope.user = details.result[0].user.email;
