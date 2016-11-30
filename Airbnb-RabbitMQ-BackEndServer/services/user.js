@@ -120,7 +120,7 @@ Users.findOne({"email":msg.email},function(err,user){
       console.log(hostBirthDay);
       var UserObject = 
       {
-        "firstname": user.firstname,
+    	  "firstname": user.firstname,
           "lastname": user.lastname,
           "email": user.email,
           "user_id": user.user_id,
@@ -131,7 +131,8 @@ Users.findOne({"email":msg.email},function(err,user){
           "birthYear":birthYear,
           "birthMonth":birthMonth,
           "birthDay":birthDay,
-          "gender": user.gender
+          "gender": user.gender,
+          "profilepic":user.profilepic
       };
 
       callback(null,{"status":200,"user":UserObject});

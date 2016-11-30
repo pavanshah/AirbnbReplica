@@ -12,6 +12,8 @@ function hostProfilePhotoAndVideoFn($state,$scope,$http) {
 			if(vm.host.profilepic==undefined||vm.host.profilepic==null){
 				console.log("setting default image");
 				vm.host.profilepic="/public/images/generic-profile.png"
+			} else {
+				vm.host.profilepic = vm.host.profilepic;
 			}
 
 		});
@@ -59,9 +61,9 @@ function hostProfilePhotoAndVideoFn($state,$scope,$http) {
 				  function(Blob){
 					console.log("got the image");
 				    console.log(JSON.stringify(Blob.url));
-				    //vm.host.profilepic=Blob.url;
-				    //console.log(vm.host.profilepic);
-				    //vm.UpdateProfile();
+				    vm.host.profilepic=Blob.url;
+				    console.log(vm.host.profilepic);
+				    vm.UpdateProfile();
 				  },
 				  function(FPError){
 				    console.log(FPError.toString());
