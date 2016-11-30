@@ -568,7 +568,17 @@ else{
 
 	mq_client.make_request("user_queue",msg_payload,function(err,response){
 
-		console.log(response);
+		console.log(response);//the response was not sent back hence get was not working for the user profile
+		if(err){
+			console.log(err);
+		}
+		else
+		{
+			console.log(response);
+			res
+ 		.status(200)
+ 		.send({"user":response.user});
+		}
 
 
 

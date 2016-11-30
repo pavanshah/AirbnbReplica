@@ -102,7 +102,7 @@ function getUserProfile(msg,callback){
 
 function getHostProfile(msg,callback){
 
-
+console.log("getting host profile");
 Users.findOne({"email":msg.email},function(err,user){
     if(err || user == null){
       callback(null,{"status":400,"result":"user not found"});
