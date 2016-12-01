@@ -136,6 +136,16 @@ cnn.on('ready', function(){
 								correlationId:m.correlationId
 							});
 					});
+					
+				case "getHostTrips":
+					user.getHostTrip(message,function(err,res){
+
+					cnn.publish(m.replyTo, res, {
+								contentType:'application/json',
+								contentEncoding:'utf-8',
+								correlationId:m.correlationId
+							});
+					});
 				break;
 
 

@@ -4,6 +4,7 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var Users = require('./Models/user');
 var moment = require('moment');
+var Trip = require('./Models/trip');
 
 function authenticate(msg,callback){
 
@@ -29,6 +30,25 @@ function authenticate(msg,callback){
   
 	});
 }
+
+function getHostTrip(msg,callback){
+	console.log("get host trip");
+	console.log(msg);
+	  Trip.find({"host_id":msg.user_id},function(err,trip){
+	    console.log("found");
+	    console.log(trip);
+	    if(!err){
+	         
+	    	callback(null,{"status":200,"trip":trip});
+	          
+	        }
+	        else{
+	          console.log("inside error");
+	          console.log(err);
+	          callback(err,null);
+	        }  
+	  });
+};
 
 function signUp(msg,callback){
 
@@ -63,7 +83,7 @@ function updateProfile(msg,callback){
   Users.findOneAndUpdate(msg.query, msg.user, {upsert:false}, function(err, doc){
     
     if (err) {
-      console.log(err);
+     console.log(err);
     callback(err,{"status":400,"result":"Bad request"});
    }
     else {
@@ -180,6 +200,7 @@ exports.getUserProfile = getUserProfile;
 exports.getHostProfile = getHostProfile;
 exports.updateHostProfileDetails = updateHostProfileDetails;
 exports.updateHostProfileCardDetails = updateHostProfileCardDetails;
+exports.getHostTrip = getHostTrip;
 
 
 
