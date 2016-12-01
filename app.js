@@ -25,8 +25,6 @@ var Users = require('./Models/user');
 var review = require("./routes/review");
 var admin = require("./routes/admin");
 var logAnalysis = require("./routes/logAnalysis");
-var redis = require('redis');
-var client = redis.createClient();
 
 // all environments
 app.use(expressSession({
@@ -68,10 +66,6 @@ app.use(favicon(path.join(__dirname, 'public','images','favicon.ico')));
 }*/
 
 //app.get('/', home.signin);
-
-client.on('connect', function() {
-    console.log('redis connected');
-});
 
 passport.serializeUser(function(host, done) {
 	var key = {id : host.id,type : host.type};

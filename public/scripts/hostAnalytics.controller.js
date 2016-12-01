@@ -4,8 +4,8 @@ var app = angular.module('Airbnb');
 function hostAnalyticsControllerFn($state,$scope,$http) {	
 	var vm = this;
 
-	//Property clicks/date
-	$scope.barOptions = {
+	//Page clicks for last 10 days
+	vm.pageClickOptions = {
 		    chart: {
 		        type: 'discreteBarChart',
 		        height: 400,
@@ -33,21 +33,92 @@ function hostAnalyticsControllerFn($state,$scope,$http) {
 		};
 	
 	
-	$scope.barData = [{
-	    key: "Cumulative Return",
-	    values: [
-	    	{ "label" : "15/11/16" , "value" : 33 },
-	    	{ "label" : "16/11/16" , "value" : 15 },
-	    	{ "label" : "17/11/16" , "value" : 27 },
-	        { "label" : "18/11/16" , "value" : 49 },
-	        { "label" : "19/11/16" , "value" : 32 },
-	        { "label" : "20/11/16" , "value" : 40 },
-	        { "label" : "21/11/16" , "value" : 19 },
-	        { "label" : "22/11/16" , "value" : 70 },
-	        { "label" : "23/11/16" , "value" : 67 },
-	        { "label" : "24/11/16" , "value" : 32 }
-	        ]
-	    }]
+	vm.pageClickData = function(){
+
+		$http({
+			method : "POST",
+			url : '/clicksPerPage'
+		}).success(function(details) {
+			//console.log(details);
+
+				vm.clickData = [{
+	    		key: "Cumulative Return",
+	    		values: [
+				        { "label" : "Login Page" , "value" : details.login_page },
+				        { "label" : "Logout Page" , "value" : details.logout_page },
+				        { "label" : "Bill Page" , "value" : details.bill_page },
+				        { "label" : "Edit Profile Page" , "value" : details.editprofile_page },
+				        { "label" : "Become A Host Page" , "value" : details.host_page},
+				        { "label" : "Search Property Page" , "value" : details.property_page },
+				        { "label" : "Property Details Page" , "value" : details.propertydescription_page },
+				        { "label" : "Signup Page" , "value" : details.signup_page },
+				        { "label" : "Trip Details Page" , "value" : details.trip_page }
+				        ]
+
+	    			}]
+	    });
+	    
+	}
+
+vm.pageClickData();
+
+	//Property clicks/date
+	vm.propertyClickOptions = {
+		    chart: {
+		        type: 'discreteBarChart',
+		        height: 400,
+		        margin : {
+		            top: 20,
+		            right: 20,
+		            bottom: 60,
+		            left: 55
+		        },
+		        x: function(d){ return d.label; },
+		        y: function(d){ return d.value; },
+		        showValues: true,
+		        valueFormat: function(d){
+		            return d3.format()(d);
+		        },
+		        transitionDuration: 1000,
+		        xAxis: {
+		            axisLabel: 'Property ID'
+		        },
+		        yAxis: {
+		            axisLabel: 'No. of clicks',
+		            axisLabelDistance: 30
+		        }
+		    }
+		};
+	
+
+	vm.propertyClickData = function()
+	{
+		$http({
+			method : "POST",
+			url : '/propertyClick'
+		}).success(function(details) {
+
+			//console.log(details);
+
+			var valueArray = [];
+
+			for(var i = 0 ; i < details.length ; i++)
+			{
+				valueArray.push({"label" : details[i][0].property_id , "value" : details[i][0].count});
+			}
+
+			console.log("valueArray "+valueArray);
+			
+			vm.propertyData = [{
+	    		key: "Cumulative Return",
+	    		values: valueArray
+	    		}]		
+
+	    });
+	}
+
+	vm.propertyClickData();
+
 
 	vm.config = {
 		    visible: true, // default: true
@@ -96,14 +167,32 @@ function hostAnalyticsControllerFn($state,$scope,$http) {
             },
         };
 
-        $scope.data = findRatingsData();
+   // $scope.data = findRatingsData();
 
         /*Random Data Generator */
         function findRatingsData() {
-            var ratings = [];
 
-            	ratings.push({x: 16, y: 2.9});
-                ratings.push({x: 15, y: 3.8});
+        	$http({
+			method : "POST",
+			url : '/propertyReviews'
+			}).success(function(details) {
+
+				console.log("details "+details);
+				console.log("details[0] "+details[2]);
+				console.log("details[0] "+details[2].reviews);
+				console.log("details[0] "+details[2].property_id);
+				console.log("details[0] "+details[2].reviews[0].rating);
+				console.log("details[0] "+details[2].reviews[0].timestamp);
+				console.log("details[0] "+details[2].reviews[1].rating);
+				console.log("details[0] "+details[2].reviews[1].timestamp);
+
+
+				var ratings1 = [];
+				var ratings2 = [];
+				var ratings = [];
+				
+            	ratings.push({x: 15, y: 2.9});
+                ratings.push({x: 16, y: 3.8});
                 ratings.push({x: 18, y: 5});
                 ratings.push({x: 19, y: 4.3});
                 ratings.push({x: 20, y: 4.1});
@@ -112,16 +201,37 @@ function hostAnalyticsControllerFn($state,$scope,$http) {
                 ratings.push({x: 23, y: 5});
                 ratings.push({x: 24, y: 4.3});
                 ratings.push({x: 25, y: 4.2});
+				
 
-            //Line chart data should be sent as an array of series objects.
-            return [
-                {
-                    values: ratings,      //values - represents the array of {x,y} data points
-                    key: 'Average Ratings', //key  - the name of the series.
-                    color: '#ff7f0e'  //color - optional: choose your own line color.
-                }
-            ];
+				ratings1.push({x: 15, y: details[2].reviews[0].rating});
+                ratings1.push({x: 16, y: details[2].reviews[1].rating});
+
+                ratings2.push({x: 15, y: details[1].reviews[0].rating});
+
+
+                console.log(details[1].reviews[0].rating);
+
+            	//Line chart data should be sent as an array of series objects.
+            	$scope.data =  [
+            			/*
+                		{
+                    		values: ratings1,      //values - represents the array of {x,y} data points
+                    		key: 'Average Ratings', //key  - the name of the series.
+                    		color: '#ff7f0e'  //color - optional: choose your own line color.
+                		},
+						*/
+                		{
+                    		values: ratings,      //values - represents the array of {x,y} data points
+                    		key: 'Average Ratings', //key  - the name of the series.
+                    		color: '#2ca02c'  //color - optional: choose your own line color.
+                		}
+            		  ];
+
+			});
         };
+
+
+        findRatingsData();
 	
 	
 }
