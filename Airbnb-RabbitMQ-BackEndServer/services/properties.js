@@ -163,8 +163,26 @@ console.log("inside SearchPropertyById rabbitMQ"+msg);
 }
 
 
+var getAuctionableProperties = function(msg, callback) {
+	
+
+	Property.find({'ListingType':"auction","ListingDate":{"$gte":msg.validListingDate}},function(err,properties){
+		if(!err){
+
+			callback(null,{"status":200,"properties":properties});			
+			}
+		else
+		{
+			console.log(err);
+			callback(null,{"status":400,"result":"Bad Request"});			
+		}
+	});
+
+}
+
 exports.createProperty = createProperty;
 exports.SearchPropertyByDistance = SearchPropertyByDistance;
 exports.UpdateProperty = UpdateProperty;
 exports.BookProperty = BookProperty;
 exports.SearchPropertyById = SearchPropertyById;
+exports.getAuctionableProperties = getAuctionableProperties;

@@ -226,6 +226,21 @@ cnn.on('ready', function(){
 
 					});
 				break;
+
+				case "getAuctionableProperties":
+					property.getAuctionableProperties (message,function(err,res){
+
+						console.log("printing response");
+						console.log(res);
+						//return index sent
+							cnn.publish(m.replyTo, res, {
+								contentType:'application/json',
+								contentEncoding:'utf-8',
+								correlationId:m.correlationId
+							});
+
+					});
+				break;
 			}
 		})
 	});
