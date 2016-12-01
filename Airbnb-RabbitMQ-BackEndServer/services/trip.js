@@ -23,4 +23,21 @@ var createTrip = function(msg,callback) {
 	});
 }
 
+
+var getTrips = function(msg,callback) {
+
+
+	Trip.find({"user_emailId":msg.user_emailId}, function(err,result) {
+		if(!err){
+			console.log(result);
+			callback(null,{"status":200,"result":"Trips fetched", "trips":result});
+			}
+		else{
+			console.log(err);
+			callback(err,{"status":400,"result":"Bad Request"});
+		}
+	});
+}
+
 exports.createTrip = createTrip;
+exports.getTrips = getTrips;
