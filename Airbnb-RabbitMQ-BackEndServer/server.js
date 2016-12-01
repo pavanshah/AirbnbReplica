@@ -8,6 +8,7 @@ var user = require('./services/user');
 var login = require('./services/login');
 var bill = require('./services/bill');
 var trip = require('./services/trip');
+var review = require('./services/review');
 
 //require('./services/mongo')();
 
@@ -306,6 +307,55 @@ cnn.on('ready', function(){
 	});
 
   });
+
+
+	console.log("listening on Review Queue");
+	cnn.queue('review_queue',function(q)
+
+	{
+
+		q.subscribe(function(message, headers, deliveryInfo, m){
+			util.log(util.format( deliveryInfo.routingKey, message));
+			util.log("Message: "+JSON.stringify(message));
+			util.log("DeliveryInfo: "+JSON.stringify(deliveryInfo));
+			
+
+			switch(message.func){
+
+				case "submitReviewForTrip":
+				review.submitReviewForTrip(message,function(err,res){
+
+					console.log("printing Review response");
+						console.log(res);
+						//return index sent
+							cnn.publish(m.replyTo, res, {
+								contentType:'application/json',
+								contentEncoding:'utf-8',
+								correlationId:m.correlationId
+							});
+				})
+				break;
+
+				case "getTrips":
+				trip.getTrips(message,function(err,res){
+
+					console.log("printing Trip response");
+						console.log(res);
+						//return index sent
+							cnn.publish(m.replyTo, res, {
+								contentType:'application/json',
+								contentEncoding:'utf-8',
+								correlationId:m.correlationId
+							});
+				})
+				break;
+
+			}
+	});
+
+  });
+
+
 
 
 });
