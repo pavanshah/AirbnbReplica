@@ -156,6 +156,7 @@ app.get("/getProfileForAdmin",admin.getProfileForAdmin);
 app.post("/authorizeUser",admin.authorizeUser);
 app.post("/deleteUserFromAdmin",admin.deleteUser);
 app.get("/getBillDetailAdmin",admin.getBillDetailAdmin);
+app.get("/getHostTrips",user.getHostTrips);
 
 
 

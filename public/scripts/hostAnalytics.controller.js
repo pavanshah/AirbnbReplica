@@ -4,6 +4,69 @@ var app = angular.module('Airbnb');
 function hostAnalyticsControllerFn($state,$scope,$http) {	
 	var vm = this;
 
+
+	vm.donutOptions = {
+	            chart: {
+	                type: 'pieChart',
+	                height: 300,
+	                donut: true,
+	                x: function(d){return d.key;},
+	                y: function(d){return d.y;},
+	                showLabels: true,
+
+	                
+	                duration: 100,
+	                legend: {
+	                    margin: {
+	                        top: 5,
+	                        right: 140,
+	                        bottom: 5,
+	                        left: 0
+	                    }
+	                }
+	            }
+	        };
+
+
+	 vm.donutData = function(){
+	 	/*
+	 	$http({
+			method : "POST",
+			url : '/clicksPerPage'
+		}).success(function(details) {
+			//console.log(details);
+
+				vm.donutData = [{
+	    		
+				        { key : "Login Page" , y : details.login_page },
+				        { key : "Logout Page" , y : details.logout_page },
+				        { key : "Bill Page" , y : details.bill_page },
+				        { key : "Edit Profile Page" , y : details.editprofile_page },
+				        { key : "Become A Host Page" , y: details.host_page},
+				        { key : "Search Property Page" , y : details.property_page },
+				        { key : "Property Details Page" , "value" : details.propertydescription_page },
+				        { key : "Signup Page" , "value" : details.signup_page },
+				        { key : "Trip Details Page" , "value" : details.trip_page }
+
+	    			}]
+	    });
+		*/
+
+	 }
+	 
+	 vm.donutData = [
+	                {
+	                    key: "Users",
+	                    y: 100
+	                },
+	                {
+	                    key: "Hosts",
+	                    y: 26
+	                }
+	                ];
+
+
+
 	//Page clicks for last 10 days
 	vm.pageClickOptions = {
 		    chart: {
@@ -157,9 +220,9 @@ vm.pageClickData();
                 yAxis: {
                     axisLabel: 'Average Rating',
                     tickFormat: function(d){
-                        return d3.format('.02f')(d);
+                        return d3.format()(d);
                     },
-                    axisLabelDistance: -10
+                    axisLabelDistance: 10
                 },
                 callback: function(chart){
                     console.log("!!! lineChart callback !!!");
@@ -167,9 +230,6 @@ vm.pageClickData();
             },
         };
 
-   // $scope.data = findRatingsData();
-
-        /*Random Data Generator */
         function findRatingsData() {
 
         	$http({
@@ -177,6 +237,33 @@ vm.pageClickData();
 			url : '/propertyReviews'
 			}).success(function(details) {
 
+
+
+				/*
+				var array = [];
+				var array1 = [];
+
+				console.log(details.length);
+
+			
+				for(var i = 0 ; i < details.length ; i++)
+				{
+					for(var j = 0 ; j < details[i].reviews.length ; j++)
+					{
+						array.push({x: details[i].reviews[j].timestamp, y: parseInt(details[i].reviews[j].rating)});
+					}
+
+					array1.push({values : array, key : details[i].property_id, color : '#ff7f0e'});
+					//array = [];
+				}
+
+
+				console.log(array1);
+				*/
+
+
+
+				/*
 				console.log("details "+details);
 				console.log("details[0] "+details[2]);
 				console.log("details[0] "+details[2].reviews);
@@ -185,45 +272,51 @@ vm.pageClickData();
 				console.log("details[0] "+details[2].reviews[0].timestamp);
 				console.log("details[0] "+details[2].reviews[1].rating);
 				console.log("details[0] "+details[2].reviews[1].timestamp);
+				*/
 
+						var sin = [],sin2 = [],
+		                cos = [];
+
+		            //Data is represented as an array of {x,y} pairs.
+		            for (var i = 0; i < 100; i++) {
+		                sin.push({x: i, y: Math.sin(i/10)});
+		                sin2.push({x: i, y: i % 10 == 5 ? null : Math.sin(i/10) *0.25 + 0.5});
+		                cos.push({x: i, y: .5 * Math.cos(i/10+ 2) + Math.random() / 10});
+		            }
 
 				var ratings1 = [];
 				var ratings2 = [];
-				var ratings = [];
-				
-            	ratings.push({x: 15, y: 2.9});
-                ratings.push({x: 16, y: 3.8});
-                ratings.push({x: 18, y: 5});
-                ratings.push({x: 19, y: 4.3});
-                ratings.push({x: 20, y: 4.1});
-                ratings.push({x: 21, y: 3.2});
-                ratings.push({x: 22, y: 4.5});
-                ratings.push({x: 23, y: 5});
-                ratings.push({x: 24, y: 4.3});
-                ratings.push({x: 25, y: 4.2});
-				
 
-				ratings1.push({x: 15, y: details[2].reviews[0].rating});
-                ratings1.push({x: 16, y: details[2].reviews[1].rating});
+				ratings1.push({x: 15, y: parseInt(details[2].reviews[0].rating)});
+                ratings1.push({x: 16, y: parseInt(details[2].reviews[1].rating)});
 
-                ratings2.push({x: 15, y: details[1].reviews[0].rating});
+                ratings2.push({x: 15, y: parseInt(details[1].reviews[0].rating)});
+                ratings2.push({x: 16, y: 5});
+                ratings2.push({x: 17, y: 3.5});
 
 
-                console.log(details[1].reviews[0].rating);
+                //console.log("timestamp "+parseInt(details[2].reviews[0].timestamp));
+                //console.log("timestamp "+parseInt(details[2].reviews[0].timestamp));
+
+                console.log(details[2].reviews[0].timestamp);
+                var date = new Date(details[2].reviews[0].timestamp);
+                console.log(date);
+                console.log(date.getDate());
+
 
             	//Line chart data should be sent as an array of series objects.
             	$scope.data =  [
-            			/*
+            			
                 		{
-                    		values: ratings1,      //values - represents the array of {x,y} data points
-                    		key: 'Average Ratings', //key  - the name of the series.
+                    		values: ratings2,      //values - represents the array of {x,y} data points
+                    		key: 'Sine Wave', //key  - the name of the series.
                     		color: '#ff7f0e'  //color - optional: choose your own line color.
                 		},
-						*/
+						
                 		{
-                    		values: ratings,      //values - represents the array of {x,y} data points
-                    		key: 'Average Ratings', //key  - the name of the series.
-                    		color: '#2ca02c'  //color - optional: choose your own line color.
+                    		values: ratings1,
+                   			 key: 'Cosine Wave',
+                    		color: '#2ca02c'
                 		}
             		  ];
 
@@ -232,8 +325,7 @@ vm.pageClickData();
 
 
         findRatingsData();
-	
-	
+
 }
 
 app.controller('hostAnalyticsController',hostAnalyticsControllerFn);

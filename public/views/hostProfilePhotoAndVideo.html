@@ -27,16 +27,8 @@
      <li>
       <a  href="#/hostCardDetails"aria-selected="false" class="sidenav-item">Payment Methods</a>
     </li>
-    <li>
-      <a  aria-selected="false" class="sidenav-item">Rating</a>
-    </li>
-    <li>
-      <a href="#/hostReviews" aria-selected="false" class="sidenav-item">Reviews</a>
-    </li>
-    <li>
-      <a  aria-selected="false" class="sidenav-item">Trips History</a>
-    </li>
-    <li>
+     <li>
+      <a  href="#/hostRatingAndReviews" aria-selected="false" class="sidenav-item">Rating,Reviews and Trips History</a>
     </li>
   </ul>
 </div>
@@ -84,12 +76,12 @@
             </h4>
             <i class="icon icon-video icon-size-3"></i>
           </div>
-          <video width="350" height="350" ng-src="{{vm.host.video}}">
-          </video>
+          <iframe width="350" height="350" ng-src="{{vm.host.video}}">
+          </iframe>
         </div>
       </div>
       <div class="video-profile-tips col-lg-5">
-        <h3>Video Checklist</h3>
+        <h3>Video Checklist </h3>
         <ul id="video-checklist" class="checklist">
           <li>We love close-ups, but we suggest you sit at arm’s length.
           </li><li>You’ve got 30 seconds, so do your best to be concise.
@@ -97,7 +89,7 @@
           </li><li>Look into the camera to create that personal connection.
           </li><li>You’ll get a chance to preview your video before it uploads.
         </li></ul>
-       <button type="button" class="btn btn-primary" style="margin-left:5%" ng-click="vm.updateHostVideo()"> Update Video </button>
+       <button type="button" class="btn btn-primary" style="margin-left:5%" ng-click="vm.uploadVideos()"> Update Video </button>
       </div>
    
     </div>

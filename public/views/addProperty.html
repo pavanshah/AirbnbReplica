@@ -98,6 +98,7 @@
 				              id="administrative_area_level_1" ng-model="vm.property.address.state" required>
 				        <span class="invalidinput" ng-show="vm.requiredStateFlag">Required Field<br></span>
 				        <span class="invalidinput" ng-show="vm.invalidStateFlag">Text Input Only<br></span>
+				        <span class="invalidinput" ng-show="vm.invalidStateInputFlag">Invalid State<br></span>
 
 				       Zip code
 				        <input type = "text" class ="form-control" id="postal_code"
@@ -138,17 +139,17 @@
 				    	<span class="invalidinput" ng-show="vm.requiredHSurgeFlag">Required Field</span>
 				    	<span class="invalidinput" ng-show="vm.invalidHSurgeFlag">Must be between 1 to 3</span>
 
-				    	<h4> Discounts </h4>
+				    	<h4> Discounts (Enter between 0 and 100)</h4>
 				    	<label for="Weekly_Discount_Rate"> Weekly Booking Discount </label>
 				    	<input type="number" class="form-control" id="Weekly_Discount_Rate" ng-model="vm.weekly_discount" required>
 				    	<span class="invalidinput" ng-show="vm.requiredWeeklyDisc">Required Field</span>
-				    	<span class="invalidinput" ng-show="vm.invalidWDiscountFlag">Must be less than 1.0</span>
+				    	<span class="invalidinput" ng-show="vm.invalidWDiscountFlag">Discount must be less than 100%</span>
 				    	
 
 				    	<label for="Monthly_Discount_Rate"> Monthly Discount Rate </label>
 				    	<input type="number" class="form-control" id="Monthly_Discount_Rate" ng-model="vm.monthly_discount" required>
 				    	<span class="invalidinput" ng-show="vm.requiredMonthlyDisc">Required Field</span>
-				    	<span class="invalidinput" ng-show="vm.invalidMDiscountFlag">Must be less than 1.0</span>
+				    	<span class="invalidinput" ng-show="vm.invalidMDiscountFlag">Discount must be less than 100%</span>
 
 				    	</div>
 

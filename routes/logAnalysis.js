@@ -236,7 +236,7 @@ var userTracking = function(req, res)
 var propertyReviews = function(req, res)
 {
    var host = req.session.user.user_id;
-   // var host = req.body.analyze.host_id;
+   //var host = req.body.analyze.host_id;
 
     winston.add(winston.transports.File, { filename: 'public/LogFiles/PropertyReviewsAnalysis.json' });
     winston.remove(winston.transports.Console);
@@ -269,6 +269,13 @@ var propertyReviews = function(req, res)
                    // propArr.push([{ 'property_id' : parseInt(results.file[i].property_id), rating : results.file[i].rating, timestamp : results.file[i].timestamp}])
                 }
             }
+
+            console.log("timestamp "+results.file[0]);
+            console.log("timestamp "+results.file[0].timestamp);
+            var timestamp = new Date(results.file[0].timestamp);
+            console.log(timestamp);
+            console.log(timestamp.getDate());
+            console.log("timestamp "+results.file[0].timestamp.getDate);
 
            // console.log(propArr);
 
