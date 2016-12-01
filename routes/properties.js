@@ -640,6 +640,7 @@ var calculateBill = function (req,res)
 			console.log("Base Bill:"+base_bill+" Weekend surge :"+weekend_surge+" Weekly discount_amount: "+discount_amount+ " Final Bill :"+billAmount);
 
 		}
+		
 
 		var GeneratedBill = {
 
