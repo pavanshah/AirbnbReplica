@@ -1,7 +1,7 @@
 var app = angular.module('Airbnb');
 
 
-function AddPropertyControllerFn($state,$stateParams,$http) {
+function AddPropertyControllerFn($state,$stateParams,$http,$mdDialog) {
 	
 	var vm = this;
 	vm.property = {
@@ -260,6 +260,21 @@ function AddPropertyControllerFn($state,$stateParams,$http) {
 
 				$http.post('/CreateProperty',{"property":vm.property}).then(function(response){
 				console.log(response);
+				if(response.status == 200){
+					var confirm = $mdDialog.confirm()
+	                .title('Successfully Added the property!')
+	                .textContent("Lets go back to the home")
+	                .ariaLabel('Created!')
+	                
+	                .ok('Ok');
+	                
+	                $mdDialog.show(confirm).then(function() {
+	                   console.log("Do u think it ll work");
+	                   window.location.assign("#/hostHomePage");
+	                   }, function() {
+	                  	 console.log("it worked");
+	                });
+				}
 			})
 		}
 	}
