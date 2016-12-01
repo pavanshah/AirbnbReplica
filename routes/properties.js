@@ -675,7 +675,29 @@ var getAuctionableProperties = function (req,res) {
 
 	console.log(validListingDate);
 
-	Property.find({'ListingType':"auction","ListingDate":{"$gte":validListingDate}},function(err,properties){
+	msg_payload = {
+		"func" : "getAuctionableProperties",
+		"validListingDate" : validListingDate
+	}
+
+	mq_client.make_request("property_queue", msg_payload, function(err, response) {
+		if(err){
+			console.log(err);
+		}
+		console.log(response);
+
+		if(response.status==200){
+			res.status(200);
+			res.json(response.properties);
+		}
+		else
+			res.status(400).
+			json({"result":"Bad Request"});
+
+	});
+
+
+/*	Property.find({'ListingType':"auction","ListingDate":{"$gte":validListingDate}},function(err,properties){
 
 		if(!err){
 
@@ -688,7 +710,7 @@ var getAuctionableProperties = function (req,res) {
 		}
 
 
-	});
+	});*/
 }
 
 var placeBid= function(req,res) {
@@ -841,5 +863,3 @@ exports.bookProperty = bookProperty;
 exports.placeBid = placeBid;
 exports.getMaxBid = getMaxBid;
 exports.getUserBids = getUserBids;
-
-
