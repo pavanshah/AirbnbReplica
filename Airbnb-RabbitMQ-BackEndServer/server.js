@@ -336,10 +336,10 @@ cnn.on('ready', function(){
 				})
 				break;
 
-				case "getTrips":
-				trip.getTrips(message,function(err,res){
+				case "getReview":
+				review.getReview(message,function(err,res){
 
-					console.log("printing Trip response");
+					console.log("printing Review response");
 						console.log(res);
 						//return index sent
 							cnn.publish(m.replyTo, res, {
