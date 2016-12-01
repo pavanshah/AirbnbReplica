@@ -609,20 +609,22 @@ var calculateBill = function (req,res)
 
 
 		if(HolidaySeason==true){
+			console.log("calculating price with holiday");
 
 			base_bill = Math.round( (NumberOfDays * req.body.property.base_price) * 1e2 ) / 1e2  ;
-			holiday_surge = Math.round((base_bill * req.body.property.princing_catalog.seasonal_surge) *1e2) /1e2;
+			holiday_surge = Math.round((base_bill * (req.body.property.princing_catalog.seasonal_surge - 1)) *1e2) /1e2;
 			discount_amount = 0;
-			bill_amount = holiday_surge; 
+			bill_amount = base_bill+holiday_surge; 
 		}
 
 		else if(MonthlyDiscount==true)
 		{
+			console.log("calculating price without holiday with monthly discount");
 			base_bill = Math.round( (NumberOfDays * req.body.property.base_price) * 1e2)/1e2;
 
-			weekend_surge = Math.round((NumberofWeekends * req.body.property.base_price * (req.body.property.princing_catalog.weekend_surge -1 ))*1e2)/1e2;
+			weekend_surge = Math.round((NumberofWeekends * req.body.property.base_price * (req.body.property.princing_catalog.weekend_surge - 1 ))*1e2)/1e2;
 
-			discount_amount = ((base_bill + weekend_surge) *(req.body.property.princing_catalog.monthly_discount));
+			discount_amount = ((base_bill + weekend_surge) *(req.body.property.princing_catalog.monthly_discount/100));
 
 			bill_amount = Math.round( (base_bill + weekend_surge - discount_amount) *1e2)/1e2 ;
 
@@ -631,13 +633,27 @@ var calculateBill = function (req,res)
 		}
 
 		else if(WeeklyDiscount==true)
+
 		{
+			console.log("calculating price without holiday with weekly disccount");
 			base_bill = Math.round((NumberOfDays * req.body.property.base_price)*1e2)/1e2;
 			weekend_surge = Math.round((NumberofWeekends * req.body.property.base_price * (req.body.property.princing_catalog.weekend_surge -1 ))*1e2)/1e2;
-			discount_amount = Math.round(((base_bill + weekend_surge) *(req.body.property.princing_catalog.weekly_discount))*1e2)/1e2; 
-			console.log("discount amount:"+ discount_amount + "weekly surge:"+req.body.property.princing_catalog.weekly_discount);
-			bill_amount = Math.round((base_bill + weekend_surge) *1e2)/1e2;
+			discount_amount = Math.round(((base_bill + weekend_surge) *(req.body.property.princing_catalog.weekly_discount/100))*1e2)/1e2; 
+			console.log("discount amount:"+ discount_amount + "weekly surge:"+weekend_surge);
+			bill_amount = Math.round((base_bill + weekend_surge - discount_amount) *1e2)/1e2;
 			console.log("Base Bill:"+base_bill+" Weekend surge :"+weekend_surge+" Weekly discount_amount: "+discount_amount+ " Final Bill :"+billAmount);
+
+		}
+
+		else
+		{
+
+			console.log("No discounts, No holiday");
+
+			base_bill = Math.round((NumberOfDays * req.body.property.base_price)*1e2)/1e2;
+			weekend_surge = Math.round((NumberofWeekends * req.body.property.base_price * (req.body.property.princing_catalog.weekend_surge -1 ))*1e2)/1e2;
+			discount_amount = 0;
+			bill_amount = Math.round((base_bill + weekend_surge - discount_amount) *1e2)/1e2;
 
 		}
 
@@ -675,7 +691,29 @@ var getAuctionableProperties = function (req,res) {
 
 	console.log(validListingDate);
 
-	Property.find({'ListingType':"auction","ListingDate":{"$gte":validListingDate}},function(err,properties){
+	msg_payload = {
+		"func" : "getAuctionableProperties",
+		"validListingDate" : validListingDate
+	}
+
+	mq_client.make_request("property_queue", msg_payload, function(err, response) {
+		if(err){
+			console.log(err);
+		}
+		console.log(response);
+
+		if(response.status==200){
+			res.status(200);
+			res.json(response.properties);
+		}
+		else
+			res.status(400).
+			json({"result":"Bad Request"});
+
+	});
+
+
+/*	Property.find({'ListingType':"auction","ListingDate":{"$gte":validListingDate}},function(err,properties){
 
 		if(!err){
 
@@ -688,7 +726,7 @@ var getAuctionableProperties = function (req,res) {
 		}
 
 
-	});
+	});*/
 }
 
 var placeBid= function(req,res) {
@@ -841,5 +879,3 @@ exports.bookProperty = bookProperty;
 exports.placeBid = placeBid;
 exports.getMaxBid = getMaxBid;
 exports.getUserBids = getUserBids;
-
-

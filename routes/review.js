@@ -78,7 +78,26 @@ var UpdateAverageRating = function(req, res, newAvgRating)
 var GetReviews = function(req, res)
 {
 	//find all reviews
-	Users.findOne({"email":req.body.review.email},function(err,user){
+
+
+	msg_payload = {
+		"func" : "getReview",
+		"email" : req.body.review.email
+	}
+
+	mq_client.make_request("review_queue", msg_payload, function(err, response) {
+		if (!err) 
+		{
+			var json_response = {avgrating:response.user.avgrating, reviews : response.user.Reviews};
+			res.send(json_response);
+			
+		} else 
+		{
+			console.log(err);
+		}
+	});
+
+/*	Users.findOne({"email":req.body.review.email},function(err,user){
 		
 		if (user) 
 		{
@@ -89,7 +108,7 @@ var GetReviews = function(req, res)
 		{
 			console.log(err);
 		}
-	})
+	})*/
 }
 
 
