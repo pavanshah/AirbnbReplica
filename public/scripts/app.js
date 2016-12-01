@@ -187,6 +187,12 @@ app.config(function($stateProvider, $urlRouterProvider) {
 		controller:"ViewUserBidsController",
 		controllerAs:"vm"
 	})
+	.state('hostRatingAndReviews',{
+		url:"/hostRatingAndReviews",
+		templateUrl:"public/views/hostRatingAndReviews.html",
+		controller:"hostRatingAndReviews",
+		controllerAs:"vm"
+	})
 	 
 	//$location.path('/prelogin');
 	//html5mode(true);n

@@ -5,6 +5,7 @@ var Schema = mongoose.Schema;
 var Users = require('../Models/user');
 var Trips = require('../Models/trip');
 var newAvgRating = 1;
+var mq_client = require('../rpc/client');
 
 //var winston = require('winston');
 
@@ -13,6 +14,10 @@ var SubmitReviewAndRating = function(req, res)
 	console.log("inside submit review");
 	
 	//review and ratings inserted
+
+
+
+
 	Users.update({"email":req.body.review.email}, {$push : {Reviews : {ratings : req.body.review.Reviews.ratings, feedback : req.body.review.Reviews.feedback, user_id : req.session.user.emailId} } } , function(err, user){
 		//needs req.session.user.emailId for testing
 		
@@ -155,6 +160,27 @@ var submitReviewForTrip = function(req, res) {
 	var query = {"trip_id":req.body.trip_id};
 
 
+
+	msg_payload = {
+		"func":"submitReviewForTrip",
+		"trip_id":req.body.trip_id,
+		"ratings" : req.body.rate,
+		"feedback" : req.body.review,
+		"photo" : req.body.photo
+	}
+
+	mq_client.make_request("review_queue", msg_payload, function(err, response) {
+		if(err)
+		{
+			res.status(401).json({"result":"no user found"});
+		}
+		else
+		{
+			res.status(200).json({"result":"review submitted"});
+		}
+	});
+
+
 	//winston.remove(winston.transports.File);
 	//winston.add(winston.transports.File, { filename: 'public/LogFiles/AirbnbAnalysis.json' });
 	//winston.log('info', 'review button clicked', { page_name : 'review_page', user_email : req.session.user.emailId, city : req.session.user.address.city, state : req.session.user.address.state, country : req.session.user.address.country});
@@ -168,7 +194,7 @@ var submitReviewForTrip = function(req, res) {
 	//winston.add(winston.transports.File, { filename: 'public/LogFiles/PropertyReviewsAnalysis.json' });
 	//winston.log('info', 'review submitted', { rating : req.body.rate, property_id : req.body.property.property_id , host_id : req.body.host_id, user_email : req.session.user.emailId, city : req.session.user.address.city, state : req.session.user.address.state, country : req.session.user.address.country});
 
-	Trips.update(query, {$push : {Reviews : {ratings : req.body.rate, feedback : req.body.review, photo : req.body.photo}}}, function(err,response) {
+/*	Trips.update(query, {$push : {Reviews : {ratings : req.body.rate, feedback : req.body.review, photo : req.body.photo}}}, function(err,response) {
 		if(err)
 		{
 			res.status(401).json({"result":"no user found"});
@@ -177,7 +203,7 @@ var submitReviewForTrip = function(req, res) {
 		{
 			res.status(200).json({"result":"review submitted"});
 		}
-	});
+	});*/
 
 	//res.status(200).json({"result":"submitted"});
 }

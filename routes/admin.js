@@ -5,6 +5,7 @@ var mongoURL = "mongodb://apps92:shim123@ds155727.mlab.com:55727/airbnbproto";
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var Users = require('../Models/user');
+var Trips = require('../Models/trip');
 var Bills = require('../Models/bill');
 var mongodb = require('mongodb');
 var redis = require('redis');
@@ -22,7 +23,7 @@ var getBillDetailAdmin = function(req,res){
 		console.log("Redis query returned with value:");
 		console.log(reply);
 		
-		if (reply === 1 && getRedisStatus) {
+		if (reply === 1 && getRedisStatus()) {
 	        console.log('redis cache exists');
 	        client.hgetall('billdetail'+req.query.id, function(err, object) {
 	        	console.log("Returned object is ");
@@ -31,7 +32,7 @@ var getBillDetailAdmin = function(req,res){
 	            
 	            res
     			.status(200)
-    			.send({"result":JSON.parse(object.result)});
+    			.send({"result":JSON.parse(object.result),"start":object.start,"end":object.end});
 	        });
 	        
 	    } else {		    	
@@ -51,11 +52,37 @@ var getBillDetailAdmin = function(req,res){
 	    	var o_id = new mongodb.ObjectID(req.query.id);
 	
 			Bills.find({"_id":o_id},function(err,bill){
-				client.hmset('billdetail'+req.query.id, {"result":JSON.stringify(bill)});
+				console.log("test........");
+				console.log(bill[0].billing_id);
+				
+				Trips.find({"bill.billing_id":bill[0].billing_id},function(err,trip){
+					console.log("Got tripppppppppp");
+					console.log(trip);
+
+					var dateObjStart = new Date(trip[0].trip_start_date);
+					var dateObjEnd = new Date(trip[0].trip_end_date);
+					var monthStart = dateObjStart.getUTCMonth() + 1; //months from 1-12
+					var dayStart = dateObjStart.getUTCDate();
+					var yearStart = dateObjStart.getUTCFullYear();
+					var monthEnd = dateObjEnd.getUTCMonth() + 1; //months from 1-12
+					var dayEnd = dateObjEnd.getUTCDate();
+					var yearEnd = dateObjEnd.getUTCFullYear();
+					
+					client.hmset('billdetail'+req.query.id, {"result":JSON.stringify(bill),"start":monthStart+'/'+dayStart+'/'+yearStart,"end":monthEnd+'/'+dayEnd+'/'+yearEnd});
+	    	        client.expire('billdetail'+req.query.id, 300);
+					res
+					.status(200)
+					.send({"result":bill,"start":monthStart+'/'+dayStart+'/'+yearStart,"end":monthEnd+'/'+dayEnd+'/'+yearEnd});
+					
+				});
+					
+				
+				
+				/*client.hmset('billdetail'+req.query.id, {"result":JSON.stringify(bill)});
     	        client.expire('billdetail'+req.query.id, 300);
 				res
 				.status(200)
-				.send({"result":bill});			
+				.send({"result":bill});*/			
 			})
 	    	
 	    }
@@ -121,7 +148,7 @@ var getProfileForAdmin = function(req,res){
 		console.log("Redis query returned with value:");
 		console.log(reply);
 		
-		if (reply === 1 && getRedisStatus) {
+		if (reply === 1 && getRedisStatus()) {
 	        console.log('redis cache exists');
 	        client.hgetall('profile'+req.query.id, function(err, object) {
 	        	console.log("Returned object is ");
@@ -161,7 +188,7 @@ var getBillForAdmin = function(req,res){
 			console.log("Redis query returned with value:");
 			console.log(reply);
 			
-			if (reply === 1 && getRedisStatus) {
+			if (reply === 1 && getRedisStatus()) {
 		        console.log('redis cache exists');
 		        client.hgetall('billnew', function(err, object) {
 		        	console.log("Returned object is ");
@@ -260,7 +287,7 @@ var getHostsForAdmin = function(req,res){
 			console.log("Redis query returned with value:");
 			console.log(reply);
 			
-			if (reply === 1 && getRedisStatus) {
+			if (reply === 1 && getRedisStatus()) {
 		        console.log('redis cache exists');
 		        client.hgetall('hostnew', function(err, object) {
 		        	console.log("Returned object is ");
@@ -297,10 +324,13 @@ var getHostsForAdmin = function(req,res){
 		var searchObject = {};
 		
 		if(req.query.type != "" && req.query.address != ""){
-			searchObject = {"UserType":req.query.type,"address.city":req.query.address.toLowerCase()};
+			//searchObject = {"UserType":req.query.type,"address.city":req.query.address.toLowerCase()};
+			searchObject = {"UserType":req.query.type,"address.city":{ $regex : new RegExp(req.query.address, "i") }};
 		}
 		else if(req.query.address != ""){
-			searchObject = {"address.city":req.query.address.toLowerCase()}; 
+			//searchObject = {"address.city":req.query.address.toLowerCase()};
+			searchObject = {"address.city":{ $regex : new RegExp(req.query.address, "i") }};
+			
 		}
 		else if(req.query.type != ""){
 			searchObject = {"UserType":req.query.type}; 
@@ -315,7 +345,7 @@ var getHostsForAdmin = function(req,res){
 			console.log("Redis query returned with value:");
 			console.log(reply);
 			
-			if (reply === 1 && getRedisStatus) {
+			if (reply === 1 && getRedisStatus()) {
 		        console.log('redis cache exists');
 		        client.hgetall('hostquery'+JSON.stringify(searchObject), function(err, object) {
 		        	console.log("Returned object is ");
@@ -364,7 +394,7 @@ var getPropertyPerYear = function(req,res){
 		console.log("Redis query returned with value:");
 		console.log(reply);
 		
-		if (reply === 1 && getRedisStatus) {
+		if (reply === 1 && getRedisStatus()) {
 	        console.log('redis cache exists');
 	        client.hgetall('property'+req.query.year, function(err, object) {
 	        	console.log("Returned object is ");
@@ -448,20 +478,24 @@ var getMainDashboard = function(req,res){
 		console.log("Redis query returned with value:");
 		console.log(reply);
 		
-	    if (reply === 1 && getRedisStatus) {
-	        console.log('redis cache exists');
+	    if (reply === 1 && getRedisStatus()) {
+	        console.log('redis cache exists main');
 	        client.hgetall('mainDash', function(err, object) {
 	        	console.log("Returned object is ");
 	        	console.log(typeof object);
 	            console.log(object);
+	            console.log("------------");
+	            console.log({"result":JSON.parse(object.result),"barchart":JSON.parse(object.barchart),"linechart":JSON.parse(object.linechart),"userstatus":JSON.parse(object.userstatus),"userstype":JSON.parse(object.userstype)});
 	            
 	            res
     			.status(200)
-    			.send({"result":JSON.parse(object.result),"barchart":JSON.parse(object.barchart),"linechart":JSON.parse(object.linechart)});
+    			.send({"result":JSON.parse(object.result),"barchart":JSON.parse(object.barchart),"linechart":JSON.parse(object.linechart),"userstatus":JSON.parse(object.userstatus),"userstype":JSON.parse(object.userstype)});
 	        });
 	        
 	    } else {
-	        console.log('redis doesn\'t exist');
+	        console.log('redis doesn\'t exist main');
+	        
+	        
 	        
 	        mysqlPool.getConnection(function(err, connection) {
 	    		sql = "select host_name,sum(total_cost) cost from billinglogs group by host_name order by cost desc limit 10";
@@ -515,18 +549,90 @@ var getMainDashboard = function(req,res){
 	                        		}
 	                        }
 	                        
-	                        for(var k=0;k<lineOutput.length;k++){
+	                        /*for(var k=0;k<lineOutput.length;k++){
 	                        	console.log(lineOutput[k].key);
 	                        	console.log(lineOutput[k].values);
-	                        }
+	                        }*/
+	                        
+	                        Users.aggregate([{$group: {_id: '$user_status',count: {$sum: 1}}}], function (err, status) {
+	                                       if (err) {
+	                                    	   console.log("User host................failed.........");
+	                                    	   return;
+	                                       } else {
+	                                           //success case
+	                                    	   
+	                                    	console.log("User host................");
+	                                    	console.log(status);
+	                                    	   
+	                                    	var userstatus = [];
+	                                    	
+	                                    	for(var i=0;i<status.length;i++){
+	                                    		if(status[i]._id == "inactive"){
+	                                    			userstatus.push({'key':"Pending",'y':status[i].count});
+	                                    		}
+	                                    		else if(status[i]._id == "active"){
+	                                    			userstatus.push({'key':"Approved",'y':status[i].count});
+	                                    		}
+	                                    	}
+	                                    	
+	                                    	console.log(userstatus);
+	                                    	Users.aggregate([{$group: {_id: '$UserType',count: {$sum: 1}}}], function (err, usertype) {
+	 	                                       if (err) {
+	 	                                    	   console.log("User type................failed.........");
+	 	                                    	   return;
+	 	                                       } else {
+	 	                                    	  console.log("User type................");
+	 	                                    	   console.log(usertype);
+	 	                                    
+	 	                                    	 /* [
+	 	                      	                {
+	 	                      	                    key: "Users",
+	 	                      	                    y: 100
+	 	                      	                },
+	 	                      	                {
+	 	                      	                    key: "Hosts",
+	 	                      	                    y: 26
+	 	                      	                }
+	 	                      	                ]*/
+	 	                                    	  var usertypeval = [];
+	 		                                    	
+	 		                                    	for(var i=0;i<usertype.length;i++){
+	 		                                    		if(usertype[i]._id == "User"){
+	 		                                    			usertypeval.push({'key':"Users",'y':usertype[i].count});
+	 		                                    		}
+	 		                                    		else if(usertype[i]._id == "Host"){
+	 		                                    			usertypeval.push({'key':"Hosts",'y':usertype[i].count});
+	 		                                    		}
+	 		                                    	}
+	 		                                    	
+	 		                                    	//console.log(usertypeval);
+	 	                                    	  client.hmset('mainDash', {"result":JSON.stringify(resultData),"barchart":JSON.stringify(barResultOutput),"linechart":JSON.stringify(lineOutput),"userstatus":JSON.stringify(userstatus),"userstype":JSON.stringify(usertypeval)});
+	 		               	            	        client.expire('mainDash', 300);
+	 		               	                        
+	 		               	            	        console.log("+++++++++++++++++++++++++++++");
+	 		               	            	        console.log({"result":resultData,"barchart":barResultOutput,"linechart":lineOutput,"userstatus":userstatus,"userstype":usertypeval});
+	 		               	                        res
+	 		               	            			.status(200)
+	 		               	            			.send({"result":resultData,"barchart":barResultOutput,"linechart":lineOutput,"userstatus":userstatus,"userstype":usertypeval});
+	 	                                    	   
+	 	                                       }});
+	 	                        
+	                                    	
+	                                    	
+	                                    	
+	                                    	   
+	                                       }
+	                                   });
 	                        
 	                        //console.log(lineOutput);
-	                        client.hmset('mainDash', {"result":JSON.stringify(resultData),"barchart":JSON.stringify(barResultOutput),"linechart":JSON.stringify(lineOutput)});
+	                        //new changes
+	                        /*client.hmset('mainDash', {"result":JSON.stringify(resultData),"barchart":JSON.stringify(barResultOutput),"linechart":JSON.stringify(lineOutput)});
 	            	        client.expire('mainDash', 300);
 	                        
 	                        res
 	            			.status(200)
-	            			.send({"result":resultData,"barchart":barResultOutput,"linechart":lineOutput});
+	            			.send({"result":resultData,"barchart":barResultOutput,"linechart":lineOutput});*/
+	                      //new changes
 	                    });
 	                    
 	                	

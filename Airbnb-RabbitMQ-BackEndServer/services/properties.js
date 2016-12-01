@@ -145,7 +145,7 @@ function BookProperty(msg,callback){
 }
 
 function SearchPropertyById(msg,callback){
-
+console.log("inside SearchPropertyById rabbitMQ"+msg);
 	Property.findOne({"property_id":msg.property_id},function(err,property){
 		
 		if(!err){

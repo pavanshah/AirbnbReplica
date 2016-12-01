@@ -26,7 +26,10 @@ var clicksPerPage = function(req, res)
     if (err) {
       throw err;
     }
- 
+
+    //winston.info("yo yo");
+    console.log("results "+results);
+
     for(var i = 0 ; i < results.file.length ; i++)
     {
         console.log(results.file[i].page_name);
@@ -76,15 +79,23 @@ var clicksPerPage = function(req, res)
         }
     }
 
+    
     var resultObj = {"login_page" : login_page_count , "logout_page" : logout_page_count, 
                     "property_page" : property_page_count, "propertydescription_page" : propertydescription_page_count,
                     "signup_page" : signup_page_count, "trip_page" : trip_page_count, "host_page" : host_page_count,
                     "editprofile_page" : editprofile_page_count, "bill_page" : bill_page_count
                     };
+    
+   // var resultObj = [];
+                    
+   // resultObj.push([{"label" : "login_page" , "value" : login_page_count}, {"label" : "logout_page" , "value" : logout_page_count}]);    
 
-    res.json({"clicksPerPage ":resultObj});
+    console.log(resultObj);
+    res.send(resultObj);
+
   });
 
+    winston.remove(winston.transports.File);
     winston.add(winston.transports.Console);
 }
 
@@ -92,7 +103,8 @@ var clicksPerPage = function(req, res)
 
 var propertyClick = function(req, res)
 {
-    var host = req.body.analyze.host_id;
+    var host = req.session.user.user_id;
+    console.log("host "+host);
 
     winston.add(winston.transports.File, { filename: 'public/LogFiles/PropertyClickAnalysis.json' });
     winston.remove(winston.transports.Console);
@@ -127,7 +139,7 @@ var propertyClick = function(req, res)
     console.log(properties);
 
     var query = Property.find({});
-    query.where('host_id', req.body.analyze.host_id);
+    query.where('host_id', host);
     var array = [];
 
     query.exec(function(err, user){
@@ -147,12 +159,13 @@ var propertyClick = function(req, res)
                     }
                 }
 
-                array.push([user[i].property_id, countProp]);
+                array.push([{"property_id" : user[i].property_id, "count" : countProp}]);
+               // resultObj.push([{"label" : "login_page" , "value" : login_page_count}
             }
 
             console.log("final array "+array);
 
-            res.json({"clicksPerProperty ":array});
+            res.send(array);
 
         }
         else
@@ -162,6 +175,9 @@ var propertyClick = function(req, res)
     });
 
    });
+
+    winston.remove(winston.transports.File);
+    winston.add(winston.transports.Console);
 }
 
 
@@ -169,7 +185,7 @@ var userTracking = function(req, res)
 {
     var finalArray = [];
 
-    winston.add(winston.transports.File, { filename: 'public/LogFiles/UserTracking.json' });
+    winston.add(winston.transports.File, { filename: 'public/LogFiles/UserTracking.json'});
     winston.remove(winston.transports.Console);
 
     var oldDate = new Date();
@@ -213,12 +229,14 @@ var userTracking = function(req, res)
 
         });
 
+        winston.remove(winston.transports.File);
         winston.add(winston.transports.Console);
 }
 
 var propertyReviews = function(req, res)
 {
-    var host = req.body.analyze.host_id;
+   var host = req.session.user.user_id;
+   // var host = req.body.analyze.host_id;
 
     winston.add(winston.transports.File, { filename: 'public/LogFiles/PropertyReviewsAnalysis.json' });
     winston.remove(winston.transports.Console);
@@ -255,7 +273,7 @@ var propertyReviews = function(req, res)
            // console.log(propArr);
 
             var query = Property.find({});
-            query.where('host_id', req.body.analyze.host_id);
+            query.where('host_id', host);
             var userArr = [];
             var finalJSON = [];
             var reviewArray = [];
@@ -279,19 +297,19 @@ var propertyReviews = function(req, res)
                             //console.log("prop "+propArr[j].property_id);
                             if(userArr[i] == propArr[j].property_id)
                             {
-                                reviewArray.push(propArr[j].rating, propArr[j].timestamp);
+                                reviewArray.push({"rating" : propArr[j].rating, "timestamp" : propArr[j].timestamp});
                           //      console.log("reviewArray "+reviewArray);
                             }
 
                         }
 
                         //console.log("end of "+userArr[i]+ " reviews array "+reviewArray);
-                        finalJSON.push([{'property_id' : userArr[i], "reviews" : reviewArray}]);
+                        finalJSON.push({"property_id" : userArr[i], "reviews" : reviewArray});
                         reviewArray = [];
                        // console.log("after pushing "+finalJSON);
                     }
 
-                    res.json(finalJSON);
+                    res.send(finalJSON);
 
                 }
                 else
@@ -315,6 +333,7 @@ var propertyReviews = function(req, res)
             
         });
     
+        winston.remove(winston.transports.File);
         winston.add(winston.transports.Console);
 }
 

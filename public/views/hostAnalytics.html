@@ -1,18 +1,32 @@
 <br>
 <br>
 <br>
+		
+	<div class="row card">
+		<div class="col-md-12"> 
+			<nvd3 
+				options="vm.pageClickOptions"
+      			data="vm.clickData"
+      			config="vm.config">
+    		</nvd3>
+			<div class="text-center fontchange">Page Clicks(For Last 10 Days)</div>
+		</div>	
+	</div>	
+	
+
+	
 
 	<div class="row card">
-		<div class="col-md-6"> 
+		<div class="col-md-4"> 
 			<nvd3 
-				options="barOptions"
-      			data="barData"
+				options="vm.propertyClickOptions"
+      			data="vm.propertyData"
       			config="vm.config">
     		</nvd3>
 			<div class="text-center fontchange">Property Clicks Per Date(For Last 10 Days)</div>
 		</div>	
 
-		<div class="col-md-6"> 
+		<div class="col-md-8"> 
 			<nvd3 
 				options="options"
       			data="data"
