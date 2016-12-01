@@ -180,9 +180,27 @@ var getAuctionableProperties = function(msg, callback) {
 
 }
 
+var getMaxBid = function(msg, callback) {
+	
+
+
+	Property.findOne({"property_id":msg.property_id},function(err, property) {
+		if(!err){
+
+			callback(null,{"status":200,"property":property});			
+			}
+		else
+		{
+			console.log(err);
+			callback(null,{"status":400,"result":"Bad Request"});			
+		}
+	})
+}
+
 exports.createProperty = createProperty;
 exports.SearchPropertyByDistance = SearchPropertyByDistance;
 exports.UpdateProperty = UpdateProperty;
 exports.BookProperty = BookProperty;
 exports.SearchPropertyById = SearchPropertyById;
 exports.getAuctionableProperties = getAuctionableProperties;
+exports.getMaxBid = getMaxBid;

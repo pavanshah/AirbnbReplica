@@ -746,6 +746,28 @@ var placeBid= function(req,res) {
 	}
 	var newBid = Bid(BidObj);
 
+/*	msg_payload = {
+		"func" : "placeBid",
+		"BidObj" : BidObj
+	}
+
+	mq_client.make_request("property_queue", msg_payload, function (err, response) {
+		if(err){
+			res.status(500);
+	   		res.json(err);
+		}
+		console.log(response);
+
+		if(response.status==200){
+			res.status(200);
+			res.json(response.properties);
+		}
+		else
+			res.status(400).
+			json({"result":"Bad Request"});
+	});*/
+
+
 	Bid.update(
 	   { "property_id": req.body.property.property_id, "bid_status":"active" },
 	   { $set:
@@ -794,7 +816,37 @@ var getMaxBid = function(req,res) {
 	
 	var property_id = req.body.property_id;
 
-	Property.findOne({"property_id":req.body.property_id},function(err,property){
+
+	msg_payload = {
+		"func" : "getMaxBid",
+		"property_id" : req.body.property_id
+	}
+
+	mq_client.make_request("property_queue", msg_payload, function (err, response) {
+		if(err){
+			console.log(err);
+			res.status(400);
+			res.json({"response":"Bad Request"});
+		}
+		console.log(response);
+
+		if(response.status==200){
+
+			var maxBid = _.max(response.property.bids, function(bid){ return bid.bid_value; });
+			console.log("bid_value",maxBid);
+			res.status(200);
+			res.json(maxBid);
+
+			/*res.status(200);
+			res.json(response.properties);*/
+		}
+		else
+			res.status(400).
+			json({"result":"Bad Request"});
+	});
+
+
+/*	Property.findOne({"property_id":req.body.property_id},function(err,property){
 		//console.log("err",err);
 		//console.log("property",property);
 		if(!err){
@@ -812,7 +864,7 @@ var getMaxBid = function(req,res) {
 			
 		}
 
-	});
+	});*/
 }
 
 
