@@ -268,7 +268,7 @@ cnn.on('ready', function(){
 				break;
 
 				case "getUserBids":
-					property.getMaxBid (message,function(err,res){
+					property.getUserBids (message,function(err,res){
 
 						console.log("printing response");
 						console.log(res);
