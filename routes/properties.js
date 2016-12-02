@@ -904,7 +904,37 @@ var job = new CronJob('* */59 * * * *', function() {
 var getUserBids = function(req,res) {
 	/*console.log(req.session.user.email);
 	console.log(req.session.user);*/
-	Bid.find({"user.emailId":req.session.user.emailId},function(err,result) {
+
+
+	msg_payload = {
+		"func" : "getUserBids",
+		"emailId" : req.session.user.emailId
+	}
+
+	mq_client.make_request("property_queue", msg_payload, function (err, response) {
+		if(err){
+			console.log(err);
+			res.status(400);
+			res.json({"response":"Bad Request"});
+		}
+		console.log(response);
+
+		if(response.status==200){
+
+			res.status(200);
+			res.json(response.result);
+
+			/*res.status(200);
+			res.json(response.properties);*/
+		}
+		else
+			res.status(400).
+			json({"result":"Bad Request"});
+	});
+
+
+
+	/*Bid.find({"user.emailId":req.session.user.emailId},function(err,result) {
 		if(err){
 			res.status(500);
 			res.json(err);
@@ -912,7 +942,7 @@ var getUserBids = function(req,res) {
 		else{
 			res.json(result);
 		}
-	})
+	})*/
 }
 
 //var intervalID = setInterval(function(){console.log("Interval reached");}, 5000);
