@@ -7,6 +7,7 @@ var Users = require('./Models/user');
 var moment = require('moment');
 var daterange = require('daterange');
 var _ = require('underscore');
+var Bid = require('./Models/bid');
 
 function filter(properties,start_date,end_date) {
     //var userProvidedRange = daterange.create(new Date(2017,3,2),new Date(2017,3,11));
@@ -180,9 +181,44 @@ var getAuctionableProperties = function(msg, callback) {
 
 }
 
+var getMaxBid = function(msg, callback) {
+	
+
+
+	Property.findOne({"property_id":msg.property_id},function(err, property) {
+		if(!err){
+
+			callback(null,{"status":200,"property":property});			
+			}
+		else
+		{
+			console.log(err);
+			callback(null,{"status":400,"result":"Bad Request"});			
+		}
+	})
+}
+
+var getUserBids = function(msg, callback) {
+	
+
+	Bid.find({"user.emailId":msg.emailId}, function(err, result) {
+		if(!err){
+
+			callback(null,{"status":200,"result":result});			
+			}
+		else
+		{
+			console.log(err);
+			callback(null,{"status":400,"result":"Bad Request"});			
+		}
+	});
+}
+
 exports.createProperty = createProperty;
 exports.SearchPropertyByDistance = SearchPropertyByDistance;
 exports.UpdateProperty = UpdateProperty;
 exports.BookProperty = BookProperty;
 exports.SearchPropertyById = SearchPropertyById;
 exports.getAuctionableProperties = getAuctionableProperties;
+exports.getMaxBid = getMaxBid;
+exports.getUserBids = getUserBids;
