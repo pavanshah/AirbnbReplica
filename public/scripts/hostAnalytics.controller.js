@@ -8,7 +8,7 @@ function hostAnalyticsControllerFn($state,$scope,$http) {
 	vm.donutOptions = {
 	            chart: {
 	                type: 'pieChart',
-	                height: 300,
+	                height: 400,
 	                donut: true,
 	                x: function(d){return d.key;},
 	                y: function(d){return d.y;},
@@ -18,9 +18,9 @@ function hostAnalyticsControllerFn($state,$scope,$http) {
 	                duration: 100,
 	                legend: {
 	                    margin: {
-	                        top: 5,
-	                        right: 140,
-	                        bottom: 5,
+	                        top: 0,
+	                        right: 0,
+	                        bottom: 0,
 	                        left: 0
 	                    }
 	                }
@@ -28,44 +28,33 @@ function hostAnalyticsControllerFn($state,$scope,$http) {
 	        };
 
 
-	 vm.donutData = function(){
-	 	/*
+	 vm.donutDataFunction = function(){
+	 	
 	 	$http({
 			method : "POST",
 			url : '/clicksPerPage'
 		}).success(function(details) {
 			//console.log(details);
 
-				vm.donutData = [{
+				vm.donutData = [
 	    		
 				        { key : "Login Page" , y : details.login_page },
 				        { key : "Logout Page" , y : details.logout_page },
 				        { key : "Bill Page" , y : details.bill_page },
-				        { key : "Edit Profile Page" , y : details.editprofile_page },
-				        { key : "Become A Host Page" , y: details.host_page},
-				        { key : "Search Property Page" , y : details.property_page },
-				        { key : "Property Details Page" , "value" : details.propertydescription_page },
+				        { key : "Profile Page" , y : details.editprofile_page },
+				        { key : "Host Page" , y: details.host_page},
+				        { key : "Search Property" , y : details.property_page },
+				        { key : "Property Details" , "value" : details.propertydescription_page },
 				        { key : "Signup Page" , "value" : details.signup_page },
-				        { key : "Trip Details Page" , "value" : details.trip_page }
+				        { key : "Trip Page" , "value" : details.trip_page }
 
-	    			}]
+	    			];
 	    });
-		*/
 
 	 }
-	 
-	 vm.donutData = [
-	                {
-	                    key: "Users",
-	                    y: 100
-	                },
-	                {
-	                    key: "Hosts",
-	                    y: 26
-	                }
-	                ];
 
 
+	  vm.donutDataFunction();
 
 	//Page clicks for last 10 days
 	vm.pageClickOptions = {
@@ -74,9 +63,9 @@ function hostAnalyticsControllerFn($state,$scope,$http) {
 		        height: 400,
 		        margin : {
 		            top: 20,
-		            right: 20,
+		            right: 0,
 		            bottom: 60,
-		            left: 55
+		            left: 0
 		        },
 		        x: function(d){ return d.label; },
 		        y: function(d){ return d.value; },
@@ -110,12 +99,12 @@ function hostAnalyticsControllerFn($state,$scope,$http) {
 				        { "label" : "Login Page" , "value" : details.login_page },
 				        { "label" : "Logout Page" , "value" : details.logout_page },
 				        { "label" : "Bill Page" , "value" : details.bill_page },
-				        { "label" : "Edit Profile Page" , "value" : details.editprofile_page },
-				        { "label" : "Become A Host Page" , "value" : details.host_page},
-				        { "label" : "Search Property Page" , "value" : details.property_page },
-				        { "label" : "Property Details Page" , "value" : details.propertydescription_page },
+				        { "label" : "Profile Page" , "value" : details.editprofile_page },
+				        { "label" : "Host Page" , "value" : details.host_page},
+				        { "label" : "Search Property" , "value" : details.property_page },
+				        { "label" : "Property Details" , "value" : details.propertydescription_page },
 				        { "label" : "Signup Page" , "value" : details.signup_page },
-				        { "label" : "Trip Details Page" , "value" : details.trip_page }
+				        { "label" : "Trip Page" , "value" : details.trip_page }
 				        ]
 
 	    			}]
@@ -237,45 +226,46 @@ vm.pageClickData();
 			url : '/propertyReviews'
 			}).success(function(details) {
 
+			console.log(details);
+			var maxReviews;
 
+			for(var i = 0 ; i < details.length ; i++)
+			{
+				console.log("review length "+details[i].reviews.length);
 
-				/*
-				var array = [];
-				var array1 = [];
-
-				console.log(details.length);
-
-			
-				for(var i = 0 ; i < details.length ; i++)
+				if(details.length == 1)
 				{
-					for(var j = 0 ; j < details[i].reviews.length ; j++)
-					{
-						array.push({x: details[i].reviews[j].timestamp, y: parseInt(details[i].reviews[j].rating)});
-					}
-
-					array1.push({values : array, key : details[i].property_id, color : '#ff7f0e'});
-					//array = [];
+					maxReviews = i;
 				}
 
+				else if(i < (details.length-1))
+				{
+					if(details[i].reviews.length < details[i+1].reviews.length)
+					{
+						maxReviews = i+1;
+						console.log("max size "+maxReviews);
+					}
+				}
+			}
 
-				console.log(array1);
-				*/
 
+			var displayObj = details[maxReviews];
+			var avg;
 
+			
+			var displayArray = [];
 
-				/*
-				console.log("details "+details);
-				console.log("details[0] "+details[2]);
-				console.log("details[0] "+details[2].reviews);
-				console.log("details[0] "+details[2].property_id);
-				console.log("details[0] "+details[2].reviews[0].rating);
-				console.log("details[0] "+details[2].reviews[0].timestamp);
-				console.log("details[0] "+details[2].reviews[1].rating);
-				console.log("details[0] "+details[2].reviews[1].timestamp);
-				*/
+			for(var i = 0 ; i < displayObj.reviews.length ; i++)
+			{
+				var date = new Date(displayObj.reviews[i].timestamp);
+				displayArray.push({x : i , y : displayObj.reviews[i].rating});
+				console.log(date);
+				console.log(displayObj.reviews[i].rating);
+			}
+			
+			//console.log("displayArray "+displayArray);
 
-						var sin = [],sin2 = [],
-		                cos = [];
+			var sin = [],sin2 = [], cos = [];
 
 		            //Data is represented as an array of {x,y} pairs.
 		            for (var i = 0; i < 100; i++) {
@@ -284,38 +274,17 @@ vm.pageClickData();
 		                cos.push({x: i, y: .5 * Math.cos(i/10+ 2) + Math.random() / 10});
 		            }
 
-				var ratings1 = [];
-				var ratings2 = [];
-
-				ratings1.push({x: 15, y: parseInt(details[2].reviews[0].rating)});
-                ratings1.push({x: 16, y: parseInt(details[2].reviews[1].rating)});
-
-                ratings2.push({x: 15, y: parseInt(details[1].reviews[0].rating)});
-                ratings2.push({x: 16, y: 5});
-                ratings2.push({x: 17, y: 3.5});
-
-
-                //console.log("timestamp "+parseInt(details[2].reviews[0].timestamp));
-                //console.log("timestamp "+parseInt(details[2].reviews[0].timestamp));
-
-                console.log(details[2].reviews[0].timestamp);
-                var date = new Date(details[2].reviews[0].timestamp);
-                console.log(date);
-                console.log(date.getDate());
-
-
-            	//Line chart data should be sent as an array of series objects.
             	$scope.data =  [
-            			
+            			/*
                 		{
-                    		values: ratings2,      //values - represents the array of {x,y} data points
+                    		values: sin,      //values - represents the array of {x,y} data points
                     		key: 'Sine Wave', //key  - the name of the series.
                     		color: '#ff7f0e'  //color - optional: choose your own line color.
                 		},
-						
+						*/
                 		{
-                    		values: ratings1,
-                   			 key: 'Cosine Wave',
+                    		values: displayArray,
+                   			 key: displayObj.property_id,
                     		color: '#2ca02c'
                 		}
             		  ];
