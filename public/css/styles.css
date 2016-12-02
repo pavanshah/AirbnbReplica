@@ -1406,6 +1406,13 @@ input.check-in-box:-ms-input-placeholder { /* Internet Explorer 10-11 */
 	color : red;
 }
 
+.invalidboldinput {
+    color : red;
+    font-size: 120%;
+    font-weight: bold;
+    margin: 10px 0px 0px 10px;
+}
+
 .header-list-right-payment
 {
    display: inline;
