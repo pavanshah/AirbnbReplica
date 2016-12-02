@@ -404,7 +404,20 @@ cnn.on('ready', function(){
 							});
 				})
 				break;
+				
+				case "hostReviewSubmit":
+					review.submitHostReview(message,function(err,res){
 
+						console.log("hostReviewSubmit Review response");
+							console.log(res);
+							//return index sent
+								cnn.publish(m.replyTo, res, {
+									contentType:'application/json',
+									contentEncoding:'utf-8',
+									correlationId:m.correlationId
+								});
+					})
+					break;
 			}
 	});
 

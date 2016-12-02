@@ -90,6 +90,7 @@ var TripControllerFn = function ($http,$state,tripsService) {
 	var getTrips = function(){
 		tripsService.getTrips().
 		then(function (response) {
+			console.log("this is the response");
 			console.log(response);
 
 
