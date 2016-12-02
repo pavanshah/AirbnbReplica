@@ -172,7 +172,29 @@ var getRatingsForTrip = function(data,callback) {
 		}
 	});
 }
+var hostReviewSubmit = function(req, res) {
+	console.log("review submit"+req.body);
+	var query = {"trip_id":req.body.trip_id};
+	msg_payload = {
+		"func":	"hostReviewSubmit",
+		"trip_id":req.body.trip_id,
+		"ratings" : req.body.rate,
+		"feedback" : req.body.review,
+		"photo" : req.body.photo
+	}
 
+	mq_client.make_request("review_queue", msg_payload, function(err, response) {
+		if(err)
+		{
+			res.status(401).json({"result":"no user found"});
+		}
+		else
+		{
+			res.status(200).json({"result":"review submitted"});
+		}
+	});
+	
+}
 var submitReviewForTrip = function(req, res) {
 	console.log("review submit"+req.body);
 
@@ -232,3 +254,4 @@ exports.SubmitReviewAndRating = SubmitReviewAndRating;
 exports.GetReviews = GetReviews;
 exports.getRatingsForTrip = getRatingsForTrip;
 exports.submitReviewForTrip = submitReviewForTrip;
+exports.hostReviewSubmit = hostReviewSubmit;

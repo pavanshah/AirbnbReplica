@@ -34,11 +34,11 @@ function authenticate(msg,callback){
 
 
 function getHostTrip(msg,callback){
-	console.log("get host trip");
-	console.log(msg);
+//	console.log("get host trip");
+//	console.log(msg);
 	  Trip.find({"host_id":msg.user_id},function(err,trip){
 	    console.log("found");
-	    console.log(trip);
+	   // console.log(trip);
 	    if(!err){
 	         
 	    	callback(null,{"status":200,"trip":trip});

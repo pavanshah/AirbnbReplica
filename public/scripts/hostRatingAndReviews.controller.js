@@ -31,7 +31,7 @@ var HostRatingAndReviewsFn = function ($http,$state,$scope,tripsService) {
 		            response.review = "";
 		            response.reviewDiv = 0;
 		            console.log(response);
-		            if( typeof response.HostReviews != 'undefined')
+		            if(response.HostReviews.length > 0)
 					{
 		            	console.log("Review exists"+response.Reviews);
 	              		response.rating = 1;
@@ -76,6 +76,29 @@ var HostRatingAndReviewsFn = function ($http,$state,$scope,tripsService) {
 		var temp = vm.trips[tripId];
 		vm.trips[tripId].reviewDiv = 1;
 		
+	}
+	vm.uploadPic = function(tripId){
+  		console.log("in photo upload");
+
+		filepicker.pick(
+		  {
+		    mimetype: 'image/*',
+		    container: 'modal',
+		    services: ['COMPUTER', 'FACEBOOK', 'INSTAGRAM', 'GOOGLE_DRIVE', 'DROPBOX']
+		  },
+		  function(Blob){
+		    console.log(JSON.stringify(Blob.url));
+		    //vm.user.profilepic=Blob.url;
+		    vm.trips[tripId].photo = Blob.url;
+		    console.log(vm.trips[tripId].photo);
+		    //vm.trips[tripId].uploadButton = true;
+
+		    //vm.UpdateProfile();
+		  },
+		  function(FPError){
+		    console.log(FPError.toString());
+		  });
+
 	}
 	vm.submitReview = function(tripId) {
 		console.log(vm.trips[tripId]);
