@@ -24,6 +24,12 @@ var Trip = new Schema({
 		ratings : Number, 
 		feedback : String,
 		photo : String
-	}]		 
+	}],	
+	
+	HostReviews : [{
+		ratings : Number, 
+		feedback : String,
+		photo : String
+	}]	
 });
 module.exports = mongoose.model("Trip",Trip);

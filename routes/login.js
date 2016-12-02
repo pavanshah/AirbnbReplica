@@ -146,9 +146,10 @@ var getHostTrips = function(req,res,next){
 
  				if(response.status==200)
  				{
- 					res
-			 	 	.status(200)
-			 	 	.send({"trip":response.trip});
+ 					console.log("inside get host trips backend");
+ 					console.log(response.trip);
+ 					res.status(200).
+ 					json(response.trip);
 
  				}
  				else

@@ -31,6 +31,8 @@ function authenticate(msg,callback){
 	});
 }
 
+
+
 function getHostTrip(msg,callback){
 	console.log("get host trip");
 	console.log(msg);
