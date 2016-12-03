@@ -22,93 +22,114 @@
 				</div>
 			</div>
 			<div class="hero-search-container">
-				<form name="checkInForm">
-				<div class="col-lg-10 col-md-10 col-sm-10 col-xs-11 no-padding">
-					<div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 no-padding common-div">
-						<!-- Open modal on input click for mobile resolution -->
-						<input type="text" class="source-input white-bg" g-places-autocomplete ng-model="vm.travelLocation" placeholder="Where to?">
-					</div>
-					<div class="col-lg-5 col-md-5 col-sm-5 hidden-xs no-padding common-div check-in-out-sec white-bg">
-						<span ng-class="{'focused-on':vm.checkInDatePopUp.opened}" class="in-out-btn" ng-click="vm.openCheckinDate()">
-						<input type="text" name="location" class="form-control check-in-box" uib-datepicker-popup="{{vm.format}}" ng-model="vm.checkInDate" is-open="vm.checkInDatePopUp.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" alt-input-formats="altInputFormats" datepicker-append-to-body="true" placeholder="Check In"/>
-					         
-						</span>
-						<span class="glyphicon glyphicon-arrow-right pad-top-5"></span>
-						<span class="in-out-btn pad-top-5" ng-class="{'focused-on':vm.checkOutDatePopUp.opened}" class="in-out-btn" ng-click="vm.openCheckOutDate()">
-						<input type="text"  class="form-control check-in-box" uib-datepicker-popup="{{vm.format}}" ng-model="vm.checkOutDate" is-open="vm.checkOutDatePopUp.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" alt-input-formats="altInputFormats" datepicker-append-to-body="true" placeholder="Check Out"/>
-						</span>
-						<span class="remove-date">
-							<svg viewBox="0 0 12 12" data-reactid=".3.0.0.0.1.0.0.0.3.1"><path d="M11.53.47a.75.75 0 0 0-1.061 0l-4.47 4.47L1.529.47A.75.75 0 1 0 .468 1.531l4.47 4.47-4.47 4.47a.75.75 0 1 0 1.061 1.061l4.47-4.47 4.47 4.47a.75.75 0 1 0 1.061-1.061l-4.47-4.47 4.47-4.47a.75.75 0 0 0 0-1.061z" data-reactid=".3.0.0.0.1.0.0.0.3.1.0"></path></svg>
-						</span>
-					</div>
-					<div class="col-lg-3 col-md-3 col-sm-3 hidden-xs no-padding common-div  no-of-guest ">
-						
-                                    <select ng-model="vm.qty" >
-                                        <option selected="" value="1">1 Room</option>
-                                        <option value="2" >2 Rooms</option>
-                                        <option value="3" >3 Rooms</option>
-                                        <option value="4" >4 Rooms</option>
-                                        <option value="5" >5 Rooms</option>
-                                        <option value="6" >6 Rooms</option>
-                                        <option value="7" >7 Rooms</option>
-                                        <option value="8" >8 Rooms</option>
-                                        <option value="9" >9 Rooms</option>
-                                        <!-- <option value="10" >10 Guests</option>
-                                        <option value="11" >11 Guests</option>
-                                        <option value="12" >12 Guests</option>
-                                        <option value="13" >13 Guests</option>
-                                        <option value="14" >14 Guests</option>
-                                        <option value="15" >15 Guests</option>
-                                        <option value="16" >16+ Guests</option> -->
-                                    </select>
-                               
-						<!-- <span class="guest-count focused-on pull-left">1 guest</span>
-						<i class="fa fa-caret-up pull-right" aria-hidden="true"></i>
-						<i class="fa fa-caret-down pull-right active" aria-hidden="true"></i>
-						<div class="filter-sec"> add class "open" to show div -->
-					<!-- 		<ul class="clearfix">
-								<li>
-									<div class="col-lg-8 col-md-8 col-sm-8 no-padding-left rest-text">
-										<span class="pull-left main-criteria">1 adult</span>
-										<span class="pull-right sub-criteria"></span>
-									</div>
-									<div class="col-lg-4 col-md-4 col-sm-4 no-padding inc-dec">
-										<span class="col-lg-6 col-md-6 col-sm-6 col-xs-6 no-padding">-</span>
-										<span class="col-lg-6 col-md-6 col-sm-6 col-xs-6 no-padding">+</span>
-									</div> 
-								</li>
-								<li>
-									<div class="col-lg-8 col-md-8 col-sm-8 no-padding-left rest-text">
-										<span class="pull-left main-criteria">0 children</span>
-										<span class="pull-right sub-criteria">age 2 - 12</span>
-									</div>
-									<div class="col-lg-4 col-md-4 col-sm-4 no-padding inc-dec">
-										<span class="col-lg-6 col-md-6 col-sm-6 col-xs-6 no-padding">-</span>
-										<span class="col-lg-6 col-md-6 col-sm-6 col-xs-6 no-padding">+</span>
-									</div> 
-								</li>
-								<li>
-									<div class="col-lg-8 col-md-8 col-sm-8 no-padding-left rest-text">
-										<span class="pull-left main-criteria">0 infants</span>
-										<span class="pull-right sub-criteria">under 2</span>
-									</div>
-									<div class="col-lg-4 col-md-4 col-sm-4 no-padding inc-dec">
-										<span class="col-lg-6 col-md-6 col-sm-6 col-xs-6 no-padding">-</span>
-										<span class="col-lg-6 col-md-6 col-sm-6 col-xs-6 no-padding">+</span>
-									</div> 
-								</li>
-							</ul>
-							<span class="pull-right close-link">close</span>
-						</div> -->	
-					</div>
+				<form name="checkInForm" novalidate>
+
+				<div class="row">
+							<div class="col-lg-10 col-md-10 col-sm-10 col-xs-11 no-padding">
+								<div class="col-lg-3 col-md-3 col-sm-3 col-xs-12 no-padding common-div">
+									<!-- Open modal on input click for mobile resolution -->
+									<input type="text" class="source-input white-bg" g-places-autocomplete ng-model="vm.travelLocation" placeholder="Where to?">
+
+									<span class="invalidboldinput" ng-show="vm.requiredLocationFlag">Required Field</span>
+								</div>
+
+								<div class="col-lg-3 col-md-3 col-sm-3 hidden-xs no-padding common-div check-in-out-sec white-bg">
+											<span class="glyphicon glyphicon-arrow-right pad-top-5"></span>
+
+											<span ng-class="{'focused-on':vm.checkInDatePopUp.opened}" class="in-out-btn" ng-click="vm.openCheckinDate()">
+											
+											<input type="text" name="location" class="form-control check-in-box" uib-datepicker-popup="{{vm.format}}" ng-model="vm.checkInDate" is-open="vm.checkInDatePopUp.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" alt-input-formats="altInputFormats" datepicker-append-to-body="true" placeholder="Check In"/>
+											</span>
+
+											<span class="invalidboldinput" ng-show="vm.requiredCheckinDate"><br>Required Field</span>
+						        			<span class="invalidboldinput" ng-show="vm.invalidCheckinDate"><br>Invalid Check-In Date</span>
+				        		</div>
+
+				        		<div class="col-lg-3 col-md-3 col-sm-3 hidden-xs no-padding common-div check-in-out-sec white-bg">	
+											<span class="glyphicon glyphicon-arrow-right pad-top-5"></span>
+											<span class="in-out-btn pad-top-5" ng-class="{'focused-on':vm.checkOutDatePopUp.opened}" class="in-out-btn" ng-click="vm.openCheckOutDate()">
+											<input type="text"  class="form-control check-in-box" uib-datepicker-popup="{{vm.format}}" ng-model="vm.checkOutDate" is-open="vm.checkOutDatePopUp.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" alt-input-formats="altInputFormats" datepicker-append-to-body="true" placeholder="Check Out"/>
+											</span>
+								
+									<span class="remove-date">
+										<svg viewBox="0 0 12 12" data-reactid=".3.0.0.0.1.0.0.0.3.1"><path d="M11.53.47a.75.75 0 0 0-1.061 0l-4.47 4.47L1.529.47A.75.75 0 1 0 .468 1.531l4.47 4.47-4.47 4.47a.75.75 0 1 0 1.061 1.061l4.47-4.47 4.47 4.47a.75.75 0 1 0 1.061-1.061l-4.47-4.47 4.47-4.47a.75.75 0 0 0 0-1.061z" data-reactid=".3.0.0.0.1.0.0.0.3.1.0"></path></svg>
+									</span>
+
+
+									<span class="invalidboldinput" ng-show="vm.requiredCheckOutDate"><br>Required Field</span>
+						        	<span class="invalidboldinput" ng-show="vm.invalidCheckOutDate"><br>Invalid Check-Out Date</span>
+								</div>
+
+								<div class="col-lg-3 col-md-3 col-sm-3 hidden-xs no-padding common-div  no-of-guest ">
+									
+			                                    <select ng-model="vm.qty" >
+			                                        <option selected="" value="1">1 Room</option>
+			                                        <option value="2" >2 Rooms</option>
+			                                        <option value="3" >3 Rooms</option>
+			                                        <option value="4" >4 Rooms</option>
+			                                        <option value="5" >5 Rooms</option>
+			                                        <option value="6" >6 Rooms</option>
+			                                        <option value="7" >7 Rooms</option>
+			                                        <option value="8" >8 Rooms</option>
+			                                        <option value="9" >9 Rooms</option>
+			                                        <!-- <option value="10" >10 Guests</option>
+			                                        <option value="11" >11 Guests</option>
+			                                        <option value="12" >12 Guests</option>
+			                                        <option value="13" >13 Guests</option>
+			                                        <option value="14" >14 Guests</option>
+			                                        <option value="15" >15 Guests</option>
+			                                        <option value="16" >16+ Guests</option> -->
+			                                    </select>
+			                               
+									<!-- <span class="guest-count focused-on pull-left">1 guest</span>
+									<i class="fa fa-caret-up pull-right" aria-hidden="true"></i>
+									<i class="fa fa-caret-down pull-right active" aria-hidden="true"></i>
+									<div class="filter-sec"> add class "open" to show div -->
+								<!-- 		<ul class="clearfix">
+											<li>
+												<div class="col-lg-8 col-md-8 col-sm-8 no-padding-left rest-text">
+													<span class="pull-left main-criteria">1 adult</span>
+													<span class="pull-right sub-criteria"></span>
+												</div>
+												<div class="col-lg-4 col-md-4 col-sm-4 no-padding inc-dec">
+													<span class="col-lg-6 col-md-6 col-sm-6 col-xs-6 no-padding">-</span>
+													<span class="col-lg-6 col-md-6 col-sm-6 col-xs-6 no-padding">+</span>
+												</div> 
+											</li>
+											<li>
+												<div class="col-lg-8 col-md-8 col-sm-8 no-padding-left rest-text">
+													<span class="pull-left main-criteria">0 children</span>
+													<span class="pull-right sub-criteria">age 2 - 12</span>
+												</div>
+												<div class="col-lg-4 col-md-4 col-sm-4 no-padding inc-dec">
+													<span class="col-lg-6 col-md-6 col-sm-6 col-xs-6 no-padding">-</span>
+													<span class="col-lg-6 col-md-6 col-sm-6 col-xs-6 no-padding">+</span>
+												</div> 
+											</li>
+											<li>
+												<div class="col-lg-8 col-md-8 col-sm-8 no-padding-left rest-text">
+													<span class="pull-left main-criteria">0 infants</span>
+													<span class="pull-right sub-criteria">under 2</span>
+												</div>
+												<div class="col-lg-4 col-md-4 col-sm-4 no-padding inc-dec">
+													<span class="col-lg-6 col-md-6 col-sm-6 col-xs-6 no-padding">-</span>
+													<span class="col-lg-6 col-md-6 col-sm-6 col-xs-6 no-padding">+</span>
+												</div> 
+											</li>
+										</ul>
+										<span class="pull-right close-link">close</span>
+									</div> -->	
+								</div>
+							</div>
+							<div class="col-lg-2 col-md-2 col-sm-2 col-xs-1 no-padding">
+								<!-- btn for tab and desktop -->
+								<button class="button-primary guest-btn hidden-xs" ng-click="vm.searchListings()">Search</button>
+								<!-- btn for mobile -->
+								<button class="button-primary guest-btn visible-xs" ng-click="vm.searchListings()"><img src="public/images/search-icon-mobile.png"></button>
+							</div>
+					</form>
 				</div>
-				<div class="col-lg-2 col-md-2 col-sm-2 col-xs-1 no-padding">
-					<!-- btn for tab and desktop -->
-					<button class="button-primary guest-btn hidden-xs" ng-click="vm.searchListings()">Search</button>
-					<!-- btn for mobile -->
-					<button class="button-primary guest-btn visible-xs" ng-click="vm.searchListings()"><img src="public/images/search-icon-mobile.png"></button>
-				</div>
-				</form>
+
 			</div>
 		</div>	
 		<div class="custom-wrapper clearfix">
