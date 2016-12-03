@@ -113,7 +113,7 @@ app.post('/SearchHostBillsByMonth',bill.SearchHostBillsByMonth);
 app.post('/SearchUserBillsbyDate',bill.SearchUserBillsbyDate);
 app.post('/SearchUserBillsByMonth',bill.SearchUserBillsByMonth);
 app.post('/DeleteBill',bill.DeleteBill);
-
+app.post('/submitHostReviewForTrip',review.hostReviewSubmit);
 app.post('/SubmitReviewAndRating',review.SubmitReviewAndRating);
 app.post('/GetReviews',review.GetReviews);
 
@@ -156,6 +156,7 @@ app.get("/getProfileForAdmin",admin.getProfileForAdmin);
 app.post("/authorizeUser",admin.authorizeUser);
 app.post("/deleteUserFromAdmin",admin.deleteUser);
 app.get("/getBillDetailAdmin",admin.getBillDetailAdmin);
+app.get("/getHostTrips",user.getHostTrips);
 
 
 

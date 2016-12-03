@@ -1,7 +1,7 @@
 var app = angular.module('Airbnb');
 
 
-function AddPropertyControllerFn($state,$stateParams,$http) {
+function AddPropertyControllerFn($state,$stateParams,$http,$mdDialog) {
 	
 	var vm = this;
 	vm.property = {
@@ -51,11 +51,12 @@ function AddPropertyControllerFn($state,$stateParams,$http) {
 		vm.invalidCountryFlag = false;
 		vm.invalidCityFlag = false;
 		vm.invalidStateFlag = false;
+		vm.invalidStateInputFlag = false;
 		vm.invalidZipFlag = false;
 		var zipRegex1 = /^[0-9]{5}$/;
 		var zipRegex2 = /^[0-9]{9}$/;
-		var titleRegex = /^[a-zA-Z\_\- ]*$/;
-		var descriptionRegex = /^[a-zA-Z0-9,\_\- ]*$/;
+		var titleRegex = /^[a-zA-Z0-9,.\_\- ]*$/;
+		var descriptionRegex = /^[a-zA-Z0-9,.\_\- ]*$/;
 		var numberRegex = /^[0-9]*$/;
 		var ZipFlag = false;
 		vm.invalidBaseFlag = false;
@@ -65,193 +66,257 @@ function AddPropertyControllerFn($state,$stateParams,$http) {
 		vm.invalidWDiscountFlag = false;
 		vm.invalidHSurgeFlag = false;
 		vm.invalidWDiscountFlag = false;
-		var start_date = new Date(vm.property.property_start_date);
-		var end_date = new Date(vm.property.property_end_date);
-		var date = new Date();
+		var StateFlag = false;
+		var start_date = new Date(vm.property.property_start_date);//.toDateString();
+		var end_date = new Date(vm.property.property_end_date);//.toDateString();
+		var date = new Date();//.toDateString();
+		//date.setTime(start_date.getTime());
+		date.setHours(0,0,0,0);
 
-		console.log("zip "+vm.property.address.zipcode);
+		console.log("date "+date);
+		console.log("start_date "+start_date);
+		console.log("end_date "+end_date);
+
+		if(start_date<date)
+		{	
+			console.log("badjjj");
+		}
+		else
+		{
+			console.log("good");
+		}
+
+
+		if(end_date<start_date)
+		{	
+			console.log("bad");
+		}
+		else
+		{
+			console.log("good");
+		}
+		
+
+
+		Array.prototype.contains = function(element){
+			console.log("inside prototype");
+    		return this.indexOf(element) > -1;
+		};
+
+		var stateArray = [
+		"ALABAMA","ALASKA","ARIZONA","ARKANSAS","CALIFORNIA","COLORADO","CONNECTICUT","DELAWARE","FLORIDA","GEORGIA","HAWAII","IDAHO","ILLINOIS","INDIANA","IOWA","KANSAS","KENTUCKY","LOUISIANA","MAINE","MARYLAND","MASSACHUSETTS","MICHIGAN","MINNESOTA","MISSISSIPPI","MISSOURI","MONTANA","NEBRASKA","NEVADA","NEW HAMPSHIRE","NEW JERSEY","NEW MEXICO","NEW YORK","NORTH CAROLINA","NORTH DAKOTA","OHIO","OKLAHOMA","OREGON","PENNSYLVANIA","RHODE ISLAND","SOUTH CAROLINA","SOUTH DAKOTA","TENNESSEE","TEXAS","UTAH","VERMONT","VIRGINIA","WASHINGTON","WEST VIRGINIA","WISCONSIN","WYOMING","AL","AK","AZ","AR","CA","CO","CT","DE","FL","GA","HI","ID","IL","IN","IA","KS","KY","LA","ME","MD","MA","MI","MN","MS","MO","MT","NE","NV","NH","NJ","NM","NY","NC","ND","OH","OK","OR","PA","RI","SC","SD","TN","TX","UT","VT","VA","WA","WV","WI","WY"
+		];
+
+		var state = (vm.property.address.state).toUpperCase();
+		console.log(state);
+		if(stateArray.contains(state))
+		{
+			StateFlag = true;
+			console.log("StateFlag "+StateFlag);
+		}
 
 		if(zipRegex2.test(vm.property.address.zipcode) || zipRegex1.test(vm.property.address.zipcode))
 		{
 				ZipFlag = true;
 		}
 
-		if(vm.weekend_surge>=1 && vm.weekend_surge<=3)
+		if((vm.weekend_surge>=1 && vm.weekend_surge<=3) || vm.property.ListingType=='auction')
 		{
 			WSurgeFlag = true;
 		}
 
-		if(vm.holiday_surge>=1 && vm.holiday_surge<=3)
+		if((vm.holiday_surge>=1 && vm.holiday_surge<=3) || vm.property.ListingType=='auction')
 		{
 			HSurgeFlag = true;
 		}
 
-		if((vm.monthly_discount == null && vm.property.ListingType!='auction') || (vm.weekly_discount == null && vm.property.ListingType!='auction') || vm.monthly_discount >= 1 || vm.weekly_discount >=1 || HSurgeFlag == false || WSurgeFlag == false || vm.property.base_price<=0 || !titleRegex.test(vm.property.address.country) || ZipFlag == false || !titleRegex.test(vm.property.address.state) || !titleRegex.test(vm.property.address.city) || !descriptionRegex.test(vm.property.address.street) || vm.property.address.country == "" || vm.property.address.zipcode == "" || vm.property.address.state == "" || vm.property.address.city == "" || vm.property.address.street == "" || vm.property.property_end_date == null || vm.property.property_start_date == null || !numberRegex.test(vm.property.base_price) || (vm.holiday_surge == null && vm.property.ListingType!='auction') || (vm.weekend_surge == null && vm.property.ListingType!='auction')|| vm.property.base_price == null || vm.travelLocation == null || vm.property.ListingType == "" || vm.property.category == null || end_date<start_date || !titleRegex.test(vm.property.propertyTitle) || !descriptionRegex.test(vm.property.description) || vm.property.propertyTitle == null || vm.property.description == null || date>start_date)
-		{
-			if(vm.monthly_discount >= 1)
+		if((vm.monthly_discount == null && vm.property.ListingType!='auction') || 
+			(vm.weekly_discount == null && vm.property.ListingType!='auction') || 
+			vm.monthly_discount >= 100 || vm.weekly_discount >=100 || HSurgeFlag == false || WSurgeFlag == false || 
+			vm.property.base_price<=0 || !titleRegex.test(vm.property.address.country) || ZipFlag == false || 
+			!titleRegex.test(vm.property.address.state) || !titleRegex.test(vm.property.address.city) || 
+			!descriptionRegex.test(vm.property.address.street) || vm.property.address.country == "" || 
+			vm.property.address.zipcode == "" || vm.property.address.state == "" || vm.property.address.city == "" || 
+			vm.property.address.street == "" || vm.property.property_end_date == null || vm.property.property_start_date == null || 
+			!numberRegex.test(vm.property.base_price) || (vm.holiday_surge == null && vm.property.ListingType!='auction') || 
+			(vm.weekend_surge == null && vm.property.ListingType!='auction')|| vm.property.base_price == null || 
+			vm.travelLocation == null || vm.property.ListingType == "" || vm.property.category == null || end_date<start_date || 
+			!titleRegex.test(vm.property.propertyTitle) || !descriptionRegex.test(vm.property.description) || 
+			vm.property.propertyTitle == null || vm.property.description == null || (start_date<date) || StateFlag == false )
+		
 			{
-				vm.invalidMDiscountFlag = true;
-			}
+					if(StateFlag == false)
+					{
+						vm.invalidStateInputFlag = true;
+					}
 
-			if(vm.weekly_discount >=1)
-			{
-				vm.invalidWDiscountFlag = true;
-			}
 
-			if(HSurgeFlag == false)
-			{
-				vm.invalidHSurgeFlag = true;
-			}
+					if(vm.monthly_discount >= 100)
+					{
+						vm.invalidMDiscountFlag = true;
+					}
 
-			if(WSurgeFlag == false)
-			{
-				vm.invalidWSurgeFlag = true;
-			}
+					if(vm.weekly_discount >=100)
+					{
+						vm.invalidWDiscountFlag = true;
+					}
 
-			if(vm.property.base_price<=0)
-			{
-				vm.invalidBaseFlag = true;	
-			}
+					if(HSurgeFlag == false)
+					{
+						vm.invalidHSurgeFlag = true;
+					}
 
-			if(!titleRegex.test(vm.property.address.country))
-			{
-				vm.invalidCountryFlag = true;	
-			}
+					if(WSurgeFlag == false)
+					{
+						vm.invalidWSurgeFlag = true;
+					}
 
-			if(ZipFlag == false)
-			{
-				vm.invalidZipFlag = true;
-			}
+					if(vm.property.base_price<=0)
+					{
+						vm.invalidBaseFlag = true;	
+					}
 
-			if(!titleRegex.test(vm.property.address.state))
-			{
-				vm.invalidStateFlag = true;
-			}
+					if(!titleRegex.test(vm.property.address.country))
+					{
+						vm.invalidCountryFlag = true;	
+					}
 
-			if(!titleRegex.test(vm.property.address.city))
-			{
-				vm.invalidCityFlag = true;
-			}
+					if(ZipFlag == false)
+					{
+						vm.invalidZipFlag = true;
+					}
 
-			if(!descriptionRegex.test(vm.property.address.street))
-			{
-				vm.invalidStreetFlag = true;
-			}
+					if(!titleRegex.test(vm.property.address.state))
+					{
+						vm.invalidStateFlag = true;
+					}
 
-			if(vm.property.address.country == "")
-			{
-				vm.requiredCountryFlag = true;	
-			}
+					if(!titleRegex.test(vm.property.address.city))
+					{
+						vm.invalidCityFlag = true;
+					}
 
-			if(vm.property.address.zipcode == "")
-			{
-				vm.requiredZipFlag = true;
-			}
+					if(!descriptionRegex.test(vm.property.address.street))
+					{
+						vm.invalidStreetFlag = true;
+					}
 
-			if(vm.property.address.state == "")
-			{
-				vm.requiredStateFlag = true;
-			}
+					if(vm.property.address.country == "")
+					{
+						vm.requiredCountryFlag = true;	
+					}
 
-			if(vm.property.address.city == "")
-			{
-				vm.requiredCityFlag = true;
-			}
+					if(vm.property.address.zipcode == "")
+					{
+						vm.requiredZipFlag = true;
+					}
 
-			if(vm.property.address.street == "")
-			{
-				vm.requiredStreetFlag = true;
-			}
+					if(vm.property.address.state == "")
+					{
+						vm.requiredStateFlag = true;
+					}
 
-			if(vm.property.property_end_date == null)
-			{
-				vm.requiredEndDateFlag = true;	
-			}
+					if(vm.property.address.city == "")
+					{
+						vm.requiredCityFlag = true;
+					}
 
-			if(vm.property.property_start_date == null)
-			{
-				vm.requiredStartDateFlag = true;	
-			}
+					if(vm.property.address.street == "")
+					{
+						vm.requiredStreetFlag = true;
+					}
 
-			if(!numberRegex.test(vm.property.base_price))
-			{
-				vm.invalidBasePrice = true;
-			}
+					if(vm.property.property_end_date == null)
+					{
+						vm.requiredEndDateFlag = true;	
+					}
 
-			if(vm.weekly_discount == null && vm.property.ListingType!='auction')
-			{
-				vm.requiredWeeklyDisc = true;
-			}
+					if(vm.property.property_start_date == null)
+					{
+						vm.requiredStartDateFlag = true;	
+					}
 
-			if(vm.monthly_discount == null && vm.property.ListingType!='auction')
-			{
-				vm.requiredMonthlyDisc = true;
-			}
+					if(!numberRegex.test(vm.property.base_price))
+					{
+						vm.invalidBasePrice = true;
+					}
 
-			if(vm.holiday_surge == null && vm.property.ListingType!='auction')
-			{
-				vm.requiredHSurgeFlag = true;
-			}
+					if(vm.weekly_discount == null && vm.property.ListingType!='auction')
+					{
+						vm.requiredWeeklyDisc = true;
+					}
 
-			if(vm.holiday_surge == null && vm.property.ListingType!='auction')
-			{
-				vm.requiredWSurgeFlag = true;
-			}
+					if(vm.monthly_discount == null && vm.property.ListingType!='auction')
+					{
+						vm.requiredMonthlyDisc = true;
+					}
 
-			if(vm.property.base_price == null)
-			{
-				vm.requiredBaseFlag = true;
-			}
+					if(vm.holiday_surge == null && vm.property.ListingType!='auction')
+					{
+						vm.requiredHSurgeFlag = true;
+					}
 
-			if(vm.travelLocation == null)
-			{
-				vm.requiredAddressFlag = true;
-			}
+					if(vm.holiday_surge == null && vm.property.ListingType!='auction')
+					{
+						vm.requiredWSurgeFlag = true;
+					}
 
-			if(vm.property.ListingType == "")
-			{
-				vm.requiredTypeFlag = true;
-			}
+					if(vm.property.base_price == null)
+					{
+						vm.requiredBaseFlag = true;
+					}
 
-			if(vm.property.category == null)
-			{
-				vm.requiredCatagoryFlag = true;
-			}
+					if(vm.travelLocation == null)
+					{
+						vm.requiredAddressFlag = true;
+					}
 
-			if(!titleRegex.test(vm.property.propertyTitle))
-			{
-				vm.invalidTitleFlag = true;
-			}
+					if(vm.property.ListingType == "")
+					{
+						vm.requiredTypeFlag = true;
+					}
 
-			if(vm.property.propertyTitle == null)
-			{
-				vm.requiredTitleFlag = true;
-			}
+					if(vm.property.category == null)
+					{
+						vm.requiredCatagoryFlag = true;
+					}
 
-			if(!descriptionRegex.test(vm.property.description))
-			{
-				vm.invalidDescriptionFlag = true;
-			}
+					if(!titleRegex.test(vm.property.propertyTitle))
+					{
+						vm.invalidTitleFlag = true;
+					}
 
-			if(vm.property.description == null)
-			{
-				vm.requiredDescriptionFlag = true;
-			}
+					if(vm.property.propertyTitle == null)
+					{
+						vm.requiredTitleFlag = true;
+					}
 
-			if(date>start_date)
-			{
-				vm.invalidStartDateFlag = true;
-			}
+					if(!descriptionRegex.test(vm.property.description))
+					{
+						vm.invalidDescriptionFlag = true;
+					}
 
-			if(end_date<start_date)
-			{
-				vm.invalidEndDateFlag = true;
-			}
+					if(vm.property.description == null)
+					{
+						vm.requiredDescriptionFlag = true;
+					}
+
+					if(date>start_date)
+					{
+						console.log("invalid start date flag set");
+						vm.invalidStartDateFlag = true;
+					}
+
+					if(end_date<start_date)
+					{
+						console.log("invalid end date flag set");
+						vm.invalidEndDateFlag = true;
+					}
 		}
 		else
 		{
 
-				console.log("inside");
+				console.log("calling create property");
 				if(angular.isUndefined(vm.travelLocation) || vm.travelLocation== null){
 				return;
 				}
@@ -260,6 +325,21 @@ function AddPropertyControllerFn($state,$stateParams,$http) {
 
 				$http.post('/CreateProperty',{"property":vm.property}).then(function(response){
 				console.log(response);
+				if(response.status == 200){
+					var confirm = $mdDialog.confirm()
+	                .title('Successfully Added the property!')
+	                .textContent("Lets go back to the home")
+	                .ariaLabel('Created!')
+	                
+	                .ok('Ok');
+	                
+	                $mdDialog.show(confirm).then(function() {
+	                   console.log("Do u think it ll work");
+	                   window.location.assign("#/hostHomePage");
+	                   }, function() {
+	                  	 console.log("it worked");
+	                });
+				}
 			})
 		}
 	}

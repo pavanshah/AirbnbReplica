@@ -22,6 +22,30 @@ var submitReviewForTrip = function(msg,callback) {
 
 };
 
+var submitHostReview = function(msg,callback) {
+
+console.log("inside submit host review");
+console.log(msg.trip_id);
+console.log(msg.ratings);
+console.log(msg.feedback);
+console.log(msg.photo);
+Trip.update({"trip_id":msg.trip_id}, {$push : {HostReviews : {ratings : msg.ratings, feedback : msg.feedback,photo : msg.photo}}}, function(err,result) {
+
+		if(!err){
+			console.log(result);
+			console.log("updated");
+			callback(null,{"status":200,"result":"Host Review Submitted"});
+			}
+		else{
+			console.log(err);
+			callback(err,{"status":400,"result":"Bad Request"});
+		}
+	});
+
+};
+
+
+
 
 var getReview = function(msg, callback) {
 
@@ -35,10 +59,8 @@ var getReview = function(msg, callback) {
 			callback(err,{"status":400,"result":"Bad Request"});
 		}
 	})
-
-	
-
 }
 
 exports.submitReviewForTrip = submitReviewForTrip;
 exports.getReview = getReview;
+exports.submitHostReview = submitHostReview;

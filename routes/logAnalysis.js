@@ -236,7 +236,7 @@ var userTracking = function(req, res)
 var propertyReviews = function(req, res)
 {
    var host = req.session.user.user_id;
-   // var host = req.body.analyze.host_id;
+  //var host = req.body.analyze.host_id;
 
     winston.add(winston.transports.File, { filename: 'public/LogFiles/PropertyReviewsAnalysis.json' });
     winston.remove(winston.transports.Console);
@@ -270,6 +270,13 @@ var propertyReviews = function(req, res)
                 }
             }
 
+            console.log("timestamp "+results.file[0]);
+            console.log("timestamp "+results.file[0].timestamp);
+            var timestamp = new Date(results.file[0].timestamp);
+            console.log(timestamp);
+            console.log(timestamp.getDate());
+            console.log("timestamp "+results.file[0].timestamp.getDate);
+
            // console.log(propArr);
 
             var query = Property.find({});
@@ -283,7 +290,7 @@ var propertyReviews = function(req, res)
                 {
                     for(var i = 0; i< user.length ; i++)
                     {
-                        userArr.push(parseInt(user[i].property_id));
+                        userArr.push(parseInt(user[i].property_id));    //all properties of user
                     }
 
                    // console.log("userArr "+userArr);
@@ -295,7 +302,7 @@ var propertyReviews = function(req, res)
                         for(var j = 0 ; j < propArr.length ; j++)
                         {
                             //console.log("prop "+propArr[j].property_id);
-                            if(userArr[i] == propArr[j].property_id)
+                            if(userArr[i] == propArr[j].property_id)    //if property present in reviews file
                             {
                                 reviewArray.push({"rating" : propArr[j].rating, "timestamp" : propArr[j].timestamp});
                           //      console.log("reviewArray "+reviewArray);
@@ -304,7 +311,7 @@ var propertyReviews = function(req, res)
                         }
 
                         //console.log("end of "+userArr[i]+ " reviews array "+reviewArray);
-                        finalJSON.push({"property_id" : userArr[i], "reviews" : reviewArray});
+                        finalJSON.push({"property_id" : userArr[i], "reviews" : reviewArray});  //push empty array if no reviews
                         reviewArray = [];
                        // console.log("after pushing "+finalJSON);
                     }

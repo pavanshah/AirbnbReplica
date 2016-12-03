@@ -136,6 +136,16 @@ cnn.on('ready', function(){
 								correlationId:m.correlationId
 							});
 					});
+					
+				case "getHostTrips":
+					user.getHostTrip(message,function(err,res){
+
+					cnn.publish(m.replyTo, res, {
+								contentType:'application/json',
+								contentEncoding:'utf-8',
+								correlationId:m.correlationId
+							});
+					});
 				break;
 
 
@@ -214,6 +224,51 @@ cnn.on('ready', function(){
 
 				case "BookProperty":
 					property.BookProperty (message,function(err,res){
+
+						console.log("printing response");
+						console.log(res);
+						//return index sent
+							cnn.publish(m.replyTo, res, {
+								contentType:'application/json',
+								contentEncoding:'utf-8',
+								correlationId:m.correlationId
+							});
+
+					});
+				break;
+
+				case "getAuctionableProperties":
+					property.getAuctionableProperties (message,function(err,res){
+
+						console.log("printing response");
+						console.log(res);
+						//return index sent
+							cnn.publish(m.replyTo, res, {
+								contentType:'application/json',
+								contentEncoding:'utf-8',
+								correlationId:m.correlationId
+							});
+
+					});
+				break;
+
+				case "getMaxBid":
+					property.getMaxBid (message,function(err,res){
+
+						console.log("printing response");
+						console.log(res);
+						//return index sent
+							cnn.publish(m.replyTo, res, {
+								contentType:'application/json',
+								contentEncoding:'utf-8',
+								correlationId:m.correlationId
+							});
+
+					});
+				break;
+
+				case "getUserBids":
+					property.getUserBids (message,function(err,res){
 
 						console.log("printing response");
 						console.log(res);
@@ -349,7 +404,20 @@ cnn.on('ready', function(){
 							});
 				})
 				break;
+				
+				case "hostReviewSubmit":
+					review.submitHostReview(message,function(err,res){
 
+						console.log("hostReviewSubmit Review response");
+							console.log(res);
+							//return index sent
+								cnn.publish(m.replyTo, res, {
+									contentType:'application/json',
+									contentEncoding:'utf-8',
+									correlationId:m.correlationId
+								});
+					})
+					break;
 			}
 	});
 

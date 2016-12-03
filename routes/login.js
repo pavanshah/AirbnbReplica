@@ -128,6 +128,45 @@ function(username, password, done) {
 }
 ));*/
 
+var getHostTrips = function(req,res,next){
+	console.log("inside get host trips");
+	msg_payload = {
+ 			"func":"getHostTrips",
+ 			"user_id":req.session.user.user_id
+ 			}
+
+ 		mq_client.make_request("user_queue",msg_payload,function(err,response){
+
+ 			if(err)
+ 			{
+ 				console.log(err);
+ 			}
+ 			else
+ 			{
+
+ 				if(response.status==200)
+ 				{
+ 					console.log("inside get host trips backend");
+ 					console.log(response.trip);
+ 					res.status(200).
+ 					json(response.trip);
+
+ 				}
+ 				else
+ 				{
+ 					console.log(response);
+	 		    	res
+	 				.status(400)
+	 				.send({"result":"Bad request"});
+
+ 				}
+ 			}
+
+ 		});
+	
+	
+	
+};
 
 var authenticateLocal = function (req,res,next){
 
@@ -680,3 +719,4 @@ exports.authenticateLocal = authenticateLocal;// done Rabbit
 exports.isUserLoggedIn = isUserLoggedIn;
 exports.logout = logout;
 exports.getHost = getHost; //done Rabbit
+exports.getHostTrips = getHostTrips;//done Rabbit kushal

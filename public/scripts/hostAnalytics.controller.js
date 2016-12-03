@@ -4,6 +4,58 @@ var app = angular.module('Airbnb');
 function hostAnalyticsControllerFn($state,$scope,$http) {	
 	var vm = this;
 
+
+	vm.donutOptions = {
+	            chart: {
+	                type: 'pieChart',
+	                height: 400,
+	                donut: true,
+	                x: function(d){return d.key;},
+	                y: function(d){return d.y;},
+	                showLabels: true,
+
+	                
+	                duration: 100,
+	                legend: {
+	                    margin: {
+	                        top: 0,
+	                        right: 0,
+	                        bottom: 0,
+	                        left: 0
+	                    }
+	                }
+	            }
+	        };
+
+
+	 vm.donutDataFunction = function(){
+	 	
+	 	$http({
+			method : "POST",
+			url : '/clicksPerPage'
+		}).success(function(details) {
+			//console.log(details);
+
+				vm.donutData = [
+	    		
+				        { key : "Login Page" , y : details.login_page },
+				        { key : "Logout Page" , y : details.logout_page },
+				        { key : "Bill Page" , y : details.bill_page },
+				        { key : "Profile Page" , y : details.editprofile_page },
+				        { key : "Host Page" , y: details.host_page},
+				        { key : "Search Property" , y : details.property_page },
+				        { key : "Property Details" , "value" : details.propertydescription_page },
+				        { key : "Signup Page" , "value" : details.signup_page },
+				        { key : "Trip Page" , "value" : details.trip_page }
+
+	    			];
+	    });
+
+	 }
+
+
+	  vm.donutDataFunction();
+
 	//Page clicks for last 10 days
 	vm.pageClickOptions = {
 		    chart: {
@@ -11,9 +63,9 @@ function hostAnalyticsControllerFn($state,$scope,$http) {
 		        height: 400,
 		        margin : {
 		            top: 20,
-		            right: 20,
+		            right: 0,
 		            bottom: 60,
-		            left: 55
+		            left: 0
 		        },
 		        x: function(d){ return d.label; },
 		        y: function(d){ return d.value; },
@@ -47,12 +99,12 @@ function hostAnalyticsControllerFn($state,$scope,$http) {
 				        { "label" : "Login Page" , "value" : details.login_page },
 				        { "label" : "Logout Page" , "value" : details.logout_page },
 				        { "label" : "Bill Page" , "value" : details.bill_page },
-				        { "label" : "Edit Profile Page" , "value" : details.editprofile_page },
-				        { "label" : "Become A Host Page" , "value" : details.host_page},
-				        { "label" : "Search Property Page" , "value" : details.property_page },
-				        { "label" : "Property Details Page" , "value" : details.propertydescription_page },
+				        { "label" : "Profile Page" , "value" : details.editprofile_page },
+				        { "label" : "Host Page" , "value" : details.host_page},
+				        { "label" : "Search Property" , "value" : details.property_page },
+				        { "label" : "Property Details" , "value" : details.propertydescription_page },
 				        { "label" : "Signup Page" , "value" : details.signup_page },
-				        { "label" : "Trip Details Page" , "value" : details.trip_page }
+				        { "label" : "Trip Page" , "value" : details.trip_page }
 				        ]
 
 	    			}]
@@ -157,9 +209,9 @@ vm.pageClickData();
                 yAxis: {
                     axisLabel: 'Average Rating',
                     tickFormat: function(d){
-                        return d3.format('.02f')(d);
+                        return d3.format()(d);
                     },
-                    axisLabelDistance: -10
+                    axisLabelDistance: 10
                 },
                 callback: function(chart){
                     console.log("!!! lineChart callback !!!");
@@ -167,9 +219,6 @@ vm.pageClickData();
             },
         };
 
-   // $scope.data = findRatingsData();
-
-        /*Random Data Generator */
         function findRatingsData() {
 
         	$http({
@@ -177,53 +226,66 @@ vm.pageClickData();
 			url : '/propertyReviews'
 			}).success(function(details) {
 
-				console.log("details "+details);
-				console.log("details[0] "+details[2]);
-				console.log("details[0] "+details[2].reviews);
-				console.log("details[0] "+details[2].property_id);
-				console.log("details[0] "+details[2].reviews[0].rating);
-				console.log("details[0] "+details[2].reviews[0].timestamp);
-				console.log("details[0] "+details[2].reviews[1].rating);
-				console.log("details[0] "+details[2].reviews[1].timestamp);
+			console.log(details);
+			var maxReviews;
+
+			for(var i = 0 ; i < details.length ; i++)
+			{
+				console.log("review length "+details[i].reviews.length);
+
+				if(details.length == 1)
+				{
+					maxReviews = i;
+				}
+
+				else if(i < (details.length-1))
+				{
+					if(details[i].reviews.length < details[i+1].reviews.length)
+					{
+						maxReviews = i+1;
+						console.log("max size "+maxReviews);
+					}
+				}
+			}
 
 
-				var ratings1 = [];
-				var ratings2 = [];
-				var ratings = [];
-				
-            	ratings.push({x: 15, y: 2.9});
-                ratings.push({x: 16, y: 3.8});
-                ratings.push({x: 18, y: 5});
-                ratings.push({x: 19, y: 4.3});
-                ratings.push({x: 20, y: 4.1});
-                ratings.push({x: 21, y: 3.2});
-                ratings.push({x: 22, y: 4.5});
-                ratings.push({x: 23, y: 5});
-                ratings.push({x: 24, y: 4.3});
-                ratings.push({x: 25, y: 4.2});
-				
+			var displayObj = details[maxReviews];
+			var avg;
 
-				ratings1.push({x: 15, y: details[2].reviews[0].rating});
-                ratings1.push({x: 16, y: details[2].reviews[1].rating});
+			
+			var displayArray = [];
 
-                ratings2.push({x: 15, y: details[1].reviews[0].rating});
+			for(var i = 0 ; i < displayObj.reviews.length ; i++)
+			{
+				var date = new Date(displayObj.reviews[i].timestamp);
+				displayArray.push({x : i , y : displayObj.reviews[i].rating});
+				console.log(date);
+				console.log(displayObj.reviews[i].rating);
+			}
+			
+			//console.log("displayArray "+displayArray);
 
+			var sin = [],sin2 = [], cos = [];
 
-                console.log(details[1].reviews[0].rating);
+		            //Data is represented as an array of {x,y} pairs.
+		            for (var i = 0; i < 100; i++) {
+		                sin.push({x: i, y: Math.sin(i/10)});
+		                sin2.push({x: i, y: i % 10 == 5 ? null : Math.sin(i/10) *0.25 + 0.5});
+		                cos.push({x: i, y: .5 * Math.cos(i/10+ 2) + Math.random() / 10});
+		            }
 
-            	//Line chart data should be sent as an array of series objects.
             	$scope.data =  [
             			/*
                 		{
-                    		values: ratings1,      //values - represents the array of {x,y} data points
-                    		key: 'Average Ratings', //key  - the name of the series.
+                    		values: sin,      //values - represents the array of {x,y} data points
+                    		key: 'Sine Wave', //key  - the name of the series.
                     		color: '#ff7f0e'  //color - optional: choose your own line color.
                 		},
 						*/
                 		{
-                    		values: ratings,      //values - represents the array of {x,y} data points
-                    		key: 'Average Ratings', //key  - the name of the series.
-                    		color: '#2ca02c'  //color - optional: choose your own line color.
+                    		values: displayArray,
+                   			 key: displayObj.property_id,
+                    		color: '#2ca02c'
                 		}
             		  ];
 
@@ -232,8 +294,7 @@ vm.pageClickData();
 
 
         findRatingsData();
-	
-	
+
 }
 
 app.controller('hostAnalyticsController',hostAnalyticsControllerFn);
