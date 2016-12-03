@@ -1,14 +1,14 @@
 var app = angular.module('Airbnb');
 
 
-function AdminProfileViewControllerFn($state,$scope,$http,$rootScope,$mdDialog) {	
+function AdminProfileViewControllerFn($state,$scope,$http,$rootScope,$mdDialog,$sce) {	
 	var vm = this;
 	console.log("loaded data");
 	console.log($rootScope.showProfile);
 	$scope.firstname = "";
 	$scope.reviews = [];
-	$scope.showSuccess = false;
-	
+	$scope.showSuccess = false;	
+	$scope.image = $sce.trustAsResourceUrl("http://babyinfoforyou.com/wp-content/uploads/2014/10/avatar-300x300.png");
 	
 	$scope.authorize = function(){
 		
@@ -69,7 +69,18 @@ function AdminProfileViewControllerFn($state,$scope,$http,$rootScope,$mdDialog) 
 			url : '/getProfileForAdmin',
 			params : $scope.hostQuery 
 		}).success(function(details) {
-			console.log("got output from backend");
+			console.log("got output from backend");			
+			//console.log(details.result[0].profilepic);
+			
+			if(typeof details.result[0].profilepic === "undefined"){
+				console.log("this is undefined");
+				$scope.image = $sce.trustAsResourceUrl("http://babyinfoforyou.com/wp-content/uploads/2014/10/avatar-300x300.png");
+			}
+			else{
+				console.log("Got image");
+				$scope.image = $sce.trustAsResourceUrl(details.result[0].profilepic);				
+				
+			}
 			console.log(details.result[0].firstname);
 			$scope.firstname = details.result[0].firstname;
 			console.log("firstname is:"+$scope.firstname );
