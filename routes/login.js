@@ -291,6 +291,7 @@ var updateHostProfile = function(req,res){
 
 
 			console.log("Inside user Profile Update");
+			console.log("Inside user Profile Update");
 			
 	 		var dateString = req.body.user.birthMonth + "-" + req.body.user.birthDay + "-" + req.body.user.birthYear;
 	 		console.log(dateString);
@@ -299,7 +300,7 @@ var updateHostProfile = function(req,res){
 	 		var hostBirthDay = momentObj.format('YYYY-MM-DD');
 	 		console.log(hostBirthDay);
 	 		req.body.user.birthdate = hostBirthDay; //to save the host birthday
-	 		req.body.user.UserType = "host";
+	 		
 	 		req.body.user.phone = req.body.user.phonenumber;
 	 		var query = {'email':req.session.user.emailId};
 
@@ -323,7 +324,7 @@ var updateHostProfile = function(req,res){
 	 				{
 	 					res
 				 	 	.status(200)
-				 	 	.send({"result":"user updated"});
+				 	 	.send({"result":"host updated"});
 
 	 				}
 	 				else
@@ -613,7 +614,7 @@ else{
 		}
 		else
 		{
-			console.log(response);
+			
 			res
  		.status(200)
  		.send({"user":response.user});

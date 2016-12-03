@@ -28,6 +28,7 @@ var Users = new Schema({
 		country : String
 	},
 	profilepic :  String,
+	video :  String,
 	UserType : String,
 	user_status:String,
 	avgrating : Number,
