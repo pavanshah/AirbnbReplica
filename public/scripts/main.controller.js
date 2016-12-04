@@ -75,8 +75,12 @@ function mainControllerFn($rootScope,$uibModal,loginService,$state,$log) {
 		    
 
 		     console.log("userData",vm.userData);
-		    }, function () {
+		    }, function (err) {
 		      $log.info('Modal dismissed at: ' + new Date());
+		      if(err && err == "signup")
+		      {
+		      	vm.openSignupModal();
+		      }
 		});
 		  
  	}
@@ -107,8 +111,12 @@ function mainControllerFn($rootScope,$uibModal,loginService,$state,$log) {
 		    
 
 		     console.log("userData",vm.userData);
-		    }, function () {
-		      $log.info('Modal dismissed at: ' + new Date());
+		    }, function (err) {
+		      $log.info('Modal dismissed at: ', new Date());
+		      console.log("err",err);
+		      if(err && err == "login"){
+		      	vm.openLoginModal();
+		      }
 		});
  	}
  } 

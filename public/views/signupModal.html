@@ -15,7 +15,7 @@
          <p class="terms-n-condn">By signing up, I agree to Airbnb’s <a href="#."></a>Terms of Service</a>, <a href="#.">Nondiscrimination Policy</a>, <a href="#.">Payments Terms of Service</a>, <a href="#.">Privacy Policy</a>, <a href="#.">Guest Refund Policy</a>, and <a href="#.">Host Guarantee Terms.</a></p>
          <div class="custom-footer">
       		<span class="">Already have an Airbnb account?</span>
-      		<button class="pull-right btn-small">Sign up</button>
+      		<button ng-click="vm.login()" class="pull-right btn-small">Log In</button>
       	</div>
       </section>
       <section ng-switch-when="signupForm" class="signup-form-wrapper">
@@ -76,7 +76,7 @@
             
             <div class="custom-footer">
                <span class="">Already have an Airbnb account?</span>
-               <button class="pull-right btn-small">Sign up</button>
+               <button ng-click="vm.login()" class="pull-right btn-small">Log In</button>
             </div>
          </div>
       </section>
