@@ -53,11 +53,25 @@ var getBillDetailAdmin = function(req,res){
 	
 			Bills.find({"_id":o_id},function(err,bill){
 				console.log("test........");
+				if(err || bill.length==0){
+					res
+					.status(200)
+					.send({"result":"failed"});
+					return;
+				}
 				console.log(bill[0].billing_id);
 				
 				Trips.find({"bill.billing_id":bill[0].billing_id},function(err,trip){
 					console.log("Got tripppppppppp");
 					console.log(trip);
+					
+					if(trip.length == 0){
+						
+						res
+						.status(200)
+						.send({"result":bill});
+						return;
+					}
 
 					var dateObjStart = new Date(trip[0].trip_start_date);
 					var dateObjEnd = new Date(trip[0].trip_end_date);
@@ -236,7 +250,7 @@ var getBillForAdmin = function(req,res){
 			
 	if(req.query.month != ""){
 		console.log("Inside month query");
-		Bills.aggregate([{$project: {billing_date: 1,_id:1, month: {$month: '$billing_date'}}},
+		Bills.aggregate([{$project: {billing_date: 1,_id:1,billing_id:1,property:1,trip_amount:1, month: {$month: '$billing_date'}}},
 				  {$match: {month: Number(req.query.month)}}],function(err,bills){
 			console.log(bills);
 			
@@ -256,7 +270,7 @@ var getBillForAdmin = function(req,res){
 		var day = dateObj.getUTCDate();
 		var year = dateObj.getUTCFullYear();
 		
-		Bills.aggregate([{$project: {billing_date: 1,from_date: 1, 
+		Bills.aggregate([{$project: {billing_date: 1,from_date: 1,billing_id:1,property:1,trip_amount:1, 
 		    month: {$month: '$billing_date'},
 		    dayOfMonth: {$dayOfMonth: '$billing_date'},
 		    year: {$year: '$billing_date'}}},

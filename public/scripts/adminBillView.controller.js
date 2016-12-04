@@ -20,12 +20,17 @@ function AdminBillViewControllerFn($state,$scope,$http,$rootScope) {
 		console.log("test output");
 		$scope.billdate = details.result[0].billing_date;
 		$scope.billid = details.result[0].billing_id;
-		$scope.user = details.result[0].user.email;
+		if(typeof details.result[0].user !== "undefined"){
+			$scope.user = details.result[0].user.email;
+		}
 		
-		$scope.type = details.result[0].property.category;
 		$scope.amount = details.result[0].trip_amount;
-		$scope.property = details.result[0].property.description;
-		$scope.address = details.result[0].property.address.formatted;
+		
+		if(typeof details.result[0].property !== "undefined"){
+			$scope.type = details.result[0].property.category;		
+			$scope.property = details.result[0].property.description;
+			$scope.address = details.result[0].property.address.formatted;
+		}
 		
 		//$scope.values = details.result;
 	})
