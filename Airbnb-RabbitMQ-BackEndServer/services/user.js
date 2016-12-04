@@ -125,6 +125,7 @@ function getUserProfile(msg,callback){
 function getHostProfile(msg,callback){
 
 console.log("getting host profile");
+console.log(msg);
 Users.findOne({"email":msg.email},function(err,user){
     if(err || user == null){
       callback(null,{"status":400,"result":"user not found"});
@@ -137,7 +138,7 @@ Users.findOne({"email":msg.email},function(err,user){
       var hostBirthDay = momentObj.format('YYYY-MM-DD');
       //1990-07-17
       var birthYear = hostBirthDay.substring(0,4);
-      var birthMonth = hostBirthDay.substring(6,7);
+      var birthMonth = hostBirthDay.substring(5,7);
       var birthDay = hostBirthDay.substring(8,10);
       console.log(hostBirthDay);
       var UserObject = 
@@ -154,7 +155,8 @@ Users.findOne({"email":msg.email},function(err,user){
           "birthMonth":birthMonth,
           "birthDay":birthDay,
           "gender": user.gender,
-          "profilepic":user.profilepic
+          "profilepic":user.profilepic,
+          "video":user.video
       };
 
       callback(null,{"status":200,"user":UserObject});
@@ -165,7 +167,8 @@ Users.findOne({"email":msg.email},function(err,user){
 
 function updateHostProfileDetails (msg,callback){
 
-
+console.log("inside updateHostProfileDetails");
+console.log(msg);
         
         Users.update(msg.query, msg.user, {upsert:true}, function(err, doc){
         

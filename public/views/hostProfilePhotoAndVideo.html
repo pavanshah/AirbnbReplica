@@ -70,13 +70,13 @@
     <div id="video-container" class="row">
       <div class="col-lg-7 space-md-4">
         <div id="parent-video-container" class="panel panel-dark video col-middle text-center placeholder">
-          <div class="placeholder-content" ng-if="video">
+          <div class="placeholder-content" ng-if="videoUpload">
             <h4>
               You haven’t recorded a video profile yet.
             </h4>
             <i class="icon icon-video icon-size-3"></i>
           </div>
-          <iframe width="350" height="350" ng-src="{{vm.host.video}}">
+          <iframe width="350" height="350" ng-src="{{video}}">
           </iframe>
         </div>
       </div>
@@ -89,7 +89,7 @@
           </li><li>Look into the camera to create that personal connection.
           </li><li>You’ll get a chance to preview your video before it uploads.
         </li></ul>
-       <button type="button" class="btn btn-primary" style="margin-left:5%" ng-click="vm.uploadVideos()"> Update Video </button>
+       <button type="button" class="btn btn-primary" style="margin-left:5%" ng-click="updateHostVideo()"> Update Video </button>
       </div>
    
     </div>
