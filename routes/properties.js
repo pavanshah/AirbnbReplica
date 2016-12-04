@@ -404,10 +404,12 @@ var sqlForBilling = function(req) {
 				{
 					host_firstname = req.body.property.host.firstname;
 				}
-				var mysql_query =  "insert into billinglogs (customer_name,customer_id,host_name,host_id,property_name,total_cost,city,date,month) values("+req.body.userFirstName+",'',"+host_firstname+","+req.body.property.host_id+","+req.body.property.propertyTitle+","+req.body.bill.trip_amount+","+req.body.property.address.city+","+year+","+month+");";
+				//var mysql_query =  "insert into billinglogs (customer_name,customer_id,host_name,host_id,property_name,total_cost,city,date,month) values("+req.body.userFirstName+",'',"+host_firstname+","+req.body.property.host_id+","+req.body.property.propertyTitle+","+req.body.bill.trip_amount+","+req.body.property.address.city+","+year+","+month+");";
+				var mysql_query =  "insert into billinglogs (customer_name,customer_id,host_name,host_id,property_name,total_cost,city,date,month) values( '"+req.body.userFirstName+"','','"+host_firstname+"','"+req.body.property.host_id+"','"+req.body.property.propertyTitle+"','"+req.body.bill.trip_amount+"','"+req.body.property.address.city+"','"+year+"','"+month+"');";
 
-
+				console.log(mysql_query);
 				mysqlPool.getConnection(function(err, connection) {
+					console.log("Inside sql connection");
 				if(err){
 					console.log("failed to connec in error");
 					console.log(err);
@@ -421,8 +423,10 @@ var sqlForBilling = function(req) {
 				}
 				
 				//var sqlBarChart = "select property_name as label,sum(total_cost) value from billinglogs where date = "+req.query.year +" group by property_name limit 10";
+				console.log("Gonna execute this");
 		        connection.query(mysql_query,function(err,results){
-		        	
+		        	console.log("SQL executed");
+		        	console.log(err);
 		        	//var barResultsJson = JSON.stringify(barResults);
 		            //var barResultOutput = JSON.parse(barResultsJson);
 		            connection.release();
@@ -507,6 +511,8 @@ var ConfirmBooking = function (req,res){
 				json({"result":"error in sqlconnection"});
 			});
 			*/
+			req.body.bill.trip_amount = 200;
+			console.log("Trip amount before calling"+req.body.bill.trip_amount);
 			sqlForBilling(req);
 			
 			Bill.GenerateBill(req, function(billResponse){
