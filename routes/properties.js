@@ -512,8 +512,7 @@ var ConfirmBooking = function (req,res){
 				json({"result":"error in sqlconnection"});
 			});
 			*/
-			//req.body.bill.trip_amount = 200;
-			console.log("Trip amount before calling"+req.body.bill.trip_amount);
+			
 			sqlForBilling(req);
 			
 			Bill.GenerateBill(req, function(billResponse){
