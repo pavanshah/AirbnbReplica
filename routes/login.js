@@ -286,10 +286,6 @@ var deleteLogin = function(req,res){
 //updateHostProfile function updates host profile details
 var updateHostProfile = function(req,res){
 		if(req.body.from != "card"){
-
-
-
-
 			console.log("Inside user Profile Update");
 			console.log("Inside user Profile Update");
 			
@@ -359,8 +355,9 @@ var updateHostProfile = function(req,res){
 	 		})	*/
 		} else
 		{
+			console.log("request from the card");
 		console.log(req.body);	
-		var query = {'email':req.body.email};
+		var query = {'email':req.session.user.emailId};
 		var carddetails = {
 				"creditcard" : req.body.cardNumber,
 				"expiryDate" : req.body.expiryDate,
@@ -371,9 +368,9 @@ var updateHostProfile = function(req,res){
 		console.log(req.body.carddetails);
 
 		msg_payload = {
-			"func": "updateHostCardDetails",
+			"func":  "updateHostCardDetails",
 			"query": query,
-			"body":body
+			"body":	 req.body.carddetails
 
 		}
 
@@ -418,39 +415,6 @@ var updateHostProfile = function(req,res){
  		
  		
 };
-
-var updateHostProfile = function(req,res){
-	console.log("Inside host Profile Update");
-	console.log(req.body); 
-	var query = {'email':req.session.user.emailId};
-
-	//console.log(req.body.user);
-	
-	Users.findOneAndUpdate(query, req.body.user, {upsert:true}, function(err, doc){
-		
-	    if (err) {
-	    	res
-			.status(400)
-			.send({"result":"Bad request"});
-			return;
-	    }
-	    else {
-	    	console.log(doc);
-	res
- 	.status(200)
- 	.send({"result":"host Updated"});
-		
-	};
-	})	
-};
-
-
-
-
-
-
-
-
 
 
 var updateProfile = function(req,res){

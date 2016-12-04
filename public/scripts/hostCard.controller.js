@@ -3,6 +3,7 @@ var app = angular.module('Airbnb');
 
 function HostCardDetails($state,$scope,$http) {	
 	var vm = this;
+	
 	$scope.cardNumber='';
 	$scope.expiryDate='';
 	$scope.cvv=''
