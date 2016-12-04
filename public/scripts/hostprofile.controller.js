@@ -27,7 +27,9 @@ function HostProfileFn($state,$scope,$http) {
 	  }
 	  */
 	$scope.getHostDetails = function(){
-console.log("geting host details");
+		
+		
+		console.log("geting host details");
 		$http.get('/getHostDetails').then(function(response){
 			console.log(response.data);
 			$scope.firstname = response.data.user.firstname;
@@ -56,20 +58,17 @@ console.log("geting host details");
 		vm.host.birthDay = $scope.birthDay;
 		vm.host.birthMonth = $scope.birthMonth;
 		console.log("calling updateProfile");
+		console.log(vm.host);
 		$http.post('/updateHost',{"user":vm.host}).then(function(response){
 
 			console.log(response.data);
 
 		})
 		
-		/*$http.post('/updateHost',{"firstname":$scope.firstname,"lastname":$scope.lastname,
-			"email":$scope.email,"phonenumber":$scope.phonenumber,"gender":$scope.gender,
-			"address":$scope.address,"birthYear":$scope.birthYear,"birthDay":$scope.birthDay,
-			"birthMonth":$scope.birthMonth
-			}).then(function(response){
-				console.log(response.data);
-			});*/
+		
 	}
+	
+	
 	$scope.getHostDetails();
 }
 	

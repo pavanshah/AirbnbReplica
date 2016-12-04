@@ -1,43 +1,37 @@
 var app = angular.module('Airbnb');
-
-
-function hostProfilePhotoAndVideoFn($state,$scope,$http) {
+function hostProfilePhotoAndVideoFn($state,$scope,$http,$sce) {
 	var vm = this;
 	vm.test = "new";
+	//$scope.video = $sce.trustAsResourceUrl("https://www.youtube.com/embed/NVlYwUrmh1s");
 	
 	
 	vm.populateHostProfile = function() {
 		
 		$http.get('/getHostDetails').then(function(response){
-	    console.log(response.data.user);
+	    console.log(response.data);
 			
 			vm.host=response.data.user;
+			$scope.video=$sce.trustAsResourceUrl(response.data.user.video);
 			
-			vm.host.video = "https://youtu.be/u4KhCg7Oj3o";
-			/*
+			
+			
 			if(vm.host.video==undefined||vm.host.video==null){
 				
 				console.log("setting default image");
-				$scope.video = true;
-				
+				$scope.videoUpload = true;
 			} else {
 				
-				$scope.video = false;
-				vm.host.video = vm.host.video;
+				$scope.videoUpload = false;
 				
-			}*/
+			}
 			
 			if(vm.host.profilepic==undefined||vm.host.profilepic==null){
 				console.log("setting default image");
 				vm.host.profilepic="/public/images/generic-profile.png"
-			} else {
-				vm.host.profilepic = vm.host.profilepic;
-			}
-
+			} 
 		});
 		
 		vm.updateProfilePic = function(){
-
 			filepicker.pick(
 			  {
 			    mimetype: 'image/*',
@@ -54,23 +48,19 @@ function hostProfilePhotoAndVideoFn($state,$scope,$http) {
 			  function(FPError){
 			    console.log(FPError.toString());
 			  });
-
 		}
 		vm.UpdateProfile = function() {
-
 			console.log("calling updateProfile");
 			$http.post('/updateHost',{"user":vm.host}).then(function(response){
-
 				console.log(response.data);
 				
 				vm.showAlert=true;
-
 			})
 		}
 		
 	}
 	
-	vm.uploadVideos = function() {
+	$scope.updateHostVideo = function() {
 		
 		filepicker.pickMultiple(
 			{mimetype: 'video/*',
@@ -88,23 +78,24 @@ function hostProfilePhotoAndVideoFn($state,$scope,$http) {
 			    	
 			    //}
 			    	console.log("after");
-			    	console.log(vm.test);
+			    	console.log(Blob[0].url);
+			    	//$scope.video = $sce.trustAsResourceUrl(Blob[0].url);
 			    	$scope.$apply(function () {
-			    		$scope.newtest = Blob[0].url;
-			    		
+			    		//$scope.newtest = Blob[0].url;
+			    		$scope.video = $sce.trustAsResourceUrl(Blob[0].url);
+			    		vm.host.video = Blob[0].url; 
+			    		vm.UpdateProfile();
 			        });
 			    	
 			    	console.log("yashasas");
-			    console.log(vm.host.video);
+			    //console.log(vm.host.video);
 			  },
 			  function(FPError){
 			    console.log(FPError.toString());
 			  });
-
 	}
 	
 		
 	vm.populateHostProfile();
 }
-
 app.controller('hostProfilePhotoAndVideo',hostProfilePhotoAndVideoFn);
