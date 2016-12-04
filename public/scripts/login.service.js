@@ -1,7 +1,7 @@
 var app = angular.module("Airbnb");
 
 
-function loginServiceFn($http,bookingDataService,$state) {
+function loginServiceFn($http,bookingDataService,$state,$rootScope) {
 	
 	var userData = {};
 
@@ -43,6 +43,7 @@ function loginServiceFn($http,bookingDataService,$state) {
 		return $http.get("/logout").
 			then(function(response) {
 				userData = {};
+				$rootScope.$emit('userLoggedIn');
 				bookingDataService.deleteBooking();
 				
 				return response;

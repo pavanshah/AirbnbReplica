@@ -199,15 +199,41 @@ app.config(function($stateProvider, $urlRouterProvider) {
 	
 });
 
-app.run(function($rootScope,$http,$state) {
+app.run(function($rootScope,$http,$state,loginService) {
   $rootScope.$on('$stateChangeStart',
    function(event, toState  , toParams
                    , fromState, fromParams) 
-    {
-      if(toState.name=="admin"){
+    {// for admin states
+      if(toState.name=="admin" || toState.name=="adminProfileView" ||toState.name=="adminBillView" ||toState.name=="adminHostSearch" ||
+      	toState.name=="adminBillSearch"){
       	$http.get("/isUserLoggedIn").
       	then(function(response) {
-      		
+      		if(response.status==200){
+      			if(response.data.UserType!="Admin" && response.data.UserType!="admin"){
+      				event.preventDefault();
+      				loginService.logout();
+      				$state.go("home");
+      			}
+      		}
+      	},function (err) {
+      		event.preventDefault();
+      		$state.go("home");
+      	})
+      }
+      /// for user states
+      else if(toState.name=="checkout" || toState.name=="orderSuccess" ||toState.name=="userBill" ||toState.name=="userHome" ||
+      	toState.name=="userProfile" ||
+      	toState.name=="bidCofirmationPage" ||
+      	toState.name=="viewUserBids"){
+      	$http.get("/isUserLoggedIn").
+      	then(function(response) {
+      		if(response.status==200){
+      			if(response.data.UserType!="User" && response.data.UserType!="user"){
+      				event.preventDefault();
+      				loginService.logout();
+      				$state.go("home");
+      			}
+      		}
       	},function (err) {
       		event.preventDefault();
       		$state.go("home");
