@@ -34,8 +34,8 @@ function authenticate(msg,callback){
 
 
 function getHostTrip(msg,callback){
-//	console.log("get host trip");
-//	console.log(msg);
+	console.log("get host trip");
+	console.log(msg);
 	  Trip.find({"host_id":msg.user_id},function(err,trip){
 	    console.log("found");
 	   // console.log(trip);
@@ -186,14 +186,24 @@ console.log(msg);
 
 function updateHostProfileCardDetails (msg,callback){
 
-
-      Users.findOneAndUpdate(msg.query, msg.body, {upsert:false}, function(err, doc){
+		console.log(msg.body);
+		console.log(msg.body.creditcard);
+		console.log(msg.body.cvv);
+		console.log(msg.query.email);
+		console.log("RabbitMq updateHostProfileCardDetails");
+		var expiryYear = msg.body.expiryDate.substring(0,4);
+		var expirymonth = msg.body.expiryDate.substring(5,7);
+		console.log(expiryYear);
+		console.log(expirymonth);
+		
+	Users.update({"email":msg.query.email}, {$set : {carddetails : {creditcard : msg.body.creditcard, expirymonth : expirymonth,expiryyear : expiryYear, cvv : msg.body.cvv}}}, function(err,result) {
       if (err) {
+    	  
          callback(null,{"status":400,"result":"Bad request"});
 
           }
         else {
-          console.log(doc);
+          console.log(result);
          callback(null,{"status":200,"result":"card details saved"});
           };
     })

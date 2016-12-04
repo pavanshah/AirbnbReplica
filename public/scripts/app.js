@@ -172,8 +172,9 @@ app.config(function($stateProvider, $urlRouterProvider) {
 	})
 	.state('hostCardDetails',{
 		url:"/hostCardDetails",
-		templateUrl:"public/views/HostCardDetails.html"
-		
+		templateUrl:"public/views/HostCardDetails.html",
+		controller:"hostCardDetails",
+		controllerAs:"vm"
 	})
 	.state('hostProfilePhotoAndVideo',{
 		url:"/hostProfilePhotoAndVideo",

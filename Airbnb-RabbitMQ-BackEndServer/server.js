@@ -157,6 +157,16 @@ cnn.on('ready', function(){
 							});
 					});
 				break;
+				case "updateHostCardDetails":
+					user.updateHostProfileCardDetails(message,function(err,res){
+
+					cnn.publish(m.replyTo, res, {
+								contentType:'application/json',
+								contentEncoding:'utf-8',
+								correlationId:m.correlationId
+							});
+					});
+				break;
 
 		};
 	});
