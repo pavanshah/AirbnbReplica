@@ -1,7 +1,7 @@
 var app = angular.module("Airbnb");
 
 
-var TripControllerFn = function ($http,$state,tripsService) {
+var TripControllerFn = function ($http,$state,tripsService,$mdDialog) {
 	
 	var vm = this;
 
@@ -78,6 +78,16 @@ var TripControllerFn = function ($http,$state,tripsService) {
 			if(response.status == 200)
 			{
 				vm.trips[tripId].submitted = 1;
+				
+				var confirm = $mdDialog.confirm()
+            	.title('Successfully Updated Your Reviews!')
+           	 	.ariaLabel('Created!')
+            	.ok('Ok');
+            
+            $mdDialog.show(confirm).then(function() {
+               }, function() {
+              	 console.log("it worked");
+            });
 			}
 			else
 			{
