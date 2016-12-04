@@ -80,10 +80,45 @@
 	 -->
 	<md-content>
     <md-list>
+    
+    <md-list-item class="md-3-line" style="background:#EF5350;min-height:45px;">
+        <div class="md-list-item-text text-center" style="padding-left:15px;padding-top:0px;padding-bottom:0px;">
+          <h3>Billing ID</h3>                    
+        </div>
+      	<div class="md-list-item-text" style="padding-left:0px;padding-top:0px;padding-bottom:0px;">
+          <h3></h3>                    
+        </div>
+        <div class="md-list-item-text" style="padding-left:0px;padding-top:0px;padding-bottom:0px;">
+          <h3>Billing Date</h3>          
+          
+        </div>
+        <div class="md-list-item-text" style="padding-left:0px;padding-top:0px;padding-bottom:0px;">
+          <h3>Property</h3>          
+          
+        </div>
+        <div class="md-list-item-text" style="padding-left:0px;padding-top:0px;padding-bottom:0px;">
+          <h3>Trip Amount</h3>          
+          
+        </div>           
+       <md-divider ></md-divider> 
+      </md-list-item>
+    
       <md-list-item class="md-3-line" ng-repeat="item in values" ng-click="showBill(item._id)">
       <img src="./images/billinfo.jpg"  style="border-radius:30%;padding-top:20px;" height="60" width="60">
+      <div class="md-list-item-text" style="padding-left:15px;padding-top:15px;padding-bottom:15px;">
+          <h3>{{item.billing_id}}</h3>          
+          
+        </div>
         <div class="md-list-item-text" style="padding-left:65px;padding-top:15px;padding-bottom:15px;">
           <h3>{{item.billing_date}}</h3>          
+          
+        </div>
+        <div class="md-list-item-text" style="padding-left:15px;padding-top:15px;padding-bottom:15px;">
+          <h3>{{item.property.propertyTitle}}</h3>          
+          
+        </div>
+        <div class="md-list-item-text" style="padding-left:15px;padding-top:15px;padding-bottom:15px;">
+          <h3>{{item.trip_amount}}</h3>          
           
         </div>
         <!-- <md-button class="md-secondary">Respond</md-button> -->

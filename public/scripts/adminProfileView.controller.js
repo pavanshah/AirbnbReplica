@@ -87,15 +87,36 @@ function AdminProfileViewControllerFn($state,$scope,$http,$rootScope,$mdDialog,$
 			$scope.lastname = details.result[0].lastname;
 			console.log("lasname is:"+vm.lastname );
 			$scope.status = details.result[0].user_status;
-			var dateObj = new Date(details.result[0].birthdate);
+			console.log("birtdate");
+			console.log(details.result[0].birthdate);
+			var dateVal = details.result[0].birthdate || "12/12/1991";
+			var dateObj = new Date(dateVal);
 			var month = dateObj.getUTCMonth() + 1; //months from 1-12
 			var day = dateObj.getUTCDate();
 			var year = dateObj.getUTCFullYear();
 			$scope.birthdate = month + '/'+day+'/'+year;
-			$scope.address = details.result[0].address.street+','+details.result[0].address.city+','+details.result[0].address.state+','+details.result[0].address.country;
-			$scope.rating = details.result[0].avgrating;
-			$scope.phone = details.result[0].phone;
-			$scope.email = details.result[0].email;
+			
+			var streetVal = "";
+			var cityVal ="";
+			var stateVal ="";
+			var countryVal ="";
+				
+			if(typeof details.result[0].address !== "undefined"){
+				streetVal = details.result[0].address.street || "";
+				cityVal = details.result[0].address.city || "";
+				stateVal = details.result[0].address.state || "";
+				countryVal =  details.result[0].address.country || "";
+				$scope.address = streetVal+','+cityVal+','+stateVal+','+countryVal;
+			}
+			else{
+				$scope.address = "";
+			}
+			
+			
+			
+			$scope.rating = details.result[0].avgrating || "";
+			$scope.phone = details.result[0].phone|| "";
+			$scope.email = details.result[0].email || "";
 			$scope.reviews = details.result[0].Reviews;
 			
 			
