@@ -1,6 +1,6 @@
 var app = angular.module('Airbnb');
 
-function auctionablePropertyDetailsControllerFn($state,$stateParams,$http,$uibModal,loginService,bookingDataService) {
+function auctionablePropertyDetailsControllerFn($rootScope,$state,$stateParams,$http,$uibModal,loginService,bookingDataService) {
 	
 	var vm = this;
 	vm.property = {};
@@ -65,6 +65,7 @@ function auctionablePropertyDetailsControllerFn($state,$stateParams,$http,$uibMo
 
 		     modalInstance.result.then(function (userData) {
 			     vm.userData = userData;
+			     $rootScope.$emit("userLoggedIn");
 			     vm.placeBid();
 			     /*loginService.login(userData).
 			     then(function(isLoggedIn) {
