@@ -35,6 +35,7 @@ function viewListingsControllerFn($state,propertyService,locationService,$stateP
       vm.properties =  _.filter(vm.storedProperties,function(property) {
           return property.base_price >= modelValue && property.base_price <= highValue;
       });
+      drawMarkersOnMap(vm.properties); 
   }
 
 
