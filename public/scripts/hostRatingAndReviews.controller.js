@@ -1,7 +1,7 @@
 var app = angular.module("Airbnb");
 
 
-var HostRatingAndReviewsFn = function ($http,$state,$scope,tripsService) {
+var HostRatingAndReviewsFn = function ($http,$state,$scope,tripsService,$mdDialog) {
 	var vm = this;
 	//$scope.reviewDiv = 0;
 	vm.rate = 1;
@@ -61,9 +61,24 @@ var HostRatingAndReviewsFn = function ($http,$state,$scope,tripsService) {
 
 		$http.post('/submitHostReviewForTrip',vm.trips[tripId]).
 		then(function(response) {
+			console.log("after posting the details");
+			vm.trips[tripId].submitted = 1;
+			console.log(vm.trips[tripId].submitted);
+			var confirm = $mdDialog.confirm()
+            .title('Successfully Updated Your Reviews!')
+            .ariaLabel('Created!')
+            .ok('Ok');
+            
+            $mdDialog.show(confirm).then(function() {
+               console.log("Do u think it ll work");
+               //window.location.assign("#/hostHomePage");
+               }, function() {
+              	 console.log("it worked");
+            });
 			if(response.status == 200)
 			{
 				vm.trips[tripId].submitted = 1;
+				
 			}
 			else
 			{
@@ -71,6 +86,8 @@ var HostRatingAndReviewsFn = function ($http,$state,$scope,tripsService) {
 			}
 		});
 	}
+	
+	
 	vm.rateHost = function(tripId) {
 		
 		var temp = vm.trips[tripId];
@@ -100,7 +117,7 @@ var HostRatingAndReviewsFn = function ($http,$state,$scope,tripsService) {
 		  });
 
 	}
-	vm.submitReview = function(tripId) {
+	/*vm.submitReview = function(tripId) {
 		console.log(vm.trips[tripId]);
 
 		$http.post('/submitHostReviewForTrip',vm.trips[tripId]).
@@ -114,7 +131,7 @@ var HostRatingAndReviewsFn = function ($http,$state,$scope,tripsService) {
 				vm.trips[tripId].submitted = 0;
 			}
 		});
-	}
+	}*/
 	getHostTrips();
 };
 

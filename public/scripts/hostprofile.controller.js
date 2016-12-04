@@ -1,7 +1,7 @@
 var app = angular.module('Airbnb');
 
 
-function HostProfileFn($state,$scope,$http) {	
+function HostProfileFn($state,$scope,$http,$mdDialog) {	
 	var vm = this;
 	console.log("inside this controller");
 	$scope.firstname = '';
@@ -45,7 +45,7 @@ function HostProfileFn($state,$scope,$http) {
 			console.log(vm.host);
 	});
 	}
-	
+	$scope.getHostDetails();
 	$scope.save = function(){
 		console.log("save button clicked");
 		vm.host.firstname = $scope.firstname;
@@ -62,6 +62,19 @@ function HostProfileFn($state,$scope,$http) {
 		$http.post('/updateHost',{"user":vm.host}).then(function(response){
 
 			console.log(response.data);
+			
+			var confirm = $mdDialog.confirm()
+            .title('Successfully Updated Your Details!')
+            .textContent("Lets go back to the home")
+            .ariaLabel('Created!')
+            .ok('Ok');
+            
+            $mdDialog.show(confirm).then(function() {
+               console.log("Do u think it ll work");
+               window.location.assign("#/hostHomePage");
+               }, function() {
+              	 console.log("it worked");
+            });
 
 		})
 		
@@ -69,7 +82,7 @@ function HostProfileFn($state,$scope,$http) {
 	}
 	
 	
-	$scope.getHostDetails();
+	
 }
 	
 	

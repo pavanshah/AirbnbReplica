@@ -578,7 +578,8 @@ var ConfirmBooking = function (req,res){
 var calculateBill = function (req,res)
 {
 	//console.log("base price: "+ req.body.property.base_price);
-
+	console.log("Booking quantity:",req.body.qty);
+	var roomQty = req.body.qty;
 	var noWeekends =0,billAmount=0,weekend_surge=0,holiday_surge=0;
 	var WeeklyDiscount=false,MonthlyDiscount=false,HolidaySeason=false;
 	var NumberOfDays = (((new Date(req.body.bookingDates.end_date) - new Date(req.body.bookingDates.start_date))/86400000)+1);
@@ -618,7 +619,7 @@ var calculateBill = function (req,res)
 		if(HolidaySeason==true){
 			console.log("calculating price with holiday");
 
-			base_bill = Math.round( (NumberOfDays * req.body.property.base_price) * 1e2 ) / 1e2  ;
+			base_bill = Math.round( (NumberOfDays * req.body.property.base_price * roomQty) * 1e2 ) / 1e2  ;
 			holiday_surge = Math.round((base_bill * (req.body.property.princing_catalog.seasonal_surge - 1)) *1e2) /1e2;
 			discount_amount = 0;
 			bill_amount = base_bill+holiday_surge; 
@@ -627,7 +628,7 @@ var calculateBill = function (req,res)
 		else if(MonthlyDiscount==true)
 		{
 			console.log("calculating price without holiday with monthly discount");
-			base_bill = Math.round( (NumberOfDays * req.body.property.base_price) * 1e2)/1e2;
+			base_bill = Math.round( (NumberOfDays * req.body.property.base_price * roomQty) * 1e2)/1e2;
 
 			weekend_surge = Math.round((NumberofWeekends * req.body.property.base_price * (req.body.property.princing_catalog.weekend_surge - 1 ))*1e2)/1e2;
 
@@ -643,7 +644,7 @@ var calculateBill = function (req,res)
 
 		{
 			console.log("calculating price without holiday with weekly disccount");
-			base_bill = Math.round((NumberOfDays * req.body.property.base_price)*1e2)/1e2;
+			base_bill = Math.round((NumberOfDays * req.body.property.base_price*roomQty)*1e2)/1e2;
 			weekend_surge = Math.round((NumberofWeekends * req.body.property.base_price * (req.body.property.princing_catalog.weekend_surge -1 ))*1e2)/1e2;
 			discount_amount = Math.round(((base_bill + weekend_surge) *(req.body.property.princing_catalog.weekly_discount/100))*1e2)/1e2; 
 			console.log("discount amount:"+ discount_amount + "weekly surge:"+weekend_surge);
@@ -657,7 +658,7 @@ var calculateBill = function (req,res)
 
 			console.log("No discounts, No holiday");
 
-			base_bill = Math.round((NumberOfDays * req.body.property.base_price)*1e2)/1e2;
+			base_bill = Math.round((NumberOfDays * req.body.property.base_price*roomQty)*1e2)/1e2;
 			weekend_surge = Math.round((NumberofWeekends * req.body.property.base_price * (req.body.property.princing_catalog.weekend_surge -1 ))*1e2)/1e2;
 			discount_amount = 0;
 			bill_amount = Math.round((base_bill + weekend_surge - discount_amount) *1e2)/1e2;
