@@ -1,7 +1,7 @@
 var app = angular.module("Airbnb");
 
 
-function loginServiceFn($http,bookingDataService,$state) {
+function loginServiceFn($http,bookingDataService,$state,$rootScope) {
 	
 	var userData = {};
 
@@ -10,6 +10,7 @@ function loginServiceFn($http,bookingDataService,$state) {
 		return $http.post("/userLogIn",userData).
 		then(function(response) {
 			console.log("response",response);
+			
 			if(response.status==200){
 				if(response.data.userLoggedIn){
 					return response.data.userLoggedIn;
@@ -26,12 +27,14 @@ function loginServiceFn($http,bookingDataService,$state) {
 		then(function(response) {
 			if(response.status==200){
 				userData = response.data.user;
-				if(userData.UserType=="Host"){
+				
+				/*if(userData.UserType=="Host"){
 					$state.go("becomeahost");
 				}
 				if(userData.UserType=="Admin"){
 					$state.go("admin");
 				}
+				*/
 				return userData;
 			}
 		},function(err) {
@@ -43,6 +46,7 @@ function loginServiceFn($http,bookingDataService,$state) {
 		return $http.get("/logout").
 			then(function(response) {
 				userData = {};
+				$rootScope.$emit('userLoggedIn');
 				bookingDataService.deleteBooking();
 				
 				return response;

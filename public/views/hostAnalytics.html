@@ -2,7 +2,7 @@
 <br>
 <br>
 	
-	<h1 style = "text-align: center;">AirBnB Analysis</h1>	
+	<h1 style = "text-align: center;">AirBnB Clickstream Analysis</h1>	
 
 	<div class="row card">
 		<div class="col-md-8"> 
@@ -21,7 +21,7 @@
       			data="vm.donutData"
       			config="vm.config">
     		</nvd3>
-			<div class="text-center fontchange">Area Less Seen Of AirBnB</div>
+			<div class="text-center fontchange">Area Less Seen(Least visited pages)</div>
 		</div>
 
 	</div>
@@ -31,7 +31,7 @@
 	
 	
 	<div class="row card">
-		<div class="col-md-8"> 
+		<div class="col-md-6"> 
 			<nvd3 
 				options="vm.propertyClickOptions"
       			data="vm.propertyData"
@@ -40,7 +40,7 @@
 			<div class="text-center fontchange">Property Clicks Per Date(For Last 10 Days)</div>
 		</div>	
 
-		<div class="col-md-4"> 
+		<div class="col-md-6"> 
 			<nvd3 
 				options="options"
       			data="data"

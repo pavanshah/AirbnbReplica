@@ -19,16 +19,20 @@
     "bootstrap": "^3.3.7",
     "angular-nvd3": "^1.0.9",
     "underscore": "^1.8.3",
-    "angular-material": "^1.1.1",
+    "angular-material": "1.0.0",
     "angular-sanitize": "^1.5.8",
     "ng-marviluz": "ng-material#^0.0.4",
     "ngAnimate": "*",
     "angular-aria": "^1.5.8",
     "angular-route": "^1.5.8",
     "moment": "^2.17.0",
-    "angularjs-slider": "^5.8.7"
+    "angularjs-slider": "^5.8.7",
+    "angular-messages": "^1.5.9"
   },
   "devDependencies": {
     "daterange.js": "daterange#^0.3.0"
+  },
+  "resolutions": {
+    "angular-material": "1.0.0"
   }
 }

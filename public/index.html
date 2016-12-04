@@ -12,7 +12,7 @@
 	<link rel="stylesheet" type="text/css" href="public/css/hostHomePage.css">
 	<link rel="stylesheet" type="text/css" href="public/css/property-details.css">
 	<link rel="stylesheet" href="/bower_components/angular-google-places-autocomplete/src/autocomplete.css">
-	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/angular-nvd3/1.0.8/angular-nvd3.min.js">
+	
 	<link rel="stylesheet" type="text/css" href="../css/addproperty.css">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 <!-- Latest compiled and minified JavaScript -->
@@ -31,16 +31,16 @@
 <link rel="manifest">
 <!-- kushal addded -->
 
-  <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/1.0.0/angular-material.min.css">
 
- <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/1.0.0/angular-material.min.css">
+<link type="text/css" rel="stylesheet" href="public/css/angular-material.css">
 
-<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-animate.min.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-aria.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-messages.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/angular_material/1.0.0/angular-material.min.js"></script>
-    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-route.js"></script>  
+<script type="text/javascript" src="bower_components/angular/angular.min.js"></script> 
+<script src="/bower_components/angular-animate/angular-animate.js"></script>
+<script type="text/javascript" src="bower_components/angular-aria/angular-aria.min.js"></script>
+<script src="/bower_components/angular-messages/angular-messages.js"></script>    
+<script type="text/javascript" src="bower_components/angular-material/angular-material.min.js"></script>
+<script type="text/javascript" src="bower_components/angular-route/angular-route.min.js"></script>
+
 
 <script type="text/javascript" src="/bower_components/angularjs-slider/dist/rzslider.js"></script> 
 
@@ -69,10 +69,10 @@
 	    </div>
 	    <div class="search-section">
 		    <form class="">
-                <input type="text" class="hidden-xs" force-selection="true" g-places-autocomplete ng-model="vm.location" placeholder="Where to?">
+                <input type="text" class="hidden-xs" force-selection="true" g-places-autocomplete ng-model="vm.location" placeholder="Where to?" ng-disabled="vm.user.UserType=='Admin'">
                 <img src="public/images/search-icon.png" alt="search-icon" class="search-icon hidden-xs">
                 <!-- Open Search modal on click of btn for mobile resolution -->
-                <button class="visible-xs search-btn-mobile"><img src="public/images/search-icon-mobile.png" alt="search-icon" class="">Where to?</button>
+                <button class="visible-xs search-btn-mobile"><img src="public/images/search-icon-mobile.png" alt="search-icon" class="" ng-disabled="vm.user.UserType=='Admin'">Where to?</button>
                 
 		    </form>
 		</div>    
@@ -82,8 +82,8 @@
 	    		<ul class="nav navbar-nav navbar-right">
 	    			<li class="visible-xs"><a href="#"><span>Home</span></a></li>
 	    			<li class="visible-xs"><a href="#"><span>Download the App</span></a></li>
-			        <li class=""><a href="#/becomeahost"><span class="have-border">Become a Host</span></a></li>
-			        <li class="hidden-xs"><a href="#"><span>Help</span></a></li>
+			        <li class="" ng-if="!vm.user.UserType"><a href="#/becomeahost"><span class="have-border">Become a Host</span></a></li>
+			        <li class="hidden-xs" ng-if="!vm.user.UserType"><a href="#"><span>Help</span></a></li>
 			        <li class="" ng-if="!vm.user.email" ng-click="vm.openSignupModal()"><a href=""><span>Sign Up</span></a></li>
 			        <li class="" ng-if="!vm.user.email" ng-click="vm.openLoginModal()"><a href=""><span>Log In</span></a></li>
 			        <li class="" ng-if="vm.user.email"><a href="" class="logout-popup-wrapper position-relative">
@@ -133,6 +133,7 @@
 <script type="text/javascript" src="bower_components/angular-aria/angular-aria.min.js"></script>
 <script type="text/javascript" src="bower_components/angular-route/angular-route.min.js"></script>
 <script type="text/javascript" src="bower_components/angular-route/angular-route.min.js"></script> -->
+
 
 
 <script type="text/javascript" src="public/scripts/app.js"></script>

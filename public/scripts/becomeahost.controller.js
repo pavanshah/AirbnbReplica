@@ -21,7 +21,7 @@ function BecomeAHostControllerFn($state,$http,$uibModal,$window) {
 	
 	function openLoginModal() {
 		
-		var modalInstance = $http.open({
+		var modalInstance = $uibModal.open({
 	 			 animation : true,
 			     templateUrl: 'public/views/loginModal.html',
 		      	 size: "md",

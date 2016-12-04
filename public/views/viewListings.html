@@ -61,7 +61,7 @@
 					</div>
 				</div>
 			</div>
-			<div class="single-row col-lg-12 col-md-12 col-sm-12 col-xs-12">
+			<!-- <div class="single-row col-lg-12 col-md-12 col-sm-12 col-xs-12">
 				<div class="text-center col-lg-2 col-md-12 col-sm-12 col-xs-12 no-padding">
 					<p class="section-label">Room type</p>
 				</div>
@@ -70,8 +70,8 @@
 						<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding checkbox">
 							<label for="entireHome" class="promotions-checkbox">
 								<img class="checkbox-img" src="public/images/room-list-images/entire-home.png">
-			                    <input type="checkbox" id="entireHome" name="entireHome" >
-			                    Entire Home
+			                    <input type="checkbox" ng-model="vm.roomTypeFilter.entirePlace" id="entireHome" name="entireHome" ng-change="vm.filterByRoomType()">
+			                    Entire Place
 			                </label>
 						</div>
 					</div>
@@ -79,7 +79,7 @@
 						<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding checkbox">
 							<label for="privateRoom" class="promotions-checkbox">
 								<img class="checkbox-img" src="public/images/room-list-images/private-room.png">
-			                    <input type="checkbox" id="privateRoom" name="privateRoom" >
+			                    <input ng-model="vm.roomTypeFilter.privateRoom" type="checkbox" id="privateRoom" name="privateRoom" ng-change="vm.filterByRoomType()">
 			                    Private Room
 			                </label>
 						</div>
@@ -88,13 +88,13 @@
 						<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding checkbox">
 							<label for="sharedRoom" class="promotions-checkbox">
 								<img class="checkbox-img" src="public/images/room-list-images/shared-room.png">
-			                    <input type="checkbox" id="sharedRoom" name="sharedRoom" >
+			                    <input type="checkbox" ng-model="vm.roomTypeFilter.sharedRoom" id="sharedRoom" name="sharedRoom" ng-change="vm.filterByRoomType()">
 			                    Shared Room
 			                </label>
 						</div>	
 					</div>
 				</div>
-			</div>
+			</div> -->
 			<div class="single-row col-lg-12 col-md-12 col-sm-12 col-xs-12">
 				<div class="text-center col-lg-2 col-md-12 col-sm-12 col-xs-12 no-padding">
 					<p class="section-label">Price range</p>

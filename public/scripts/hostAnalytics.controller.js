@@ -13,6 +13,7 @@ function hostAnalyticsControllerFn($state,$scope,$http) {
 	                x: function(d){return d.key;},
 	                y: function(d){return d.y;},
 	                showLabels: true,
+	                color : ["#1f77b4 ", "#ff7f0e ", "#2ca02c ", "#d62728 ", "#9467bd ", "#8c564b ", "#e377c2 ", "#7f7f7f ", "#bcbd22 ", "#17becf "],
 
 	                
 	                duration: 100,
@@ -36,17 +37,48 @@ function hostAnalyticsControllerFn($state,$scope,$http) {
 		}).success(function(details) {
 			//console.log(details);
 
+			var total = details.login_page+details.logout_page+details.bill_page +details.editprofile_page+details.host_page+details.property_page+details.propertydescription_page+details.signup_page+details.trip_page;
+			
+			console.log("lets test this");
+
+			console.log(typeof details.login_page);
+			console.log(typeof details.logout_page);
+			console.log( details.login_page);
+			console.log( details.logout_page);
+			console.log( details.bill_page);
+			console.log( details.editprofile_page);
+			console.log( details.host_page);
+			console.log( details.property_page);
+			console.log( details.propertydescription_page);
+			console.log( details.signup_page);
+			console.log( details.trip_page);
+			
+
+
+			var sum = details.login_page+details.logout_page+details.bill_page +details.editprofile_page+details.host_page+details.property_page+details.propertydescription_page+details.signup_page+details.trip_page;
+			var login_page = sum - details.login_page;
+			var logout_page = sum - details.logout_page;
+			var bill_page = sum - details.bill_page;
+			var editprofile_page  = sum - details.editprofile_page;
+			var host_page = sum - details.host_page;
+			var property_page = sum - details.property_page;
+			var propertydescription_page = sum - details.propertydescription_page;
+			var signup_page = sum - details.signup_page;
+			var trip_page = sum - details.trip_page;
+
+			console.log(login_page);
+			console.log(logout_page);
 				vm.donutData = [
 	    		
-				        { key : "Login Page" , y : details.login_page },
-				        { key : "Logout Page" , y : details.logout_page },
-				        { key : "Bill Page" , y : details.bill_page },
-				        { key : "Profile Page" , y : details.editprofile_page },
-				        { key : "Host Page" , y: details.host_page},
-				        { key : "Search Property" , y : details.property_page },
-				        { key : "Property Details" , "value" : details.propertydescription_page },
-				        { key : "Signup Page" , "value" : details.signup_page },
-				        { key : "Trip Page" , "value" : details.trip_page }
+				        { key : "Login Page" , y : Number(login_page) },
+				        { key : "Logout Page" , y : Number(logout_page) },
+				        { key : "Bill Page" , y : Number(bill_page) },
+				        { key : "Profile Page" , y : Number(editprofile_page) },
+				        { key : "Host Page" , y: Number(host_page)},
+				        { key : "Search Property" , y : Number(property_page) },	
+				        { key : "Property Details" , y : Number(propertydescription_page) },
+				        { key : "Signup Page" , y : Number(signup_page) },
+				        { key : "Trip Page" , y : Number(trip_page) }
 
 	    			];
 	    });
@@ -70,6 +102,8 @@ function hostAnalyticsControllerFn($state,$scope,$http) {
 		        x: function(d){ return d.label; },
 		        y: function(d){ return d.value; },
 		        showValues: true,
+		       // color : ["#1f77b4 ", "#ff7f0e ", "#2ca02c ", "#d62728 ", "#9467bd ", "#8c564b ", "#e377c2 ", "#7f7f7f ", "#bcbd22 ", "#17becf "],
+		         // color : ["red", "blue"],
 		        valueFormat: function(d){
 		            return d3.format()(d);
 		        },
@@ -156,7 +190,14 @@ vm.pageClickData();
 
 			for(var i = 0 ; i < details.length ; i++)
 			{
-				valueArray.push({"label" : details[i][0].property_id , "value" : details[i][0].count});
+				if(details[i][0].count == 0)
+				{
+
+				}
+				else
+				{
+					valueArray.push({"label" : details[i][0].property_id , "value" : details[i][0].count});
+				}
 			}
 
 			console.log("valueArray "+valueArray);
@@ -226,7 +267,7 @@ vm.pageClickData();
 			url : '/propertyReviews'
 			}).success(function(details) {
 
-			console.log(details);
+			console.log("Ratings data "+details);
 			var maxReviews;
 
 			for(var i = 0 ; i < details.length ; i++)
@@ -263,16 +304,6 @@ vm.pageClickData();
 				console.log(displayObj.reviews[i].rating);
 			}
 			
-			//console.log("displayArray "+displayArray);
-
-			var sin = [],sin2 = [], cos = [];
-
-		            //Data is represented as an array of {x,y} pairs.
-		            for (var i = 0; i < 100; i++) {
-		                sin.push({x: i, y: Math.sin(i/10)});
-		                sin2.push({x: i, y: i % 10 == 5 ? null : Math.sin(i/10) *0.25 + 0.5});
-		                cos.push({x: i, y: .5 * Math.cos(i/10+ 2) + Math.random() / 10});
-		            }
 
             	$scope.data =  [
             			/*
@@ -294,6 +325,43 @@ vm.pageClickData();
 
 
         findRatingsData();
+
+
+
+        function findUserTraceData() {
+
+        	$http({
+			method : "POST",
+			url : '/userTracking'
+			}).success(function(details) {
+
+			console.log("User trace "+details);
+			
+
+				/*
+            	$scope.data =  [
+            			/*
+                		{
+                    		values: sin,      //values - represents the array of {x,y} data points
+                    		key: 'Sine Wave', //key  - the name of the series.
+                    		color: '#ff7f0e'  //color - optional: choose your own line color.
+                		},
+						
+                		{
+                    		values: displayArray,
+                   			 key: displayObj.property_id,
+                    		color: '#2ca02c'
+                		}
+            		  ];	
+				*/
+
+			});
+        };
+
+
+        findUserTraceData();
+
+
 
 }
 

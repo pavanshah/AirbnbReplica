@@ -172,8 +172,9 @@ app.config(function($stateProvider, $urlRouterProvider) {
 	})
 	.state('hostCardDetails',{
 		url:"/hostCardDetails",
-		templateUrl:"public/views/HostCardDetails.html"
-		
+		templateUrl:"public/views/HostCardDetails.html",
+		controller:"hostCardDetails",
+		controllerAs:"vm"
 	})
 	.state('hostProfilePhotoAndVideo',{
 		url:"/hostProfilePhotoAndVideo",
@@ -199,15 +200,61 @@ app.config(function($stateProvider, $urlRouterProvider) {
 	
 });
 
-app.run(function($rootScope,$http,$state) {
+app.run(function($rootScope,$http,$state,loginService) {
   $rootScope.$on('$stateChangeStart',
    function(event, toState  , toParams
                    , fromState, fromParams) 
-    {
-      if(toState.name=="admin"){
+    {// for admin states
+      if(toState.name=="admin" || toState.name=="adminProfileView" ||toState.name=="adminBillView" ||toState.name=="adminHostSearch" ||
+      	toState.name=="adminBillSearch"){
       	$http.get("/isUserLoggedIn").
       	then(function(response) {
-      		
+      		if(response.status==200){
+      			if(response.data.UserType!="Admin" && response.data.UserType!="admin"){
+      				event.preventDefault();
+      				loginService.logout();
+      				$state.go("home");
+      			}
+      		}
+      	},function (err) {
+      		event.preventDefault();
+      		$state.go("home");
+      	})
+      }
+      /// for user states
+      else if(toState.name=="checkout" || toState.name=="orderSuccess" ||toState.name=="userBill" ||toState.name=="userHome" ||
+      	toState.name=="userProfile" ||
+      	toState.name=="bidCofirmationPage" ||
+      	toState.name=="viewUserBids"){
+      	$http.get("/isUserLoggedIn").
+      	then(function(response) {
+      		if(response.status==200){
+      			if(response.data.UserType!="User" && response.data.UserType!="user"){
+      				event.preventDefault();
+      				loginService.logout();
+      				$state.go("home");
+      			}
+      		}
+      	},function (err) {
+      		event.preventDefault();
+      		$state.go("home");
+      	})
+      }
+
+      else if(toState.name=="hostRatingAndReviews" || toState.name=="hostProfilePhotoAndVideo" ||toState.name=="hostCardDetails" ||toState.name=="HostHomePageController" ||
+      	toState.name=="hostAnalytics" ||
+      	toState.name=="addProperty" ||
+      	toState.name=="hostProfile")
+      {
+      	$http.get("/isUserLoggedIn").
+      	then(function(response) {
+      		if(response.status==200){
+      			if(response.data.UserType!="Host" && response.data.UserType!="host"){
+      				event.preventDefault();
+      				loginService.logout();
+      				$state.go("home");
+      			}
+      		}
       	},function (err) {
       		event.preventDefault();
       		$state.go("home");

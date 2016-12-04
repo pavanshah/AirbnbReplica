@@ -104,6 +104,7 @@ var clicksPerPage = function(req, res)
 var propertyClick = function(req, res)
 {
     var host = req.session.user.user_id;
+    //var host = req.body.analyze.host_id;
     console.log("host "+host);
 
     winston.add(winston.transports.File, { filename: 'public/LogFiles/PropertyClickAnalysis.json' });
@@ -180,7 +181,6 @@ var propertyClick = function(req, res)
     winston.add(winston.transports.Console);
 }
 
-
 var userTracking = function(req, res)
 {
     var finalArray = [];
@@ -212,8 +212,8 @@ var userTracking = function(req, res)
 
                 if(i == results.file.length-1)
                 {
-                    finalArray.push([results.file[i].session_id, results.file[i].user_email, results.file[i].user_tracker, results.file[i].timestamp]);
-                    res.json({"usertracker ": finalArray});
+                    finalArray.push({"session_id" : results.file[i].session_id, "user_email" : results.file[i].user_email, "user_tracker" : results.file[i].user_tracker, "timestamp" : results.file[i].timestamp});
+                    res.send(finalArray);
                     break;
                 }
 
@@ -223,7 +223,7 @@ var userTracking = function(req, res)
                 }
                 else
                 {
-                    finalArray.push([results.file[i].session_id, results.file[i].user_email, results.file[i].user_tracker, results.file[i].timestamp]);
+                    finalArray.push({"session_id" : results.file[i].session_id, "user_email" : results.file[i].user_email, "user_tracker" : results.file[i].user_tracker, "timestamp" : results.file[i].timestamp});
                 }
            }
 
