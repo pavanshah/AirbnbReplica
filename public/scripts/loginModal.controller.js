@@ -33,8 +33,8 @@ function loginModalControllerFn($uibModalInstance,loginService) {
   	};
 
 
-  	vm.login = function(){
-
+  	vm.signUp = function(){
+  		$uibModalInstance.dismiss("signup");
   	}
 
 }
