@@ -11,6 +11,7 @@ var Trip = new Schema({
 		qty : Number,
 		category : String
 	},
+	qty : Number,
 	host_id : String,
 	user_id : String,
 	user_emailId : String,

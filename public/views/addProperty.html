@@ -130,24 +130,24 @@
 				    	<h4> Surges (Enter between 1.0 and 3.0) </h4>
 
 				    	<label for="Weekend_Surge_Rate"> Weekend Surge Rate</label>
-				    	<input type="number" class="form-control" id="Weekend_Surge_Rate" ng-model="vm.weekend_surge" required>
+				    	<input type="number" class="form-control" id="Weekend_Surge_Rate" ng-model="vm.property.princing_catalog.weekend_surge" required>
 				    	<span class="invalidinput" ng-show="vm.requiredWSurgeFlag">Required Field</span>
 				    	<span class="invalidinput" ng-show="vm.invalidWSurgeFlag">Must be between 1 to 3</span>
 
 				    	<label for="Holiday_Surge_Rate"> Holiday Surge Rate (November and December)</label>
-				    	<input type="number" class="form-control" id="Holiday_Surge_Rate" ng-model="vm.holiday_surge" required>
+				    	<input type="number" class="form-control" id="Holiday_Surge_Rate" ng-model="vm.property.princing_catalog.seasonal_surge" required>
 				    	<span class="invalidinput" ng-show="vm.requiredHSurgeFlag">Required Field</span>
 				    	<span class="invalidinput" ng-show="vm.invalidHSurgeFlag">Must be between 1 to 3</span>
 
 				    	<h4> Discounts (Enter between 0 and 100)</h4>
 				    	<label for="Weekly_Discount_Rate"> Weekly Booking Discount </label>
-				    	<input type="number" class="form-control" id="Weekly_Discount_Rate" ng-model="vm.weekly_discount" required>
+				    	<input type="number" class="form-control" id="Weekly_Discount_Rate" ng-model="vm.property.princing_catalog.weekly_discount" required>
 				    	<span class="invalidinput" ng-show="vm.requiredWeeklyDisc">Required Field</span>
 				    	<span class="invalidinput" ng-show="vm.invalidWDiscountFlag">Discount must be less than 100%</span>
 				    	
 
 				    	<label for="Monthly_Discount_Rate"> Monthly Discount Rate </label>
-				    	<input type="number" class="form-control" id="Monthly_Discount_Rate" ng-model="vm.monthly_discount" required>
+				    	<input type="number" class="form-control" id="Monthly_Discount_Rate" ng-model="vm.property.princing_catalog.monthly_discount" required>
 				    	<span class="invalidinput" ng-show="vm.requiredMonthlyDisc">Required Field</span>
 				    	<span class="invalidinput" ng-show="vm.invalidMDiscountFlag">Discount must be less than 100%</span>
 

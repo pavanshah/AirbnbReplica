@@ -1,14 +1,14 @@
 var app = angular.module('Airbnb');
 
 
-function AdminProfileViewControllerFn($state,$scope,$http,$rootScope,$mdDialog) {	
+function AdminProfileViewControllerFn($state,$scope,$http,$rootScope,$mdDialog,$sce) {	
 	var vm = this;
 	console.log("loaded data");
 	console.log($rootScope.showProfile);
 	$scope.firstname = "";
 	$scope.reviews = [];
-	$scope.showSuccess = false;
-	
+	$scope.showSuccess = false;	
+	$scope.image = $sce.trustAsResourceUrl("http://babyinfoforyou.com/wp-content/uploads/2014/10/avatar-300x300.png");
 	
 	$scope.authorize = function(){
 		
@@ -69,22 +69,54 @@ function AdminProfileViewControllerFn($state,$scope,$http,$rootScope,$mdDialog) 
 			url : '/getProfileForAdmin',
 			params : $scope.hostQuery 
 		}).success(function(details) {
-			console.log("got output from backend");
+			console.log("got output from backend");			
+			//console.log(details.result[0].profilepic);
+			
+			if(typeof details.result[0].profilepic === "undefined"){
+				console.log("this is undefined");
+				$scope.image = $sce.trustAsResourceUrl("http://babyinfoforyou.com/wp-content/uploads/2014/10/avatar-300x300.png");
+			}
+			else{
+				console.log("Got image");
+				$scope.image = $sce.trustAsResourceUrl(details.result[0].profilepic);				
+				
+			}
 			console.log(details.result[0].firstname);
 			$scope.firstname = details.result[0].firstname;
 			console.log("firstname is:"+$scope.firstname );
 			$scope.lastname = details.result[0].lastname;
 			console.log("lasname is:"+vm.lastname );
 			$scope.status = details.result[0].user_status;
-			var dateObj = new Date(details.result[0].birthdate);
+			console.log("birtdate");
+			console.log(details.result[0].birthdate);
+			var dateVal = details.result[0].birthdate || "12/12/1991";
+			var dateObj = new Date(dateVal);
 			var month = dateObj.getUTCMonth() + 1; //months from 1-12
 			var day = dateObj.getUTCDate();
 			var year = dateObj.getUTCFullYear();
 			$scope.birthdate = month + '/'+day+'/'+year;
-			$scope.address = details.result[0].address.street+','+details.result[0].address.city+','+details.result[0].address.state+','+details.result[0].address.country;
-			$scope.rating = details.result[0].avgrating;
-			$scope.phone = details.result[0].phone;
-			$scope.email = details.result[0].email;
+			
+			var streetVal = "";
+			var cityVal ="";
+			var stateVal ="";
+			var countryVal ="";
+				
+			if(typeof details.result[0].address !== "undefined"){
+				streetVal = details.result[0].address.street || "";
+				cityVal = details.result[0].address.city || "";
+				stateVal = details.result[0].address.state || "";
+				countryVal =  details.result[0].address.country || "";
+				$scope.address = streetVal+','+cityVal+','+stateVal+','+countryVal;
+			}
+			else{
+				$scope.address = "";
+			}
+			
+			
+			
+			$scope.rating = details.result[0].avgrating || "";
+			$scope.phone = details.result[0].phone|| "";
+			$scope.email = details.result[0].email || "";
 			$scope.reviews = details.result[0].Reviews;
 			
 			
