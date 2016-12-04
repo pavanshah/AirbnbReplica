@@ -489,7 +489,8 @@ var ConfirmBooking = function (req,res){
 							    "to_date" : req.body.bookingDates.end_date,
 							    "property" : req.body.property,
 							    "user" : {"userid":req.session.user.user_id,"email":req.session.user.emailId},
-							    "trip_amount" : req.body.trip_amount
+							    "trip_amount" : req.body.trip_amount,
+							    "qty" : req.body.qty
 							    
 							    }
 							}
@@ -521,7 +522,7 @@ var ConfirmBooking = function (req,res){
 				{
 					var generatedBill = billResponse.bill;
 					console.log("final objects:");
-					console.log(generatedBill);
+					console.log("createtrip"+generatedBill.trip_amount);
 
 
 
@@ -532,6 +533,7 @@ var ConfirmBooking = function (req,res){
 						},
 						"user_id":"281521057" ,//change the userid to session userid
 						"user_emailId" : req.session.user.emailId,
+						"qty" : billResponse.bill.qty,
 						"bill" : {
 							"billing_id": billResponse.bill.billing_id,
 							"trip_amount" : billResponse.bill.trip_amount
@@ -869,7 +871,7 @@ var getMaxBid = function(req,res) {
 
 
 function checkBidsOnInterval(){
-	console.log("CronJob to check bidding status started");
+	//console.log("CronJob to check bidding status started");
 
 	var today = new Date();
 	var validListingDate= new Date();
@@ -885,7 +887,7 @@ function checkBidsOnInterval(){
 	   	// body...
 	   	/*console.log("err",err);
 	   	console.log("res",res);*/
-	   	console.log("CronJob to check bidding status ended");
+	   	//console.log("CronJob to check bidding status ended");
 	   })
 }
 
