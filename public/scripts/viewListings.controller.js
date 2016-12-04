@@ -12,6 +12,11 @@ function viewListingsControllerFn($state,propertyService,locationService,$stateP
   var mapCenter = {};
   vm.properties = [];
   var filterdProperties = [];
+  vm.roomTypeFilter = {
+    privateRoom:false,
+    sharedRoom:false,
+    entirePlace:false
+  };
   vm.filters = $stateParams.filters;
   console.log("stateParams",vm.filters);
   vm.booking = bookingDataService.getBooking();
@@ -88,6 +93,23 @@ function viewListingsControllerFn($state,propertyService,locationService,$stateP
   }
 
   getProperties(vm.filters); 
+
+  vm.filterByRoomType = function() {
+    if(!vm.roomTypeFilter.sharedRoom && !vm.roomTypeFilter.entirePlace && !vm.roomTypeFilter.privateRoom){
+      vm.properties = vm.storedProperties;
+      return;
+    }
+
+    vm.properties = _.filter(vm.storedProperties,function(property) {
+      if(vm.roomTypeFilter.sharedRoom)
+        return property.category=="Shared Room";
+      if(vm.roomTypeFilter.entirePlace)
+        return property.category=="Entire Place";
+      if(vm.roomTypeFilter.privateRoom)
+        return property.category=="Private Room";;
+    });
+
+  }
 
  }
 
