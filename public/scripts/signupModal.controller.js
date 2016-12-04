@@ -94,6 +94,11 @@ function signupModalControllerFn($uibModalInstance,loginService) {
 				vm.birthdayrequiredflag = false;
   	}
 
+
+  	vm.login = function() {
+  		$uibModalInstance.dismiss("login");
+  	}
+
 }
 
 app.controller('SignupModalController',signupModalControllerFn)
