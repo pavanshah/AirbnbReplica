@@ -61,7 +61,7 @@ var userSignup = function(req,res){
 					else
 					{
 						res.status(400);
-						res.json({"result":"Bad Resquest"});
+						res.json({"result":response.result});
 					}
 				}
 				else{

@@ -60,7 +60,7 @@ function signUp(msg,callback){
     console.log("found");
     console.log(user);
     if(user.length > 0){
-      callback(null,{"status":400,"result":"user already present"});
+      callback(null,{"status":400,"result":"User already present"});
          }
 
     newUser = Users(msg.user);

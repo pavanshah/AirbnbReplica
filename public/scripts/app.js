@@ -240,6 +240,26 @@ app.run(function($rootScope,$http,$state,loginService) {
       		$state.go("home");
       	})
       }
+
+      else if(toState.name=="hostRatingAndReviews" || toState.name=="hostProfilePhotoAndVideo" ||toState.name=="hostCardDetails" ||toState.name=="HostHomePageController" ||
+      	toState.name=="hostAnalytics" ||
+      	toState.name=="addProperty" ||
+      	toState.name=="hostProfile")
+      {
+      	$http.get("/isUserLoggedIn").
+      	then(function(response) {
+      		if(response.status==200){
+      			if(response.data.UserType!="Host" && response.data.UserType!="host"){
+      				event.preventDefault();
+      				loginService.logout();
+      				$state.go("home");
+      			}
+      		}
+      	},function (err) {
+      		event.preventDefault();
+      		$state.go("home");
+      	})
+      }
     });
 });
 
