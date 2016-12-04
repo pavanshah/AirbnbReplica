@@ -69,10 +69,10 @@
 	    </div>
 	    <div class="search-section">
 		    <form class="">
-                <input type="text" class="hidden-xs" force-selection="true" g-places-autocomplete ng-model="vm.location" placeholder="Where to?">
+                <input type="text" class="hidden-xs" force-selection="true" g-places-autocomplete ng-model="vm.location" placeholder="Where to?" ng-disabled="vm.user.UserType=='Admin'">
                 <img src="public/images/search-icon.png" alt="search-icon" class="search-icon hidden-xs">
                 <!-- Open Search modal on click of btn for mobile resolution -->
-                <button class="visible-xs search-btn-mobile"><img src="public/images/search-icon-mobile.png" alt="search-icon" class="">Where to?</button>
+                <button class="visible-xs search-btn-mobile"><img src="public/images/search-icon-mobile.png" alt="search-icon" class="" ng-disabled="vm.user.UserType=='Admin'">Where to?</button>
                 
 		    </form>
 		</div>    
@@ -82,8 +82,8 @@
 	    		<ul class="nav navbar-nav navbar-right">
 	    			<li class="visible-xs"><a href="#"><span>Home</span></a></li>
 	    			<li class="visible-xs"><a href="#"><span>Download the App</span></a></li>
-			        <li class=""><a href="#/becomeahost"><span class="have-border">Become a Host</span></a></li>
-			        <li class="hidden-xs"><a href="#"><span>Help</span></a></li>
+			        <li class="" ng-if="!vm.user.UserType"><a href="#/becomeahost"><span class="have-border">Become a Host</span></a></li>
+			        <li class="hidden-xs" ng-if="!vm.user.UserType"><a href="#"><span>Help</span></a></li>
 			        <li class="" ng-if="!vm.user.email" ng-click="vm.openSignupModal()"><a href=""><span>Sign Up</span></a></li>
 			        <li class="" ng-if="!vm.user.email" ng-click="vm.openLoginModal()"><a href=""><span>Log In</span></a></li>
 			        <li class="" ng-if="vm.user.email"><a href="" class="logout-popup-wrapper position-relative">
