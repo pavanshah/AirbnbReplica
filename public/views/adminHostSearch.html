@@ -47,7 +47,8 @@
     <md-list>
       <md-list-item class="md-3-line" ng-repeat="item in values" ng-click="vm.showProfile(item._id)">
        
-      <img src="http://placehold.it/50x50"  style="border-radius:50%;padding-top:20px;" >
+      <!-- <img src="http://placehold.it/50x50"  style="border-radius:50%;padding-top:20px;" > -->
+      <img class="img-circle" ng-src="{{item.profilepic || 'http://placehold.it/50x50'}}"  style="padding-top:10px;" height="50px" width="50px">
         <div class="md-list-item-text" style="padding-left:65px;padding-top:15px;padding-bottom:15px;">
           <h3>{{item.firstname}}{{space}}{{ item.lastname}}</h3>          
           <h4>{{item.UserType}}</h4>          
