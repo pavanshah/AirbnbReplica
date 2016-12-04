@@ -318,6 +318,7 @@ var createTrip = function (tripObject,callback) {
 				"host_id" : globalProperty.host_id,
 				"user_id" : globalTripObject.user_id,
 				"user_emailId" : globalTripObject.user_emailId,
+				"qty" : globalTripObject.qty,
 				"bill" : {
 					"billing_id" : globalTripObject.bill.billing_id,
 					"trip_amount" : globalTripObject.bill.trip_amount, 

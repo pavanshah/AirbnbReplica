@@ -15,7 +15,13 @@ function AddPropertyControllerFn($state,$stateParams,$http,$mdDialog) {
 		location:[],
 		propertyPictures:[],
 		propertyVideos:[],
-		ListingType:""
+		ListingType:"",
+		princing_catalog : {
+			weekend_surge: 0,
+			seasonal_surge: 0,
+			weekly_discount: 0,
+			monthly_discount: 0
+		}
 	};
 	vm.location=[];
 	vm.showPricingCatalog=true;
@@ -120,26 +126,26 @@ function AddPropertyControllerFn($state,$stateParams,$http,$mdDialog) {
 				ZipFlag = true;
 		}
 
-		if((vm.weekend_surge>=1 && vm.weekend_surge<=3) || vm.property.ListingType=='auction')
+		if((vm.property.princing_catalog.weekend_surge>=1 && vm.property.princing_catalog.weekend_surge<=3) || vm.property.ListingType=='auction')
 		{
 			WSurgeFlag = true;
 		}
 
-		if((vm.holiday_surge>=1 && vm.holiday_surge<=3) || vm.property.ListingType=='auction')
+		if((vm.property.princing_catalog.seasonal_surge>=1 && vm.property.princing_catalog.seasonal_surge<=3) || vm.property.ListingType=='auction')
 		{
 			HSurgeFlag = true;
 		}
 
-		if((vm.monthly_discount == null && vm.property.ListingType!='auction') || 
-			(vm.weekly_discount == null && vm.property.ListingType!='auction') || 
-			vm.monthly_discount >= 100 || vm.weekly_discount >=100 || HSurgeFlag == false || WSurgeFlag == false || 
+		if((vm.property.princing_catalog.monthly_discount == null && vm.property.ListingType!='auction') || 
+			(vm.property.princing_catalog.weekly_discount == null && vm.property.ListingType!='auction') || 
+			vm.property.princing_catalog.monthly_discount >= 100 || vm.property.princing_catalog.weekly_discount >=100 || HSurgeFlag == false || WSurgeFlag == false || 
 			vm.property.base_price<=0 || !titleRegex.test(vm.property.address.country) || ZipFlag == false || 
 			!titleRegex.test(vm.property.address.state) || !titleRegex.test(vm.property.address.city) || 
 			!descriptionRegex.test(vm.property.address.street) || vm.property.address.country == "" || 
 			vm.property.address.zipcode == "" || vm.property.address.state == "" || vm.property.address.city == "" || 
 			vm.property.address.street == "" || vm.property.property_end_date == null || vm.property.property_start_date == null || 
-			!numberRegex.test(vm.property.base_price) || (vm.holiday_surge == null && vm.property.ListingType!='auction') || 
-			(vm.weekend_surge == null && vm.property.ListingType!='auction')|| vm.property.base_price == null || 
+			!numberRegex.test(vm.property.base_price) || (vm.property.princing_catalog.seasonal_surge == null && vm.property.ListingType!='auction') || 
+			(vm.property.princing_catalog.weekend_surge == null && vm.property.ListingType!='auction')|| vm.property.base_price == null || 
 			vm.travelLocation == null || vm.property.ListingType == "" || vm.property.category == null || end_date<start_date || 
 			!titleRegex.test(vm.property.propertyTitle) || !descriptionRegex.test(vm.property.description) || 
 			vm.property.propertyTitle == null || vm.property.description == null || (start_date<date) || StateFlag == false )
@@ -151,12 +157,12 @@ function AddPropertyControllerFn($state,$stateParams,$http,$mdDialog) {
 					}
 
 
-					if(vm.monthly_discount >= 100)
+					if(vm.property.princing_catalog.monthly_discount >= 100)
 					{
 						vm.invalidMDiscountFlag = true;
 					}
 
-					if(vm.weekly_discount >=100)
+					if(vm.property.princing_catalog.weekly_discount >=100)
 					{
 						vm.invalidWDiscountFlag = true;
 					}
@@ -241,22 +247,22 @@ function AddPropertyControllerFn($state,$stateParams,$http,$mdDialog) {
 						vm.invalidBasePrice = true;
 					}
 
-					if(vm.weekly_discount == null && vm.property.ListingType!='auction')
+					if(vm.property.princing_catalog.weekly_discount == null && vm.property.ListingType!='auction')
 					{
 						vm.requiredWeeklyDisc = true;
 					}
 
-					if(vm.monthly_discount == null && vm.property.ListingType!='auction')
+					if(vm.property.princing_catalog.monthly_discount == null && vm.property.ListingType!='auction')
 					{
 						vm.requiredMonthlyDisc = true;
 					}
 
-					if(vm.holiday_surge == null && vm.property.ListingType!='auction')
+					if(vm.property.princing_catalog.seasonal_surge == null && vm.property.ListingType!='auction')
 					{
 						vm.requiredHSurgeFlag = true;
 					}
 
-					if(vm.holiday_surge == null && vm.property.ListingType!='auction')
+					if(vm.property.princing_catalog.seasonal_surge == null && vm.property.ListingType!='auction')
 					{
 						vm.requiredWSurgeFlag = true;
 					}
