@@ -22,6 +22,16 @@ function mainControllerFn($rootScope,$uibModal,loginService,$state,$log) {
 
  	});
 
+ 	$rootScope.$on('userLoggedIn', function(event, data) {
+ 		  loginService.getUserProfile().
+		 	then(function(userData) {
+		 		vm.user = userData;
+		 	},function(err) {
+		 		vm.user = {};
+		 	});
+
+ 	});
+
  	vm.homeNavigation = function () {
  		
  		if(vm.user.UserType=="Admin"){
