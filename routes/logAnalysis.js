@@ -104,6 +104,7 @@ var clicksPerPage = function(req, res)
 var propertyClick = function(req, res)
 {
     var host = req.session.user.user_id;
+    //var host = req.body.analyze.host_id;
     console.log("host "+host);
 
     winston.add(winston.transports.File, { filename: 'public/LogFiles/PropertyClickAnalysis.json' });
