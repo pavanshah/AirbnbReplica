@@ -24,7 +24,7 @@ var HostRatingAndReviewsFn = function ($http,$state,$scope,tripsService) {
 					console.log("inside angular for each");
 					console.log(response);
 					if(!response.property.propertyPictures || response.property.propertyPictures.length==0){
-						resp.data.property.propertyPictures = ["public/images/room-list-images/room-1-a.png"];
+						response.property.propertyPictures = ["public/images/room-list-images/room-1-a.png"];
 			            }
 					response.rating = 0;
 		            response.rate = 1;

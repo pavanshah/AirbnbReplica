@@ -134,7 +134,7 @@ var getHostTrips = function(req,res,next){
  			"func":"getHostTrips",
  			"user_id":req.session.user.user_id
  			}
-
+console.log("in getHostTriops"+msg_payload.user_id);
  		mq_client.make_request("user_queue",msg_payload,function(err,response){
 
  			if(err)
