@@ -298,7 +298,6 @@ var updateHostProfile = function(req,res){
 	 		console.log(hostBirthDay);
 	 		req.body.user.birthdate = hostBirthDay; //to save the host birthday
 	 		
-	 		req.body.user.phone = req.body.user.phonenumber;
 	 		var query = {'email':req.session.user.emailId};
 
 
@@ -308,7 +307,7 @@ var updateHostProfile = function(req,res){
 	 			"user": req.body.user
 	 		}
 
-	 		mq_client.make_request("user_queue",msg_payload,function(err,respose){
+	 		mq_client.make_request("host_queue",msg_payload,function(err,response){
 
 	 			if(err)
 	 			{
@@ -319,6 +318,8 @@ var updateHostProfile = function(req,res){
 
 	 				if(response.status==200)
 	 				{
+	 					console.log("host updated sending the response");
+	 					console.log(response);
 	 					res
 				 	 	.status(200)
 				 	 	.send({"result":"host updated"});
@@ -554,7 +555,7 @@ else{
 
 
 var getHost = function(req,res){
-	console.log("inside get host");
+	console.log("---------------------------------------------------------->inside get host---------------------------------------------------------->");
 	if(req.session.user==undefined||req.session.user==null)
 	{
 		console.log("No Session");
@@ -571,7 +572,7 @@ else{
 		"email":req.session.user.emailId
 	};
 
-	mq_client.make_request("user_queue",msg_payload,function(err,response){
+	mq_client.make_request("host_queue",msg_payload,function(err,response){
 
 		console.log(response);//the response was not sent back hence get was not working for the user profile
 		if(err){
@@ -580,7 +581,7 @@ else{
 		else
 		{
 			
-			res
+		res
  		.status(200)
  		.send({"user":response.user});
 		}
