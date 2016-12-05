@@ -32,6 +32,11 @@ function mainControllerFn($rootScope,$uibModal,loginService,$state,$log) {
 
  	});
 
+ 	 $rootScope.$on('userLoggedOut', function(event, data) {
+ 		  vm.user = {};
+
+ 	});
+
  	vm.homeNavigation = function () {
  		
  		if(vm.user.UserType=="Admin"){
