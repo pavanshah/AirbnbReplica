@@ -14,7 +14,19 @@ var TripControllerFn = function ($http,$state,tripsService,$mdDialog) {
     //alert(vm.overStar);
     //vm.percent = 100 * (value / vm.max);
   };
+
+  var entriesPerPage = 10;
+  vm.totalDisplayed = entriesPerPage;
+  vm.fetchMore = true;
+  vm.recordCount = 0;
 	
+	vm.showMore = function() {
+			console.log("clicked");
+	        vm.totalDisplayed = vm.totalDisplayed + entriesPerPage;
+	        if(vm.recordCount<= vm.totalDisplayed){
+				vm.fetchMore = false;
+			}
+	 }
 
   	vm.uploadPic = function(tripId){
   		console.log("in photo upload");
@@ -186,7 +198,9 @@ var TripControllerFn = function ($http,$state,tripsService,$mdDialog) {
 
             })}
 
-
+	            vm.recordCount = response.length;
+	            if(vm.recordCount<=vm.totalDisplayed)
+	            	vm.fetchMore = false;
 			vm.trips = response;
 		});
 		console.log("fewrctwatcretcerceetet"+vm.trips);

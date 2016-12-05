@@ -49,7 +49,7 @@ var CreateProperty = function (req,res){
 		if(err){
 			console.log(err);
 		}
-		console.log(response);
+/*		console.log(response);
 
 		if(response.status==200){
 			res.status(200);
@@ -57,11 +57,11 @@ var CreateProperty = function (req,res){
 		}
 		else
 			res.status(400);
-			res.json({"result":"Bad Request"});
+			res.json({"result":"Bad Request"});*/
 
 
 	});
-/*
+
 
 	var newProperty = Property(req.body.property);
 	console.log(newProperty);
@@ -75,7 +75,7 @@ var CreateProperty = function (req,res){
 		}
 		else
 			console.log(err);
-	});*/
+	});
 
 
 }
