@@ -122,7 +122,9 @@
         </label>
         <div class="col-sm-9">
       Street
-      <input id="street" name="user_address_street"  size="30" type="text" ng-model="vm.user.address.street">
+      <input id="street" name="user_address_street"  size="30" type="text" ng-model="vm.user.address.street" ng-pattern="/^[a-zA-Z0-9\_\- ]*$/">
+      <span class="invalidinput" ng-show="profileForm.user_address_street.$error.pattern">Text Or Numeric Input Only</br></span>
+
       City
       <input id="city" name="user_address_city" size="30" type="text" ng-model="vm.user.address.city"
       ng-pattern="/^[a-zA-Z\_\- ]*$/">
