@@ -331,14 +331,45 @@
 
           <div class="row row-condensed space-4">
         <label class="text-right col-sm-3" >
-          Where You Live 
+      Where You Live 
         </label>
+
+         <div class="col-sm-9">
+      Street
+      <input id="street" name="user_address_street"  size="30" type="text" ng-model="vm.host.address.street">
+      <span class="invalidinput" ng-show="invalidStreetFlag">Text and Numeric Input Only</br></span> 
+
+      City
+      <input id="city" name="user_address_city" size="30" type="text" ng-model="vm.host.address.city">
+      <span class="invalidinput" ng-show="invalidCityFlag">Text Input Only</br></span>
+      
+      State
+      <input id="state" name="user_address_state" size="30" type="text" ng-model="vm.host.address.state" ng-pattern="/^[a-zA-Z\_\- ]*$/">
+      <!-- <span class="invalidinput" ng-show="profileForm.user_address_state.$error.pattern">Text Input Only</br></span> -->
+      
+      ZipCode
+      <input id="Zipcode" name="user_address_zipcode" size="30" type="text" ng-model="vm.host.address.zipcode" >
+
+      <!-- <span class="invalidinput" ng-show="vm.invalidzipflag1">Not a valid zip code</br></span> -->
+
+      Country
+      <input id="Country" name="user_address_country" size="30" type="text" ng-model="vm.host.address.country" ng-pattern="/^[a-zA-Z\_\- ]*$/">
+      <!-- <span class="invalidinput" ng-show="profileForm.user_address_country.$error.pattern">Text Input Only</br></span> -->
+
+
+        </div>
+
+
+        <!-- ========================
         <div class="col-sm-9">
           
       <input placeholder="e.g. Paris, France / Brooklyn, NY / Chicago, IL" ng-model="vm.host.address" size="30" type="text" />
 
           
         </div>
+
+        ===================
+         -->
       </div>
 
           <div class="row row-condensed space-4">

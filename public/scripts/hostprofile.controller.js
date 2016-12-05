@@ -26,8 +26,9 @@ function HostProfileFn($state,$scope,$http,$mdDialog) {
 			console.log(response.data);
 			if(response.status == 200){
 				vm.host = response.data.user;
+				vm.host.address = response.data.user.address;
 			}
-	});
+		});
 	}
 	
 	vm.getHostDetails();
@@ -38,10 +39,23 @@ function HostProfileFn($state,$scope,$http,$mdDialog) {
 		window.location.assign("#/hostProfilePhotoAndVideo");
 	}
 	$scope.save = function(){
+
+		var descriptionRegex = /^[a-zA-Z0-9&!',.\_\- ]*$/;
+		var invalidStreetFlag = false;
 		console.log("save button clicked");
-		console.log("calling updateProfile");
-		console.log(vm.host);
-		$http.post('/updateHost',{"user":vm.host}).then(function(response){
+
+
+		if(!descriptionRegex.test(vm.host.address.street))
+		{
+			console.log("inside regex");
+			invalidStreetFlag = true;
+		}
+		else
+		{
+
+			console.log("calling updateProfile");
+			console.log(vm.host);
+			$http.post('/updateHost',{"user":vm.host}).then(function(response){
 
 			console.log(response.data);
 			
@@ -59,6 +73,9 @@ function HostProfileFn($state,$scope,$http,$mdDialog) {
             });
 
 		})
+
+		}
+		
 		
 		
 	}
