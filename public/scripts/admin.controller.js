@@ -534,6 +534,7 @@ function AdminControllerFn($state,$scope,$http) {
 
 	                
 	                duration: 100,
+	                
 	                legend: {
 	                    margin: {
 	                        top: 5,

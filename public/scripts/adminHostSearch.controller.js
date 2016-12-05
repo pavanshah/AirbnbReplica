@@ -4,7 +4,21 @@ var app = angular.module('Airbnb');
 function AdminHostSearchControllerFn($state,$scope,$http,$rootScope) {
 	console.log("Inside admin host search");
 	var vm = this;
+	$scope.type = "Host";
+	//$scope.totalItems = 64;
+	//$scope.currentPage = 4;
+	$scope.totalDisplayed = 20;
 	
+	$scope.fetchMore = true;
+	$scope.recordCount = 0;
+	
+
+	$scope.showMore = function() {
+	        $scope.totalDisplayed = $scope.totalDisplayed + 20;
+	        if($scope.recordCount<= $scope.totalDisplayed){
+				$scope.fetchMore = false;
+			}
+	 }
 	
 	vm.showProfile = function(id){
 		console.log("profile clicked");
@@ -15,7 +29,9 @@ function AdminHostSearchControllerFn($state,$scope,$http,$rootScope) {
 	
 	$scope.values = [];
 	$scope.space = " ";
-	$scope.hostQuery = {"type":"","address":"","query":"new"};
+	$scope.hostQuery = {"type":"","address":"","query":"new","status":""};
+	//$scope.hostQuery = {"type":"Host","address":"","query":"updated"};;
+	//$scope.type = "Host";
 	
 	
 	vm.searchDetails = function(){
@@ -31,6 +47,13 @@ function AdminHostSearchControllerFn($state,$scope,$http,$rootScope) {
 			$scope.hostQuery.address = $scope.address.address_components[0].long_name;
 			$scope.hostQuery.query = "updated";
 		}
+		console.log("+++++++++++++");
+		console.log($scope.authtype);
+		if(typeof $scope.authtype != "undefined" && $scope.authtype != ""){
+			console.log("----");
+			$scope.hostQuery.status = $scope.authtype;
+			$scope.hostQuery.query = "updated";
+		}
 		
 		
 		$http({
@@ -40,12 +63,22 @@ function AdminHostSearchControllerFn($state,$scope,$http,$rootScope) {
 		}).success(function(details) {
 			console.log(details.result);
 			$scope.values = details.result;
+			$scope.totalDisplayed = 20;
+			$scope.recordCount = details.result.length;
+			
+			if($scope.recordCount<= $scope.totalDisplayed){
+				$scope.fetchMore = false;
+			}
 			$scope.hostQuery.address = "";
 			$scope.hostQuery.type = "";
+			$scope.hostQuery.status = "";
 		})
 		
 	}
-	
+	$scope.totalDisplayed = 20;
+	$scope.showMore = function(argument) {
+		$scope.totalDisplayed = $scope.totalDisplayed + 20;
+	}
 	
 	$http({
 		method : "GET",
@@ -53,6 +86,12 @@ function AdminHostSearchControllerFn($state,$scope,$http,$rootScope) {
 		params : $scope.hostQuery 
 	}).success(function(details) {
 		console.log(details.result);
+		$scope.totalDisplayed = 20;
+$scope.recordCount = details.result.length;
+		
+		if($scope.recordCount<= $scope.totalDisplayed){
+			$scope.fetchMore = false;
+		}
 		$scope.values = details.result;
 	})
 

@@ -555,7 +555,6 @@ else{
 
 
 var getHost = function(req,res){
-	console.log("---------------------------------------------------------->inside get host---------------------------------------------------------->");
 	if(req.session.user==undefined||req.session.user==null)
 	{
 		console.log("No Session");

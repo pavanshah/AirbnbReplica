@@ -127,15 +127,7 @@ cnn.on('ready', function(){
 							});
 					});
 				break;
-				/*case "getHost":
-					user.getHostProfile(message,function(err,res){
-
-					cnn.publish(m.replyTo, res, {
-								contentType:'application/json',
-								contentEncoding:'utf-8',
-								correlationId:m.correlationId
-							});
-					});*/
+				
 					
 				case "getHostTrips":
 					user.getHostTrip(message,function(err,res){
@@ -147,16 +139,7 @@ cnn.on('ready', function(){
 							});
 					});
 				break;
-				/*case "updateHostDetails":
-					user.updateHostProfileDetails(message,function(err,res){
-
-					cnn.publish(m.replyTo, res, {
-								contentType:'application/json',
-								contentEncoding:'utf-8',
-								correlationId:m.correlationId
-							});
-					});*/
-				break;
+				
 				case "updateHostCardDetails":
 					user.updateHostProfileCardDetails(message,function(err,res){
 
@@ -173,7 +156,7 @@ cnn.on('ready', function(){
 	});
  	});
 
-	/* kushal host testing starts queue*/
+	
 	
 	console.log("listening on Host Queue");
 	cnn.queue('host_queue',function(q)
@@ -213,7 +196,7 @@ cnn.on('ready', function(){
  	});
 	
 	
-	/* kushal host testing starts queue*/
+	
 	
 	
 	
@@ -491,5 +474,3 @@ cnn.on('ready', function(){
 
 
 });
-
-
