@@ -14,7 +14,7 @@ var review = require('./services/review');
 
 
 
-var mongoSessionConnectURL = "mongodb://apps92:shim123@ds155727.mlab.com:55727/airbnbproto";
+var mongoSessionConnectURL = "mongodb://apps92:shim123@ds113668.mlab.com:13668/airbnbprod";
 var expressSession = require("express-session");
 var mongoStore = require("connect-mongo")(expressSession);
 var mongo = require("./services/mongo");
