@@ -337,24 +337,25 @@
          <div class="col-sm-9">
       Street
       <input id="street" name="user_address_street"  size="30" type="text" ng-model="vm.host.address.street">
-      <span class="invalidinput" ng-show="invalidStreetFlag">Text and Numeric Input Only</br></span> 
+      <span class="invalidinput" ng-show="vm.invalidStreetFlag">Text and Numeric Input Only</br></span> 
 
       City
       <input id="city" name="user_address_city" size="30" type="text" ng-model="vm.host.address.city">
-      <span class="invalidinput" ng-show="invalidCityFlag">Text Input Only</br></span>
+      <span class="invalidinput" ng-show="vm.invalidCityFlag">Text Input Only</br></span>
       
       State
-      <input id="state" name="user_address_state" size="30" type="text" ng-model="vm.host.address.state" ng-pattern="/^[a-zA-Z\_\- ]*$/">
+      <input id="state" name="user_address_state" size="30" type="text" ng-model="vm.host.address.state">
       <!-- <span class="invalidinput" ng-show="profileForm.user_address_state.$error.pattern">Text Input Only</br></span> -->
-      
+      <span class="invalidinput" ng-show="vm.invalidStateFlag">Text Input Only</br></span>  
+
       ZipCode
       <input id="Zipcode" name="user_address_zipcode" size="30" type="text" ng-model="vm.host.address.zipcode" >
-
+      <span class="invalidinput" ng-show="vm.invalidZipFlag">Invalid zip format</br></span> 
       <!-- <span class="invalidinput" ng-show="vm.invalidzipflag1">Not a valid zip code</br></span> -->
 
       Country
-      <input id="Country" name="user_address_country" size="30" type="text" ng-model="vm.host.address.country" ng-pattern="/^[a-zA-Z\_\- ]*$/">
-      <!-- <span class="invalidinput" ng-show="profileForm.user_address_country.$error.pattern">Text Input Only</br></span> -->
+      <input id="Country" name="user_address_country" size="30" type="text" ng-model="vm.host.address.country">
+      <span class="invalidinput" ng-show="vm.invalidCountryFlag">Text Input Only</br></span>  
 
 
         </div>

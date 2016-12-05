@@ -41,14 +41,54 @@ function HostProfileFn($state,$scope,$http,$mdDialog) {
 	$scope.save = function(){
 
 		var descriptionRegex = /^[a-zA-Z0-9&!',.\_\- ]*$/;
-		var invalidStreetFlag = false;
+		var titleRegex = /^[a-zA-Z\_\ ]*$/;
+		vm.invalidStreetFlag = false;
+		vm.invalidCityFlag = false;
+		vm.invalidStateFlag = false;
+		vm.invalidZipFlag = false;
+		vm.invalidCountryFlag = false;
+		var zipRegex1 = /^[0-9]{5}$/;
+		var zipRegex2 = /^[0-9]{9}$/;
+		var zipFlag = false;
 		console.log("save button clicked");
 
+		console.log("street "+vm.host.address.street);
+		console.log("Zip "+vm.host.address.zipcode);
 
-		if(!descriptionRegex.test(vm.host.address.street))
+		if(zipRegex2.test(vm.host.address.zipcode) || zipRegex1.test(vm.host.address.zipcode))
 		{
-			console.log("inside regex");
-			invalidStreetFlag = true;
+			console.log("inside zip")
+				zipFlag = true;
+		}
+
+
+		if(zipFlag == false || !descriptionRegex.test(vm.host.address.street) || !titleRegex.test(vm.host.address.city) || !titleRegex.test(vm.host.address.state) || !titleRegex.test(vm.host.address.country))
+		{
+			if(zipFlag == false)
+			{
+				vm.invalidZipFlag = true;
+			}
+
+			if(!descriptionRegex.test(vm.host.address.street))
+			{
+				vm.invalidStreetFlag = true;
+			}
+
+			if(!titleRegex.test(vm.host.address.city))
+			{
+				vm.invalidCityFlag = true;
+			}
+
+			if(!titleRegex.test(vm.host.address.state))
+			{
+				vm.invalidStateFlag = true;
+			}
+
+
+			if(!titleRegex.test(vm.host.address.country))
+			{
+				vm.invalidCountryFlag = true;
+			}
 		}
 		else
 		{
