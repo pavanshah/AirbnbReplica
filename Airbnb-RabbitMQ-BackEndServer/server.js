@@ -13,6 +13,7 @@ var review = require('./services/review');
 //require('./services/mongo')();
 
 
+
 var mongoSessionConnectURL = "mongodb://apps92:shim123@ds113668.mlab.com:13668/airbnbprod";
 var expressSession = require("express-session");
 var mongoStore = require("connect-mongo")(expressSession);
@@ -126,15 +127,7 @@ cnn.on('ready', function(){
 							});
 					});
 				break;
-				case "getHost":
-					user.getHostProfile(message,function(err,res){
-
-					cnn.publish(m.replyTo, res, {
-								contentType:'application/json',
-								contentEncoding:'utf-8',
-								correlationId:m.correlationId
-							});
-					});
+				
 					
 				case "getHostTrips":
 					user.getHostTrip(message,function(err,res){
@@ -146,16 +139,7 @@ cnn.on('ready', function(){
 							});
 					});
 				break;
-				case "updateHostDetails":
-					user.updateHostProfileDetails(message,function(err,res){
-
-					cnn.publish(m.replyTo, res, {
-								contentType:'application/json',
-								contentEncoding:'utf-8',
-								correlationId:m.correlationId
-							});
-					});
-				break;
+				
 				case "updateHostCardDetails":
 					user.updateHostProfileCardDetails(message,function(err,res){
 
@@ -166,11 +150,56 @@ cnn.on('ready', function(){
 							});
 					});
 				break;
+				
 
 		};
 	});
  	});
 
+	
+	
+	console.log("listening on Host Queue");
+	cnn.queue('host_queue',function(q)
+
+	{
+		q.subscribe(function(message, headers, deliveryInfo, m){
+			util.log(util.format( deliveryInfo.routingKey, message));
+			util.log("Message: "+JSON.stringify(message));
+			util.log("DeliveryInfo: "+JSON.stringify(deliveryInfo));
+			
+
+
+			switch(message.func){
+
+				case "getHost":
+					user.getHostProfile(message,function(err,res){
+
+					cnn.publish(m.replyTo, res, {
+								contentType:'application/json',
+								contentEncoding:'utf-8',
+								correlationId:m.correlationId
+							});
+					});
+					
+				case "updateHostDetails":
+					user.updateHostProfileDetails(message,function(err,res){
+
+					cnn.publish(m.replyTo, res, {
+								contentType:'application/json',
+								contentEncoding:'utf-8',
+								correlationId:m.correlationId
+							});
+					});
+			};
+			
+	});
+ 	});
+	
+	
+	
+	
+	
+	
 	console.log("listening on Property Queue");
 	cnn.queue('property_queue',function(q)
 
@@ -445,5 +474,3 @@ cnn.on('ready', function(){
 
 
 });
-
-

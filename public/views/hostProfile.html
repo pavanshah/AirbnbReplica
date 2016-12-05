@@ -4,29 +4,7 @@
 
 </head>
 
-  <body class="with-new-header has-epcot-header">
-    <a class="screen-reader-only screen-reader-only-focusable skip-to-content"
-       data-hook="skip-to-content"
-       href="#site-content">
-      Skip to content
-    </a>
-
-    <span class="screen-reader-only">
-      Airbnb
-    </span>
- <div class="comp pull-right not-launched comp-hire-a-host">
-  <a class="hdr-btn link-reset lys-link hire-a-host-link"
-     href="/co-hosting?ref=header_button">
-    <span class="btn btn-small btn-hire-a-host" />
-  </a>
-  <div class="panel  drop-down-menu hire-a-host-dropdown">
-    <p class="panel-body">
-      <a class="link-reset hire-a-host-tooltip" href="/co-hosting?ref=header_button">
-        Tooltip content!
-      </a>
-    </p>
-  </div>
-</div>
+  
 
 <div class="comp pull-left back-to-search-results-wrapper">
 </div>
@@ -87,9 +65,6 @@
       <!--  button ng-click="vm.photoSymbolVideo()" class="btn btn-primary">Photos, Symbol, and Video</button-->
     </li>
     <li>
-      <a  aria-selected="false" class="sidenav-item">Trust and Verification</a>
-    </li>
-    <li>
       <a  href="#/hostRatingAndReviews" aria-selected="false" class="sidenav-item">Rating,Reviews and Trips History</a>
     </li>
 </ul>
@@ -115,7 +90,7 @@
         </label>
         <div class="col-sm-9">
           
-      <input size="30" ng-model="firstname" type="text" value="{{firstname}}"/>
+      <input size="30" type="text" ng-model="vm.host.firstname"/>
 		</div>
       </div>
 
@@ -125,7 +100,7 @@
         </label>
         <div class="col-sm-9">
           
-      <input id="user_last_name" ng-model="lastname" size="30" type="text" value="{{lastname}}" />
+      <input ng-model="vm.host.lastname" size="30" type="text"/>
 
           <div class="text-muted space-top-1">This is only shared once you have a confirmed booking with another Airbnb user.</div>
         </div>
@@ -138,7 +113,7 @@
         <div class="col-sm-9">
           
       <div class="select">
-        <select ng-model="gender"><option value="" selected="selected">Gender</option>
+        <select ng-model="vm.host.gender"><option value="" selected="selected">Gender</option>
 <option value="Male">Male</option>
 <option value="Female">Female</option>
 <option value="Other">Other</option></select>
@@ -155,7 +130,7 @@
         <div class="col-sm-9">
           
         <div class="select">
-          <select ng-model="birthMonth">
+          <select ng-model="vm.host.birthMonth">
 <option value="01">January</option>
 <option value="02">February</option>
 <option value="03">March</option>
@@ -172,7 +147,7 @@
 
         </div>
         <div class="select">
-<select ng-model="birthDay">
+<select ng-model="vm.host.birthDay">
 <option value="01">1</option>
 <option value="02">2</option>
 <option value="03">3</option>
@@ -208,7 +183,7 @@
 
         </div>
         <div class="select">
-<select ng-model="birthYear">
+<select ng-model="vm.host.birthYear">
 <option value="1998">1998</option>
 <option value="1997">1997</option>
 <option value="1996">1996</option>
@@ -306,7 +281,7 @@
         </label>
         <div class="col-sm-9">
           
-        <input ng-model="email" size="30" type="text" value={{email}} />
+        <input ng-model="vm.host.email" size="30" type="text" ng-readonly="true"/>
 
           <div class="text-muted space-top-1">We won’t share your private email address with other Airbnb users. <a href="/help/article/694" target="blank">Learn more</a>.</div>
         </div>
@@ -317,7 +292,8 @@
           Phone Number <i class="icon icon-lock icon-ebisu" data-behavior="tooltip" title="Private"></i>
         </label>
         <div class="col-sm-9">
-        <input ng-model="phonenumber" size="30" type="text" value={{phonenumber}} />
+        <input ng-model="vm.host.phone" size="30" type="text" ng-change = "vm.checkPhone()"/>
+        <span class="invalidinput" ng-show="vm.invalidPhone">Not a valid Phone Number</br></span>
       
 
           <div class="text-muted space-top-1">This is only shared once you have a confirmed booking with another Airbnb user. This is how we can all get in touch.</div>
@@ -359,21 +335,14 @@
         </label>
         <div class="col-sm-9">
           
-      <input placeholder="e.g. Paris, France / Brooklyn, NY / Chicago, IL" ng-model="address" size="30" type="text" />
+      <input placeholder="e.g. Paris, France / Brooklyn, NY / Chicago, IL" ng-model="vm.host.address" size="30" type="text" />
 
           
         </div>
       </div>
 
           <div class="row row-condensed space-4">
-        <label class="text-right col-sm-3" for="user_profile_info_about">
-          Describe Yourself 
-        </label>
-        <div class="col-sm-9">
-          
-      <textarea cols="40" id="user_profile_info_about" name="user_profile_info[about]" rows="5"></textarea>
-
-          <div class="text-muted space-top-1">Airbnb is built on relationships. Help other people get to know you.<br /><br />Tell them about the things you like: What are 5 things you can’t live without? Share your favorite travel destinations, books, movies, shows, music, food.<br /><br />Tell them what it’s like to have you as a guest or host: What’s your style of traveling? Of Airbnb hosting?<br /><br />Tell them about you: Do you have a life motto?</div>
+	   <div class="text-muted space-top-1">Airbnb is built on relationships. Help other people get to know you.<br /><br />Tell them about the things you like: What are 5 things you can’t live without? Share your favorite travel destinations, books, movies, shows, music, food.<br /><br />Tell them what it’s like to have you as a guest or host: What’s your style of traveling? Of Airbnb hosting?<br /><br />Tell them about you: Do you have a life motto?</div>
         </div>
       </div>
   </div>

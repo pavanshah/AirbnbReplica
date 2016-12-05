@@ -106,7 +106,7 @@ function getUserProfile(msg,callback){
 
         var UserObject =       
           {
-            "firstname": user.firstname,
+        	  "firstname": user.firstname,
               "lastname": user.lastname,
               "email": user.email,
               "user_id": user.user_id,
@@ -126,22 +126,22 @@ function getUserProfile(msg,callback){
 function getHostProfile(msg,callback){
 
 console.log("getting host profile");
-console.log(msg);
+//console.log(msg);
 Users.findOne({"email":msg.email},function(err,user){
     if(err || user == null){
-      callback(null,{"status":400,"result":"user not found"});
-      }
-
+      
+    callback(null,{"status":400,"result":"user not found"});
+     
+    }
     else
     {
-
       var momentObj = moment(user.birthdate, 'MM-DD-YYYY');
       var hostBirthDay = momentObj.format('YYYY-MM-DD');
-      //1990-07-17
       var birthYear = hostBirthDay.substring(0,4);
       var birthMonth = hostBirthDay.substring(5,7);
       var birthDay = hostBirthDay.substring(8,10);
-      console.log(hostBirthDay);
+      console.log("host response from RabitMq");
+      console.log(user);
       var UserObject = 
       {
     	  "firstname": user.firstname,
@@ -181,7 +181,7 @@ console.log(msg);
           else {
             console.log(doc);
             console.log("host updated");
-            callback(null,{"status":200,"result":"user updated"});        
+            callback(null,{"status":200,"result":"Host updated"});        
       };
       });
 }
