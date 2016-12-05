@@ -114,7 +114,8 @@
 
 				    	<div class="Quantity" ng-show="vm.showPricingCatalog">
 				    	<label for="propertyQuantity"> Quantity</label>
-				    	<input type="text" class="form-control" id="propertyQuantity" ng-model="vm.property.qty" required>
+				    	<input type="Number" class="form-control" id="propertyQuantity" ng-model="vm.property.qty" required>
+				    	<span class="invalidinput" ng-show="vm.invalidQuantityFlag">Quantity must be greater than 0<br></span>
 				    	</div>
 
 				    	<label for="propertyBasePrice"> Base Price </label>
@@ -143,13 +144,13 @@
 				    	<label for="Weekly_Discount_Rate"> Weekly Booking Discount </label>
 				    	<input type="number" class="form-control" id="Weekly_Discount_Rate" ng-model="vm.property.princing_catalog.weekly_discount" required>
 				    	<span class="invalidinput" ng-show="vm.requiredWeeklyDisc">Required Field</span>
-				    	<span class="invalidinput" ng-show="vm.invalidWDiscountFlag">Discount must be less than 100%</span>
+				    	<span class="invalidinput" ng-show="vm.invalidWDiscountFlag">Discount must be between 0% and 100%</span>
 				    	
 
 				    	<label for="Monthly_Discount_Rate"> Monthly Discount Rate </label>
 				    	<input type="number" class="form-control" id="Monthly_Discount_Rate" ng-model="vm.property.princing_catalog.monthly_discount" required>
 				    	<span class="invalidinput" ng-show="vm.requiredMonthlyDisc">Required Field</span>
-				    	<span class="invalidinput" ng-show="vm.invalidMDiscountFlag">Discount must be less than 100%</span>
+				    	<span class="invalidinput" ng-show="vm.invalidMDiscountFlag">Discount must be between 0% and 100%</span>
 
 				    	</div>
 
