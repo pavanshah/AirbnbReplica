@@ -222,7 +222,7 @@ app.run(function($rootScope,$http,$state,loginService) {
       	})
       }
       /// for user states
-      else if(toState.name=="checkout" || toState.name=="orderSuccess" ||toState.name=="userBill" ||toState.name=="userHome" ||
+      else if(toState.name=="checkout" || toState.name=="orderSuccess" ||toState.name=="userHome" ||
       	toState.name=="userProfile" ||
       	toState.name=="bidCofirmationPage" ||
       	toState.name=="viewUserBids"){
