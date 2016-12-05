@@ -36,7 +36,7 @@
       <h4> Total Amount {{vm.Bill_details.Total_Bill | currency}} </h4>
 		</div>
 		<div class="col-md-6">
-              <form class="form-horizontal">
+              <form class="form-horizontal" novalidate>
               <fieldset>
                 <div id="legend" class="payment-top" ><span>
                   <legend class="">Payment <img class="header-list-right-payment" src="public/images/checkout/Dark Color/12.png">
@@ -53,7 +53,10 @@
                 <div class="control-group">
                   <label for="username">Card Holder's Name</label>
                   <div class="controls">
-                    <input type="text" id="username" name="username" ng-model="cardName" placeholder="" class="credit-card-field"/>
+                    <input type="text" id="username" name="username" ng-model="vm.cardName" placeholder="" class="credit-card-field"/>
+                    <span class="invalidinput" ng-show="vm.requiredNameFlag">Required Field</span>
+                    <span class="invalidinput" ng-show="vm.invalidNameFlag">Invalid Name</span>
+
                     <div class="input-validation" style="display:inline;"></div>
                   </div>
                 </div>
@@ -63,7 +66,9 @@
                   <label  for="cardNumber">Card Number</label>
                   <div class="controls">
                   <span>
-                    <input type="text" pattern="[0-9]{16}" id="email" ng-model="cardNumber" name="cardNumber" placeholder="" class="input-xlarge credit-card-field" required/>
+                    <input type="Number" id="email" ng-model="vm.cardNumber" name="cardNumber" placeholder="" class="input-xlarge credit-card-field" required/>
+                    <span class="invalidinput" ng-show="vm.requiredNumberFlag">Required Field</span>
+                    <span class="invalidinput" ng-show="vm.invalidNumberFlag">Invalid credit card number</span>
 
            			<div class="input-validation" style="display:inline;"></div>
                   </div>
@@ -74,8 +79,8 @@
                   <label  for="expiry_month">Card Expiry Date</label>
                   <div class="custom" style="max-width:100px;">
                   <label for="expiry_month" > Month / Year</label>
-                     <select class="credit-card-field1" name="expiry_month" ng-model="expiry_month" id="expiry_month" required>
-                      <option></option>
+                     <select class="credit-card-field1" name="vm.expiry_month" ng-model="vm.expirymonth" id="expiry_month" required>
+                     
                       <option value="01">Jan (01)</option>
                       <option value="02">Feb (02)</option>
                       <option value="03">Mar (03)</option>
@@ -91,8 +96,7 @@
                     </select>
 
 
-                    <select style="margin-left:105px; margin-top:-36;" class="credit-card-field1" name="expiry_year" ng-model="expiry_year" id="expiry_year" required>
-                      <option value="16">2016</option>
+                    <select style="margin-left:105px; margin-top:-36;" class="credit-card-field1" name="expiry_year" ng-model="vm.expiryyear" id="expiry_year" required>
                       <option value="17">2017</option>
                       <option value="18">2018</option>
                       <option value="19">2019</option>
@@ -102,7 +106,8 @@
                       <option value="23">2023</option>
                     </select>
                     
-                    
+                    <span class="invalidinput" ng-show="vm.requiredDateFlag">Required Field</span>
+
                   </div>
                 </div>
            
@@ -110,9 +115,12 @@
                 <div class="control-group">
                   <label   for="password_cvv">Card CVV</label>
                   <div class="controls">
-                    <input type="password" id="password_cvv" name="password_cvv" placeholder="" ng-model="vm.creditCard.password_cvv" class="span2 credit-card-field" maxlength="4" required>
+                    <input type="password" id="password_cvv" name="password_cvv" placeholder="" ng-model="vm.cvv" class="span2 credit-card-field" required>
                   </div>
+
+                  <span class="invalidinput" ng-show="vm.requiredCVVFlag">Required Field</span>
                 </div>
+                <span class="invalidinput" ng-show="vm.invalidCVVFlag">Invalid CVV</span>
           	
                 <!-- Submit -->
                 <br>

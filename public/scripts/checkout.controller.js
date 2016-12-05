@@ -25,8 +25,65 @@ function CheckoutControllerFn($state,$stateParams,$http,bookingDataService) {
 
 	vm.bookProperty = function(){
 
-		$http.post("/bookProperty",vm.booking).
-		then(function(response) {
+		vm.requiredNameFlag = false;
+		vm.requiredNumberFlag = false;
+		vm.requiredDateFlag = false;
+		vm.requiredCVVFlag = false;
+		vm.invalidNameFlag = false;
+		vm.invalidNumberFlag = false;
+		var nameregex = /^[a-zA-Z ]*$/;
+		var numberregex = /^[0-9]{16}$/;
+		var cvvregex = /^[0-9]{3}$/;
+		vm.invalidCVVFlag = false;
+
+		if(vm.cardName == null || vm.cardNumber == null || vm.cvv == null || vm.expirymonth == null || vm.expiryyear == null || !nameregex.test(vm.cardName) || !numberregex.test(vm.cardNumber) || !cvvregex.test(vm.cvv))
+		{	
+			if(vm.cardName == null)
+			{
+				vm.requiredNameFlag = true;
+			}
+
+			if(vm.cardNumber == null)
+			{
+				vm.requiredNumberFlag = true;
+			}
+
+			if(vm.cvv == null)
+			{
+				vm.requiredCVVFlag = true;
+			}
+
+			if(vm.expirymonth == null || vm.expiryyear == null)
+			{
+				vm.requiredDateFlag = true;
+			}
+
+			if(!nameregex.test(vm.cardName))
+			{
+				vm.invalidNameFlag = true;
+			}
+
+			if(!numberregex.test(vm.cardNumber))
+			{
+				if(vm.cardNumber == null){}
+				else
+				vm.invalidNumberFlag = true;
+			}
+
+			if(!cvvregex.test(vm.cvv))
+			{
+				if(vm.cvv == null){}
+				else
+				vm.invalidCVVFlag = true;
+			}
+		}
+
+		else
+		{
+
+			console.log("out");
+			$http.post("/bookProperty",vm.booking).
+			then(function(response) {
 			if(response.status==200){
 				bookingDataService.deleteBooking();
 				console.log("bookpropertyahdbadhkbda"+response.data.trip);
@@ -35,7 +92,10 @@ function CheckoutControllerFn($state,$stateParams,$http,bookingDataService) {
 			else if(response.status==401){
 				openLoginModal();
 			}
-		})
+			})
+
+		}
+		
 	}
 
 }
