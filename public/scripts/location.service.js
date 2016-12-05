@@ -8,7 +8,7 @@ function locationServiceFn($filter) {
         console.log("mapCenter",mapCenter);
         // Create a new map and place in the index.html page
         map = new google.maps.Map(document.getElementById('map'), {
-            zoom: 3,
+            zoom: 10,
             center: mapCenter
         });
     
@@ -28,7 +28,7 @@ function locationServiceFn($filter) {
 	    	 var marker = new google.maps.Marker({
 	                   position: property.latlon,
 	                   map: map,
-	                   title: "property",
+	                   title: property.propertyTitle,
 	                   icon: icon
 	                   //label:"MarkerText"
 	               });
