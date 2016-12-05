@@ -80,6 +80,7 @@ function signUp(msg,callback){
 
 };
 
+
 function updateProfile(msg,callback){
 
   Users.findOneAndUpdate(msg.query, msg.user, {upsert:false}, function(err, doc){
@@ -156,7 +157,8 @@ Users.findOne({"email":msg.email},function(err,user){
           "birthDay":birthDay,
           "gender": user.gender,
           "profilepic":user.profilepic,
-          "video":user.video
+          "video":user.video,
+          "card":user.carddetails
       };
 
       callback(null,{"status":200,"user":UserObject});
