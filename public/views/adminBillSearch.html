@@ -14,7 +14,7 @@
           <a href="#/admin">Admin Main Dashboard</a>
         </md-button>
         <md-button class="md-raised" aria-label="Learn More">
-          <a href="#/adminHostSearch">Host and Users</a>
+          <a href="#/adminHostSearch">Hosts</a>
         </md-button>
     </div>
   </md-toolbar>
@@ -103,7 +103,7 @@
        <md-divider ></md-divider> 
       </md-list-item>
     
-      <md-list-item class="md-3-line" ng-repeat="item in values" ng-click="showBill(item._id)">
+      <md-list-item class="md-3-line" ng-repeat="item in values | limitTo:totalDisplayed" ng-click="showBill(item._id)">
       <img src="./images/billinfo.jpg"  style="border-radius:30%;padding-top:20px;" height="60" width="60">
       <div class="md-list-item-text" style="padding-left:15px;padding-top:15px;padding-bottom:15px;">
           <h3>{{item.billing_id}}</h3>          
@@ -126,6 +126,12 @@
        <md-divider ></md-divider> 
       </md-list-item>
     </md-list>
-    <md-divider ></md-divider> 
+    <md-divider ></md-divider>
+     
   </md-content>
+   <br>
+  <div class="text-center">
+  <md-button class="md-raised md-secondary" ng-click="showMore()" style="width:40%;background:#EF5350;color:white;" ng-show="fetchMore">Fetch more</md-button>
+  </div>
+  <br>
 </div>
