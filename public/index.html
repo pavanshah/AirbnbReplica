@@ -93,11 +93,10 @@
 			        	<img ng-if="vm.user.profilepic!=undefined" ng-src="{{vm.user.profilepic}}" height="30px" width="30px" style="border-radius:20px"><span ng-bind="vm.user.firstname"></span>
 		        		<div class="logout-popup position-absolute">
 			        		<ul class="clearfix">
-			        			<li ng-click="vm.profile()">Edit Profile</li>
-			        			<li ng-click="vm.trips()">Your Trips</li>
-			        			<li ng-click="vm.bids()">Your Bids</li>
-			        			<li>Account Settings</li>
-			        			<li>Business Travel</li>
+			        			<li ng-click="vm.profile()" ng-if="vm.user.UserType=='User' || vm.user.UserType=='user'">Edit Profile</li>
+			        			<li ng-click="vm.trips()" ng-if="vm.user.UserType=='User' || vm.user.UserType=='user'">Your Trips</li>
+			        			<li ng-click="vm.bids()" ng-if="vm.user.UserType=='User' || vm.user.UserType=='user'">Your Bids</li>
+			        			
 			        			<li ng-click="vm.logout()">Logout</li>
 			        		</ul>
 			        	</div>
