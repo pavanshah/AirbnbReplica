@@ -376,7 +376,7 @@ var updateHostProfile = function(req,res){
 
 		}
 
-		mq_client.make_request("user_queue",msg_payload,function(err,response){
+		mq_client.make_request("host_queue",msg_payload,function(err,response){
 
 			if(err)
 			{
