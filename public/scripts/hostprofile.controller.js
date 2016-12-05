@@ -26,26 +26,36 @@ function HostProfileFn($state,$scope,$http,$mdDialog) {
 	    "gender": "Male"
 	  }
 	  */
-	$scope.getHostDetails = function(){
+	
+	$scope.$on('$viewContentLoaded', function() {
+	//$scope.getHostDetails = function(){
 		
 		
 		console.log("geting host details");
 		$http.get('/getHostDetails').then(function(response){
 			console.log(response.data);
-			$scope.firstname = response.data.user.firstname;
-			$scope.lastname = response.data.user.lastname;
-			$scope.email = response.data.user.email;
-			$scope.phonenumber = response.data.user.phone;
-			$scope.gender = response.data.user.gender;
-			$scope.address = response.data.user.address;
-			$scope.birthYear = response.data.user.birthYear;
-			$scope.birthDay = response.data.user.birthDay;
-			$scope.birthMonth = response.data.user.birthMonth;
-			vm.host = response.data.user;
-			console.log(vm.host);
+			if(response.status == 200){
+				$scope.firstname = response.data.user.firstname;
+				$scope.lastname = response.data.user.lastname;
+				$scope.email = response.data.user.email;
+				$scope.phonenumber = response.data.user.phone;
+				$scope.gender = response.data.user.gender;
+				$scope.address = response.data.user.address;
+				$scope.birthYear = response.data.user.birthYear;
+				$scope.birthDay = response.data.user.birthDay;
+				$scope.birthMonth = response.data.user.birthMonth;
+				vm.host = response.data.user;
+				console.log(vm.host);
+			}
+			
 	});
+	});
+	//}
+	//$scope.getHostDetails();
+	
+	vm.photoSymbolVideo = function(){
+		window.location.assign("#/hostProfilePhotoAndVideo");
 	}
-	$scope.getHostDetails();
 	$scope.save = function(){
 		console.log("save button clicked");
 		vm.host.firstname = $scope.firstname;

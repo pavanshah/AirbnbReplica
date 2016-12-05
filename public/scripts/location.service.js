@@ -1,14 +1,14 @@
 var app = angular.module("Airbnb");
 
 
-function locationServiceFn() {
+function locationServiceFn($filter) {
 	var map;
 	function initMap(mapCenter){
       
         console.log("mapCenter",mapCenter);
         // Create a new map and place in the index.html page
         map = new google.maps.Map(document.getElementById('map'), {
-            zoom: 3,
+            zoom: 10,
             center: mapCenter
         });
     
@@ -28,7 +28,7 @@ function locationServiceFn() {
 	    	 var marker = new google.maps.Marker({
 	                   position: property.latlon,
 	                   map: map,
-	                   title: "Big Map",
+	                   title: property.propertyTitle,
 	                   icon: icon
 	                   //label:"MarkerText"
 	               });
@@ -55,7 +55,7 @@ function locationServiceFn() {
             else
             	var propertyImage = "public/images/room-list-images/room-1-a.png";
             // Create popup windows for each record
-            var  contentString = '<p><b> ' + property.propertyTitle + '</b></p><p><img width="200" height="200" alt="property image" src="'+propertyImage+'"></p>';
+            var  contentString = '<p><b> ' + property.propertyTitle + '</b></p><p><img width="200" height="200" alt="property image" src="'+propertyImage+'"></p><p><b>'+ $filter('currency')(property.base_price)+'</b></p>';
 
             // Converts each of the JSON records into Google Maps Location format (Note Lat, Lng format).
             locations.push(new Location(
