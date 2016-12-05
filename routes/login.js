@@ -61,7 +61,7 @@ var userSignup = function(req,res){
 					else
 					{
 						res.status(400);
-						res.json({"result":"Bad Resquest"});
+						res.json({"result":response.result});
 					}
 				}
 				else{
@@ -652,7 +652,7 @@ var isUserLoggedIn = function(req,res) {
 	 	//winston.log('info', 'user tracker updated', {session_id : req.session.user.session_id, user_email : req.session.user.emailId, "user_tracker" : req.session.user.user_tracker});		
 
 		res.status(200);
-		res.json({"response":"Authenticated."});	
+		res.json(req.session.user);	
 	}
 }
 
