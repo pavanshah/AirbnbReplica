@@ -18,6 +18,27 @@ function HostCardDetails($state,$scope,$http) {
 			})
 	};
 	
+	$scope.$on('$viewContentLoaded', function() {
+		//$scope.getHostDetails = function(){
+			
+			
+			console.log("geting host card details");
+			$http.get('/getHostDetails').then(function(response){
+				console.log(response);
+				if(response.status == 200){
+					console.log($scope.cardNumber);
+					console.log($scope.expiryDate);
+					console.log($scope.cvv);
+					var expiryDate =response.data.user.card.expiryyear +"/"+ response.data.user.card.expirymonth;
+					console.log(expiryDate);
+					$scope.cardNumber = response.data.user.card.creditcard;
+					$scope.expiryDate = expiryDate;
+					$scope.cvv = response.data.user.card.cvv;
+				}
+				
+		});
+		});
+	
 		
 }
 

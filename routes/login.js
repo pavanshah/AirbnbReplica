@@ -128,6 +128,7 @@ function(username, password, done) {
 }
 ));*/
 
+
 var getHostTrips = function(req,res,next){
 	console.log("inside get host trips");
 	msg_payload = {
