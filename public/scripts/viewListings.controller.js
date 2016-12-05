@@ -8,7 +8,8 @@ function viewListingsControllerFn($state,propertyService,locationService,$stateP
     bookingDataService.setBooking(property);
 		$state.go("propertyDetails",{property:property});
 	}
-  var icon = "http://maps.google.com/mapfiles/ms/icons/blue-dot.png";
+  //var icon = "http://maps.google.com/mapfiles/ms/icons/blue-dot.png";
+  var icon = "public/images/3.png";
   var mapCenter = {};
   vm.properties = [];
   var filterdProperties = [];

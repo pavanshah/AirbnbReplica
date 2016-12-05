@@ -138,7 +138,7 @@ var SearchPropertyByDistance = function(req,res){
     
     var userProvidedRange =  daterange.create(new Date(req.body.start_date),new Date(req.body.end_date));
 
-    var distance = 100;
+    var distance = 10;
     //lat = 42;
     //long = -122;
 
