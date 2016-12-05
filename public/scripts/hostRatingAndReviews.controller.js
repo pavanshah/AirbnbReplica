@@ -87,6 +87,10 @@ var HostRatingAndReviewsFn = function ($http,$state,$scope,tripsService,$mdDialo
 		});
 	}
 	
+	vm.tripBill = function(tripId){
+		console.log("inside order click");
+		$state.go("userBill",{"trip":vm.trips[tripId]});
+	}
 	
 	vm.rateHost = function(tripId) {
 		

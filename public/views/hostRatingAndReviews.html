@@ -53,7 +53,9 @@
                   <strong><p><span style="font-size: 20px;"> Check-In Date: </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{trips.trip_start_date | date}}</p></strong>
                 <strong><p><span style="font-size: 20px;">Check-out Date: </span>&nbsp;{{trips.trip_end_date | date}}</p></strong>
                 </div>
-            
+            <div class="col-md-5">
+                  <button class="btn btn-primary" ng-click="vm.tripBill($index)" style="width: 140px; height: 70px;">View Receipt</button>
+                </div>
               </div>
                 <strong><P><span style="font-size: 20px;"> Trip Cost: </span>{{trips.bill.trip_amount | currency}}</P></strong>
                 <strong><p> <span style="font-size: 20px;"> {{trips.property.qty}}&nbsp;&nbsp;{{trips.property.category}}&nbsp;&nbsp;booked</span></p></strong>
