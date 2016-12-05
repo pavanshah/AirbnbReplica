@@ -4,8 +4,8 @@ function hostProfilePhotoAndVideoFn($state,$scope,$http,$sce) {
 	vm.test = "new";
 	//$scope.video = $sce.trustAsResourceUrl("https://www.youtube.com/embed/NVlYwUrmh1s");
 	
-	
-	vm.populateHostProfile = function() {
+$scope.$on('$viewContentLoaded', function() {
+	//vm.populateHostProfile = function() {
 		
 		$http.get('/getHostDetails').then(function(response){
 	    console.log(response.data);
@@ -30,35 +30,36 @@ function hostProfilePhotoAndVideoFn($state,$scope,$http,$sce) {
 				vm.host.profilepic="/public/images/generic-profile.png"
 			} 
 		});
-		
-		vm.updateProfilePic = function(){
-			filepicker.pick(
-			  {
-			    mimetype: 'image/*',
-			    container: 'modal',
-			    services: ['COMPUTER', 'FACEBOOK', 'INSTAGRAM', 'GOOGLE_DRIVE', 'DROPBOX']
-			  },
-			  function(Blob){
-				console.log("got the image");
-			    console.log(JSON.stringify(Blob.url));
-			    vm.host.profilepic=Blob.url;
-			    console.log(vm.host.profilepic);
-			    vm.UpdateProfile();
-			  },
-			  function(FPError){
-			    console.log(FPError.toString());
-			  });
-		}
-		vm.UpdateProfile = function() {
-			console.log("calling updateProfile");
-			$http.post('/updateHost',{"user":vm.host}).then(function(response){
-				console.log(response.data);
-				
-				vm.showAlert=true;
-			})
-		}
-		
+});
+	//}
+	//vm.populateHostProfile();
+//}
+	vm.updateProfilePic = function(){
+		filepicker.pick(
+		  {
+		    mimetype: 'image/*',
+		    container: 'modal',
+		    services: ['COMPUTER', 'FACEBOOK', 'INSTAGRAM', 'GOOGLE_DRIVE', 'DROPBOX']
+		  },
+		  function(Blob){
+			console.log("got the image");
+		    console.log(JSON.stringify(Blob.url));
+		    vm.host.profilepic=Blob.url;
+		    console.log(vm.host.profilepic);
+		    vm.UpdateProfile();
+		  },
+		  function(FPError){
+		    console.log(FPError.toString());
+		  });
 	}
+	vm.UpdateProfile = function() {
+		console.log("calling updateProfile");
+		$http.post('/updateHost',{"user":vm.host}).then(function(response){
+			console.log(response.data);
+			
+			vm.showAlert=true;
+		});
+	}	
 	
 	$scope.updateHostVideo = function() {
 		
@@ -96,6 +97,7 @@ function hostProfilePhotoAndVideoFn($state,$scope,$http,$sce) {
 	}
 	
 		
-	vm.populateHostProfile();
+	
+
 }
 app.controller('hostProfilePhotoAndVideo',hostProfilePhotoAndVideoFn);
