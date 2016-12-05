@@ -96,7 +96,7 @@ function createProperty(msg,callback){
 
 	var newProperty = Property(msg.property);
 	console.log(newProperty);
-	newProperty.save(function(err,result){
+/*	newProperty.save(function(err,result){
 
 		if(!err){
 			console.log(result);
@@ -106,7 +106,8 @@ function createProperty(msg,callback){
 			console.log(err);
 			callback(err,{"status":400,"result":"Bad Request"});
 		}
-	});
+	});*/
+	callback(null,{"status":200,"result":"Property created"});
 }
 
 function UpdateProperty(msg,callback){

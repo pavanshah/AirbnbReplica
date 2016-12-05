@@ -47,7 +47,7 @@ mongoose.connect(mongoSessionConnectURL, function(){
 cnn.on('ready', function(){
 	console.log("listening on login_queue");
 
-	cnn.queue('ebay_login_queue', function(q){
+	/*cnn.queue('ebay_login_queue', function(q){
 		q.subscribe(function(message, headers, deliveryInfo, m){
 			util.log(util.format( deliveryInfo.routingKey, message));
 			util.log("Message: "+JSON.stringify(message));
@@ -62,7 +62,7 @@ cnn.on('ready', function(){
 				});
 			});
 		});
-	});
+	});*/
 
 
 
