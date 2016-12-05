@@ -12,7 +12,7 @@ var redis = require('redis');
 var client = redis.createClient();
 
 function getRedisStatus(){
-	return 0;
+	return 1;
 }
 
 var getBillDetailAdmin = function(req,res){
