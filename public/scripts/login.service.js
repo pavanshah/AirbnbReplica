@@ -28,13 +28,13 @@ function loginServiceFn($http,bookingDataService,$state,$rootScope) {
 			if(response.status==200){
 				userData = response.data.user;
 				
-				/*if(userData.UserType=="Host"){
+				if(userData.UserType=="Host" || userData.UserType=="host"){
 					$state.go("becomeahost");
 				}
-				if(userData.UserType=="Admin"){
+				if(userData.UserType=="Admin" || userData.UserType=="admin"){
 					$state.go("admin");
 				}
-				*/
+				
 				return userData;
 			}
 		},function(err) {
