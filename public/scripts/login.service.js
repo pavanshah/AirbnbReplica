@@ -46,7 +46,7 @@ function loginServiceFn($http,bookingDataService,$state,$rootScope) {
 		return $http.get("/logout").
 			then(function(response) {
 				userData = {};
-				$rootScope.$emit('userLoggedIn');
+				$rootScope.$emit('userLoggedOut');
 				bookingDataService.deleteBooking();
 				
 				return response;
