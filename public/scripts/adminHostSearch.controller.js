@@ -45,7 +45,10 @@ function AdminHostSearchControllerFn($state,$scope,$http,$rootScope) {
 		})
 		
 	}
-	
+	$scope.totalDisplayed = 20;
+	$scope.showMore = function(argument) {
+		$scope.totalDisplayed = $scope.totalDisplayed + 20;
+	}
 	
 	$http({
 		method : "GET",
