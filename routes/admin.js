@@ -28,7 +28,7 @@ var getBillDetailAdmin = function(req,res){
 	        client.hgetall('billdetail'+req.query.id, function(err, object) {
 	        	console.log("Returned object is ");
 	        	console.log(typeof object);
-	            console.log(object);
+	            //console.log(object);
 	            
 	            res
     			.status(200)
@@ -63,7 +63,7 @@ var getBillDetailAdmin = function(req,res){
 				
 				Trips.find({"bill.billing_id":bill[0].billing_id},function(err,trip){
 					console.log("Got tripppppppppp");
-					console.log(trip);
+					//console.log(trip);
 					
 					if(trip.length == 0){
 						
@@ -167,7 +167,7 @@ var getProfileForAdmin = function(req,res){
 	        client.hgetall('profile'+req.query.id, function(err, object) {
 	        	console.log("Returned object is ");
 	        	console.log(typeof object);
-	            console.log(object);
+	            //console.log(object);
 	            
 	            res
     			.status(200)
@@ -207,7 +207,7 @@ var getBillForAdmin = function(req,res){
 		        client.hgetall('billnew', function(err, object) {
 		        	console.log("Returned object is ");
 		        	console.log(typeof object);
-		            console.log(object);
+		           // console.log(object);
 		            
 		            res
 	    			.status(200)
@@ -217,7 +217,7 @@ var getBillForAdmin = function(req,res){
 		    } else {		    	
 				
 				Bills.find({},function(err,bills){
-					console.log(bills);
+					//console.log(bills);
 					client.hmset('billnew', {"result":JSON.stringify(bills)});
         	        client.expire('billnew', 300);
 			
@@ -244,15 +244,15 @@ var getBillForAdmin = function(req,res){
 
 		
 		
-			console.log(req.query.querytype);
-			console.log(req.query.date);
-			console.log(req.query.month);
+			//console.log(req.query.querytype);
+			//console.log(req.query.date);
+			//console.log(req.query.month);
 			
 	if(req.query.month != ""){
 		console.log("Inside month query");
 		Bills.aggregate([{$project: {billing_date: 1,_id:1,billing_id:1,property:1,trip_amount:1, month: {$month: '$billing_date'}}},
 				  {$match: {month: Number(req.query.month)}}],function(err,bills){
-			console.log(bills);
+			//console.log(bills);
 			
 
 			res
@@ -275,7 +275,7 @@ var getBillForAdmin = function(req,res){
 		    dayOfMonth: {$dayOfMonth: '$billing_date'},
 		    year: {$year: '$billing_date'}}},
 		    {$match: {month: month,dayOfMonth: day,year: year}}],function(err,bills){
-			console.log(bills);
+			//console.log(bills);
 			
 
 			res
@@ -289,9 +289,10 @@ var getBillForAdmin = function(req,res){
 	}
 	
 }
-
 var getHostsForAdmin = function(req,res){
+
 	console.log(req.query);
+	console.log("inside getHostsForAdmin");
 	
 	if(req.query.query == "new"){
 		console.log("Inside new");
@@ -299,14 +300,14 @@ var getHostsForAdmin = function(req,res){
 		
 		client.exists('hostnew', function(err, reply) {
 			console.log("Redis query returned with value:");
-			console.log(reply);
+			//console.log(reply);
 			
 			if (reply === 1 && getRedisStatus()) {
 		        console.log('redis cache exists');
 		        client.hgetall('hostnew', function(err, object) {
 		        	console.log("Returned object is ");
 		        	console.log(typeof object);
-		            console.log(object);
+		            //console.log(object);
 		            
 		            res
 	    			.status(200)
@@ -314,8 +315,8 @@ var getHostsForAdmin = function(req,res){
 		        });
 		        
 		    } else {
-		    	Users.find({},function(err,user){
-					console.log(user);
+		    	Users.find({"UserType":"Host"},function(err,user){
+					//console.log(user);
 					
 					client.hmset('hostnew', {"result":JSON.stringify(user)});
         	        client.expire('hostnew', 300);
@@ -337,7 +338,7 @@ var getHostsForAdmin = function(req,res){
 	else{
 		var searchObject = {};
 		
-		if(req.query.type != "" && req.query.address != ""){
+		/*if(req.query.type != "" && req.query.address != ""){
 			//searchObject = {"UserType":req.query.type,"address.city":req.query.address.toLowerCase()};
 			searchObject = {"UserType":req.query.type,"address.city":{ $regex : new RegExp(req.query.address, "i") }};
 		}
@@ -348,10 +349,23 @@ var getHostsForAdmin = function(req,res){
 		}
 		else if(req.query.type != ""){
 			searchObject = {"UserType":req.query.type}; 
+		}*/
+		
+		if(req.query.status != "" && req.query.address != ""){
+			//searchObject = {"UserType":req.query.type,"address.city":req.query.address.toLowerCase()};
+			searchObject = {"UserType":"Host","user_status":req.query.status,"address.city":{ $regex : new RegExp(req.query.address, "i") }};
+		}
+		else if(req.query.address != ""){
+			//searchObject = {"address.city":req.query.address.toLowerCase()};
+			searchObject = {"UserType":"Host","address.city":{ $regex : new RegExp(req.query.address, "i") }};
+			
+		}
+		else if(req.query.status != ""){
+			searchObject = {"UserType":"Host","user_status":req.query.status}; 
 		}
 		
 		//if(req.query.type != "" && req.query.address != ""){
-		
+		console.log("-------------------------------------------------------------------");
 		console.log(searchObject);
 		
 		//redis changes starts
@@ -364,7 +378,7 @@ var getHostsForAdmin = function(req,res){
 		        client.hgetall('hostquery'+JSON.stringify(searchObject), function(err, object) {
 		        	console.log("Returned object is ");
 		        	console.log(typeof object);
-		            console.log(object);
+		            //console.log(object);
 		            
 		            res
 	    			.status(200)
@@ -373,7 +387,7 @@ var getHostsForAdmin = function(req,res){
 		        
 		    } else {
 		    	Users.find(searchObject,function(err,user){
-					console.log(user);
+					//console.log(user);
 					
 					client.hmset('hostquery'+JSON.stringify(searchObject), {"result":JSON.stringify(user)});
         	        client.expire('hostquery'+JSON.stringify(searchObject), 300);
@@ -413,7 +427,7 @@ var getPropertyPerYear = function(req,res){
 	        client.hgetall('property'+req.query.year, function(err, object) {
 	        	console.log("Returned object is ");
 	        	console.log(typeof object);
-	            console.log(object);
+	            //console.log(object);
 	            
 	            res
     			.status(200)
@@ -497,9 +511,9 @@ var getMainDashboard = function(req,res){
 	        client.hgetall('mainDash', function(err, object) {
 	        	console.log("Returned object is ");
 	        	console.log(typeof object);
-	            console.log(object);
-	            console.log("------------");
-	            console.log({"result":JSON.parse(object.result),"barchart":JSON.parse(object.barchart),"linechart":JSON.parse(object.linechart),"userstatus":JSON.parse(object.userstatus),"userstype":JSON.parse(object.userstype)});
+	            //console.log(object);
+	            //console.log("------------");
+	            //console.log({"result":JSON.parse(object.result),"barchart":JSON.parse(object.barchart),"linechart":JSON.parse(object.linechart),"userstatus":JSON.parse(object.userstatus),"userstype":JSON.parse(object.userstype)});
 	            
 	            res
     			.status(200)
@@ -545,7 +559,7 @@ var getMainDashboard = function(req,res){
 	                        console.log("Inside................. line")
 	                    	//console.log(resultData);
 	                        //console.log(barResultOutput);
-	                        console.log(lineResultOutput);
+	                   //     console.log(lineResultOutput);
 	                        var lineOutput = [];
 	                        for(var i=0;i<lineResultOutput.length;i++){
 	                        	//console.log(lineResultOutput[i].city);
@@ -568,7 +582,7 @@ var getMainDashboard = function(req,res){
 	                        	console.log(lineOutput[k].values);
 	                        }*/
 	                        
-	                        Users.aggregate([{$group: {_id: '$user_status',count: {$sum: 1}}}], function (err, status) {
+	                        Users.aggregate([{$match: {"UserType":"Host"}},{$group: {_id: '$user_status',count: {$sum: 1}}}], function (err, status) {
 	                                       if (err) {
 	                                    	   console.log("User host................failed.........");
 	                                    	   return;
@@ -576,7 +590,7 @@ var getMainDashboard = function(req,res){
 	                                           //success case
 	                                    	   
 	                                    	console.log("User host................");
-	                                    	console.log(status);
+	                     //               	console.log(status);
 	                                    	   
 	                                    	var userstatus = [];
 	                                    	
@@ -596,7 +610,7 @@ var getMainDashboard = function(req,res){
 	 	                                    	   return;
 	 	                                       } else {
 	 	                                    	  console.log("User type................");
-	 	                                    	   console.log(usertype);
+	 	                   //                 	   console.log(usertype);
 	 	                                    
 	 	                                    	 /* [
 	 	                      	                {
@@ -625,6 +639,7 @@ var getMainDashboard = function(req,res){
 	 		               	                        
 	 		               	            	        console.log("+++++++++++++++++++++++++++++");
 	 		               	            	        console.log({"result":resultData,"barchart":barResultOutput,"linechart":lineOutput,"userstatus":userstatus,"userstype":usertypeval});
+	 		               	            	    connection.release();
 	 		               	                        res
 	 		               	            			.status(200)
 	 		               	            			.send({"result":resultData,"barchart":barResultOutput,"linechart":lineOutput,"userstatus":userstatus,"userstype":usertypeval});

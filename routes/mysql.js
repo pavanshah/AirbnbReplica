@@ -8,7 +8,7 @@ var pool  = mysql_pool.createPool({
 	password : 'airbnb',
 	port     : 3306,
 	database : 'airbnb',
-	connectionLimit : '100',
+	connectionLimit : '10',
 		multipleStatements: true
 });
 

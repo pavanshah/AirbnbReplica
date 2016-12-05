@@ -6,11 +6,27 @@ function AdminBillSearchControllerFn($state,$scope,$http,$rootScope) {
 	
 	$scope.billQuery = {"date":"","month":"","query":"new","querytype":$scope.queryType};
 	
+	$scope.fetchMore = true;
+	$scope.recordCount = 0;
+	
 	$scope.showBill = function(id){
 		$rootScope.billid = id;		
 		window.location.assign("/#/adminBillView");
 		
 	}
+	
+	$scope.totalDisplayed = 20;
+	
+	
+	
+
+	$scope.showMore = function() {
+			console.log("clicked");
+	        $scope.totalDisplayed = $scope.totalDisplayed + 20;
+	        if($scope.recordCount<= $scope.totalDisplayed){
+				$scope.fetchMore = false;
+			}
+	 }
 
 	$http({
 		method : "GET",
@@ -18,6 +34,14 @@ function AdminBillSearchControllerFn($state,$scope,$http,$rootScope) {
 		params : $scope.billQuery 
 	}).success(function(details) {
 		console.log(details.result);
+		$scope.totalDisplayed = 20;
+		console.log("length");
+		console.log(details.result.length);
+		$scope.recordCount = details.result.length;
+		
+		if($scope.recordCount<= $scope.totalDisplayed){
+			$scope.fetchMore = false;
+		}
 		$scope.values = details.result;
 	})
 	
@@ -43,6 +67,13 @@ function AdminBillSearchControllerFn($state,$scope,$http,$rootScope) {
 			params : $scope.billQuery 
 		}).success(function(details) {
 			console.log(details.result);
+			console.log("length");
+			$scope.totalDisplayed = 20;
+			console.log(details.result.length);
+			$scope.recordCount = details.result.length;
+			if($scope.recordCount<= $scope.totalDisplayed){
+				$scope.fetchMore = false;
+			}
 			$scope.values = details.result;
 			$scope.billQuery.date = "";
 			$scope.billQuery.month = "";
