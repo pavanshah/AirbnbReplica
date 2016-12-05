@@ -45,23 +45,11 @@
         
         </div>
 	</div>
-<!-- 	<div class="row cardHost" style="margin-left:0px;margin-right:0px;margin-top:10px;padding-left:20px;">
-		<div class="btn-toolbar" role="toolbar" aria-label="Select Page">
-		  <div class="btn-group" role="group" aria-label="1">1</div>
-		  <div class="btn-group" role="group" aria-label="2">2</div>
-		  <div class="btn-group" role="group" aria-label="3">3</div>
-		  <div class="btn-group" role="group" aria-label="1">4</div>
-		  <div class="btn-group" role="group" aria-label="2">5</div>
-		  <div class="btn-group" role="group" aria-label="3">6</div>
-		</div>
-	</div> -->
-	<!-- <div>		 
-	  <pre>You are currently on page {{currentPage}}</pre>
-	  <ul uib-pager total-items="totalItems" ng-model="currentPage"></ul>
-  </div> -->
+
 	<md-content>
     <md-list>
-      <md-list-item class="md-3-line" ng-repeat="item in values| limitTo:totalDisplayed" ng-click="vm.showProfile(item._id)">
+      <md-list-item class="md-3-line" ng-repeat="item in values | limitTo:totalDisplayed" ng-click="vm.showProfile(item._id)">
+
        
       <!-- <img src="http://placehold.it/50x50"  style="border-radius:50%;padding-top:20px;" > -->
       <img class="img-circle" ng-src="{{item.profilepic || 'http://placehold.it/50x50'}}"  style="padding-top:10px;" height="50px" width="50px">

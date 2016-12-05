@@ -33,6 +33,7 @@
     "daterange.js": "daterange#^0.3.0"
   },
   "resolutions": {
-    "angular-material": "1.0.0"
+    "angular-material": "1.0.0",
+    "angular": ">=1.4.0"
   }
 }

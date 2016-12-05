@@ -62,7 +62,7 @@ function AddPropertyControllerFn($state,$stateParams,$http,$mdDialog) {
 		var zipRegex1 = /^[0-9]{5}$/;
 		var zipRegex2 = /^[0-9]{9}$/;
 		var titleRegex = /^[a-zA-Z0-9,.\_\- ]*$/;
-		var descriptionRegex = /^[a-zA-Z0-9,.\_\- ]*$/;
+		var descriptionRegex = /^[a-zA-Z0-9&!',.\_\- ]*$/;
 		var numberRegex = /^[0-9]*$/;
 		var ZipFlag = false;
 		vm.invalidBaseFlag = false;
@@ -71,6 +71,7 @@ function AddPropertyControllerFn($state,$stateParams,$http,$mdDialog) {
 		vm.invalidWSurgeFlag = false;
 		vm.invalidWDiscountFlag = false;
 		vm.invalidHSurgeFlag = false;
+		vm.invalidQuantityFlag = false;
 		vm.invalidWDiscountFlag = false;
 		var StateFlag = false;
 		var start_date = new Date(vm.property.property_start_date);//.toDateString();
@@ -136,7 +137,7 @@ function AddPropertyControllerFn($state,$stateParams,$http,$mdDialog) {
 			HSurgeFlag = true;
 		}
 
-		if((vm.property.princing_catalog.monthly_discount == null && vm.property.ListingType!='auction') || 
+		if((vm.property.qty < 0 || vm.property.princing_catalog.monthly_discount == null && vm.property.ListingType!='auction') || 
 			(vm.property.princing_catalog.weekly_discount == null && vm.property.ListingType!='auction') || 
 			vm.property.princing_catalog.monthly_discount >= 100 || vm.property.princing_catalog.weekly_discount >=100 || HSurgeFlag == false || WSurgeFlag == false || 
 			vm.property.base_price<=0 || !titleRegex.test(vm.property.address.country) || ZipFlag == false || 
@@ -148,9 +149,24 @@ function AddPropertyControllerFn($state,$stateParams,$http,$mdDialog) {
 			(vm.property.princing_catalog.weekend_surge == null && vm.property.ListingType!='auction')|| vm.property.base_price == null || 
 			vm.travelLocation == null || vm.property.ListingType == "" || vm.property.category == null || end_date<start_date || 
 			!titleRegex.test(vm.property.propertyTitle) || !descriptionRegex.test(vm.property.description) || 
-			vm.property.propertyTitle == null || vm.property.description == null || (start_date<date) || StateFlag == false )
+			vm.property.propertyTitle == null || vm.property.description == null || (start_date<date) || StateFlag == false || vm.property.princing_catalog.monthly_discount < 0 || vm.property.princing_catalog.weekly_discount < 0)
 		
 			{
+					if(vm.property.qty < 0)
+					{
+						vm.invalidQuantityFlag = true;
+					}
+
+					if(vm.property.princing_catalog.weekly_discount < 0)
+					{
+						vm.invalidWDiscountFlag = true;
+					}
+
+					if(vm.property.princing_catalog.monthly_discount < 0)
+					{
+						vm.invalidMDiscountFlag = true;
+					}
+
 					if(StateFlag == false)
 					{
 						vm.invalidStateInputFlag = true;
