@@ -19,7 +19,7 @@
 
 # Screen Captures Of WebApp:
 
-<p align="center">##Homepage:</p>
+##Homepage:
 ![1](https://cloud.githubusercontent.com/assets/22826481/21554432/563aa626-cdc4-11e6-8449-f1f609dee69f.PNG)
 
 
