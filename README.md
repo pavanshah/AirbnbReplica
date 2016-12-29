@@ -67,5 +67,5 @@
 ##AirBnB Analysis:
 ![15](https://cloud.githubusercontent.com/assets/22826481/21554444/5667c408-cdc4-11e6-96dc-97c06e9b7d8d.png)
 
-#AirBnB Analysis:
+##Host Property Analysis:
 ![16](https://cloud.githubusercontent.com/assets/22826481/21554446/566c859c-cdc4-11e6-9e1d-f76afb66bea7.png)
