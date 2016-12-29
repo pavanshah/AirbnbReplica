@@ -1,8 +1,4 @@
-# Airbnb-Simulation
-CMPE273 Class Project Fall 2016 
-
-
-# Guidelines:
+# Guidelines for installation:
 
 * Once you take latest code, run below commands to install all the dependencies
 
@@ -19,4 +15,10 @@ CMPE273 Class Project Fall 2016
 
 * Use bower to install all the client side dependencies
 
-* Use npm to install all the node dependencies 
+* Use npm to install all the node dependencies
+
+# Screen Captures Of WebApp:
+
+##Homepage:
+
+##Sign-up:
